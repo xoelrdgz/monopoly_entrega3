@@ -20,4 +20,15 @@ public class ConsolaNormal implements Consola {
         return mensaje;
     }
 
+    @Override
+    public int leerInt (int mensaje){
+        Scanner scanner = new Scanner(System.in);
+
+        mensaje = scanner.nextInt();
+
+        scanner.close();
+
+        return mensaje;
+    }
+
 }
