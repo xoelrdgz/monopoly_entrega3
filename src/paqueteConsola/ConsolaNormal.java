@@ -1,5 +1,5 @@
 package paqueteConsola;
 
-public class ConsolaNormal {
+public class ConsolaNormal implements Consola {
     
 }
