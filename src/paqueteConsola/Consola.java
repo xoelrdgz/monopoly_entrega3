@@ -6,4 +6,6 @@ public interface Consola {
 
     public String leer (String mensaje);
 
+    public int leerInt (int mensaje);
+
 }
