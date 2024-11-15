@@ -1,5 +1,6 @@
 package paqueteJuego;
 
+import paqueteCasilla.Casilla;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
 package paqueteJuego;
 
-
-
 import java.util.ArrayList;
+import paqueteCasilla.Casilla;
+import paqueteAvatar.Avatar;
 
 public class Jugador {
 
@@ -25,12 +25,15 @@ public class Jugador {
     public int vecesencarcel;// Hecho
     public int vecesdados;
     public int vecesvueltas;
+    public int turnosEnCarcel;
     public boolean modomovin;
     public int turnoscocheavanzado;
     public int turnossinjugarcocheavanzado;
     public boolean cocheprohibido;
     public boolean cocheextra;
-
+    public boolean casosacarmenosdecuatroenunturnoextracocheavanzado;
+    public boolean casollegaralcuartoturnosextracocheavanzado;
+    
     // Constructor vacío (para la banca)
     public Jugador() {
     }
@@ -43,6 +46,7 @@ public class Jugador {
         this.enCarcel = false;
         this.tiradasCarcel = 0;
         this.vueltas = 0;
+        this.turnosEnCarcel=0;
         this.propiedades = new ArrayList<>();
         this.vecesdados = 0;
         this.valorpropiedades = 0;
@@ -61,6 +65,8 @@ public class Jugador {
         this.cocheprohibido = false;
         this.cocheextra = false;
         this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);
+        this.casosacarmenosdecuatroenunturnoextracocheavanzado=false;
+        this.casollegaralcuartoturnosextracocheavanzado=false;
     }
 
     // Getters y Setters para recuperar los valores de los atributos
@@ -108,8 +114,15 @@ public class Jugador {
             return "basico";
         }
     }
+    public void setCasosacarmenosdecuatroenunturnoextracocheavanzado(boolean casosacarmenosdecuatroenunturnoextracocheavanzado){
+        this.casosacarmenosdecuatroenunturnoextracocheavanzado=casosacarmenosdecuatroenunturnoextracocheavanzado;
+    }
+    public void setCasollegaralcuartoturnosextracocheavanzado(boolean casollegaralcuartoturnosextracocheavanzado){
+        this.casollegaralcuartoturnosextracocheavanzado=casollegaralcuartoturnosextracocheavanzado;
+    }
 
     public void setModomovimiento() {
+
         if (this.modomovin == true) {
 
             this.modomovin = false;
@@ -190,7 +203,12 @@ public class Jugador {
             this.vueltas += 1;
         }
     }
-
+    // Método para disminuir las vueltas al retroceder por la salida
+    public void disminuirVueltas() {
+        if (!isEnCarcel()) { // Solo incrementar si no está en la cárcel
+            this.vueltas=this.vueltas- 1;
+        }
+    }
     // Método para resetear las vueltas si es necesario
     public void resetearVueltas() {
         this.vueltas = 0;

@@ -1,3 +1,4 @@
+import paqueteJuego.Juego;
 
 public class MonopolyETSE {
 
@@ -5,6 +6,6 @@ public class MonopolyETSE {
         Juego juego = new Juego();
 
         // Llamar al metodo para iniciar la partida
-        Juego.iniciarPartida();
+        juego.iniciarPartida();
     }
 }

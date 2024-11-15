@@ -1,7 +1,6 @@
 package paqueteJuego;
 
-import partida.*;
-
+import paqueteCasilla.Casilla;
 import java.util.ArrayList;
 import java.util.HashMap;
 
