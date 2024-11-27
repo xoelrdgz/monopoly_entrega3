@@ -4,10 +4,14 @@ import paqueteEdificio.*;
 import paqueteJuego.Grupo;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
+import paqueteConsola.ConsolaNormal;
 
 import java.util.ArrayList;
 
 public class Solar extends Propiedad {
+
+    private ConsolaNormal consola = new ConsolaNormal();
+
     // Atributos para los diferentes tipos de edificios
     private Edificio casas;
     private Edificio hoteles;
@@ -122,4 +126,29 @@ public class Solar extends Propiedad {
             this.valor *= 1.05; // Aumenta el precio en un 5%
         }
     }
+
+    public void edificar(String tipoEdificio) {
+        switch (tipoEdificio) {
+            case "casa":
+            case "Casa":
+                getCasas().construirEdificio();
+                break;
+            case "hotel":
+            case "Hotel":
+                getHoteles().construirEdificio();
+                break;
+            case "piscina":
+            case "Piscina":
+                getPiscinas().construirEdificio();
+                break;
+            case "pista":
+            case "PistaDeporte":
+                getPistasDeporte().construirEdificio();
+                break;
+            default:
+                consola.imprimir("Tipo de edificio no válido.");
+                break;
+        }
+    }
+
 }

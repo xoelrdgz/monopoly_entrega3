@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 import paqueteConsola.ConsolaNormal;
+import paqueteCasilla.Solar;
 
 import static paqueteJuego.Valor.SUMA_VUELTA;
 
@@ -417,9 +418,16 @@ public class Juego implements Comando {
                     i = 1;
                     break;
 
-                case "construir":
-                    construir();
-                    i = 1;
+                case "edificar":
+                if (partes.length < 2) {
+                    System.out.println("Comando incompleto. Uso: edificar [casa/hotel/piscina/pistadeporte] [nombre_casilla]");
+                    i = 2;
+                    return;
+                }
+                String tipoEdific = partes[1];
+                Solar solar = (Solar) jugadores.get(turno).getAvatar().getLugar();
+                solar.edificar(tipoEdific);
+                i = 1;
                     break;
                 case "vender":
                     if (partes.length < 4) {
@@ -1408,23 +1416,6 @@ public class Juego implements Comando {
         return -1; // Si no se encuentra la casilla
     }*/
 
-    // Metodo que construye un edificio en una casilla de tipo solar comprada por el
-    @Override
-    public void construir() {
-        Jugador jugadorActual = jugadores.get(turno);
-        Casilla casillaActual = jugadorActual.getAvatar().getLugar();
-        if (!casillaActual.getTipo().equalsIgnoreCase("Solar")) {
-            System.out.println("No puedes construir en esta casilla. Debes estar en una casilla de tipo Solar.");
-            return;
-        }
-
-        System.out.println("Introduce el tipo de edificio que deseas construir (Casa, Hotel, Piscina, PistaDeporte): ");
-        String tipoEdificio = consola.leer();
-
-        Edificio edificio = new Edificio(casillaActual, tipoEdificio);
-        edificio.construirEdificio();
-    }
-
     // Metodo que lista los edificios construidos por los jugadores.
     @Override
     public void listarEdificios() {
@@ -1589,7 +1580,7 @@ public class Juego implements Comando {
         System.out.println("    hipotecar [nombre_casilla]");
         System.out.println("    deshipotecar [nombre_casilla]");
         System.out.println("    estadisticas [jugador/nada]");
-        System.out.println("    construir");
+        System.out.println("    edificar");
         System.out.println("    vender [casas/hoteles/piscinas/pistasdeporte] [nombre_casilla] [cantidad]");
         System.out.println("    bancarrota");
         System.out.println("    cambiar movimiento");
