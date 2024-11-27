@@ -7,12 +7,13 @@ public class Servicio extends Propiedad {
     public Servicio(String nombre, String tipo, int posicion, float valor, Jugador duenho, Grupo grupo) {
         super(nombre, tipo, posicion, valor, duenho, grupo);}
 
-    public float getAlquilerServicio(){float alquiler=0; alquiler=calcularAlquilerServicio(); return alquiler;}
+    @Override
+    public float getAlquiler(){float alquiler=0; alquiler=calcularAlquiler(); return alquiler;}
 
     @Override
     public boolean evaluarCasilla(Jugador actual, Jugador banca){
         if (this.duenho != null && this.duenho != actual) {
-            float alquiler = calcularAlquilerServicio();
+            float alquiler = calcularAlquiler();
             if (actual.getFortuna() >= alquiler) {
                 actual.sumarFortuna(-alquiler);
                 actual.pagoalquileres = actual.pagoalquileres + alquiler;
@@ -31,8 +32,8 @@ public class Servicio extends Propiedad {
     }
 
 
-    // Método para calcular el alquiler de una casilla de tipo servicio.
-    private float calcularAlquilerServicio() {
+    @Override
+    public float calcularAlquiler() {
         Jugador propietario = this.getDuenho();
         if (propietario == null) {
             return 0;

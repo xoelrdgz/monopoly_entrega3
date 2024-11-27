@@ -7,8 +7,8 @@ import paqueteJuego.Tablero;
 
 public class AccionSuerte extends Accion{
 
-    public AccionSuerte(String nombre, String tipo, int posicion, Jugador duenho, float valor,Grupo grupo){
-        super(nombre,tipo,posicion,duenho,valor,grupo);
+    public AccionSuerte(String nombre, String tipo, int posicion, Jugador duenho, Grupo grupo){
+        super(nombre,tipo,posicion,duenho,grupo);
     }
     @Override
     public boolean evaluarCasilla(Jugador actual,Jugador banca){
@@ -16,5 +16,7 @@ public class AccionSuerte extends Accion{
         Juego.accionSuerte(actual, Tablero.getTodasCasillas());
         return true;
     }
+
+    public float getAlquiler(){return 0;}
     
 }

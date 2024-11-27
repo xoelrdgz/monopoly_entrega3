@@ -14,7 +14,7 @@ public class Transporte extends Propiedad{
     @Override
     public boolean evaluarCasilla(Jugador actual,Jugador banca){
         if (this.duenho != null && this.duenho != actual) {
-            float alquilerTransporte = calcularAlquilerTransporte();
+            float alquilerTransporte = calcularAlquiler();
             if (actual.getFortuna() >= alquilerTransporte) {
                 actual.sumarFortuna(-alquilerTransporte);
                 actual.pagoalquileres = actual.pagoalquileres + alquilerTransporte;
@@ -32,10 +32,11 @@ public class Transporte extends Propiedad{
         return true;
     }
 
-    public float getAlquilerTransporte(){float alquiler=0; alquiler=calcularAlquilerTransporte(); return alquiler;}
+    @Override
+    public float getAlquiler(){float alquiler=0; alquiler=calcularAlquiler(); return alquiler;}
 
-    // Método para calcular el alquiler de una casilla de tipo transporte.
-    private float calcularAlquilerTransporte() {
+    @Override
+    public float calcularAlquiler() {
         int numTransportes = 0;
         Jugador jugador = this.getDuenho();
         float alquiler;

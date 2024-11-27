@@ -52,7 +52,6 @@ public class Solar extends Propiedad {
 
     }
 
-    public float getAlquilerSolar(){float alquiler=0; alquiler=calcularAlquiler(); return alquiler;}
 
     @Override
     public boolean evaluarCasilla(Jugador actual, Jugador banca){
@@ -82,8 +81,11 @@ public class Solar extends Propiedad {
         return true;
     }
 
+    @Override
+    public float getAlquiler(){float alquiler=0; alquiler=calcularAlquiler(); return alquiler;}
 
-    // Método para calcular el alquiler de una casilla de tipo solar.
+
+    @Override
     public float calcularAlquiler() {
         float alquiler = 0;
         if (this.grupo.esDuenhoGrupo(this.duenho)) {

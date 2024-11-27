@@ -5,8 +5,8 @@ import paqueteJuego.Grupo;
 import paqueteJuego.Tablero;
 
 public class IrCarcel extends Especial{
-    public IrCarcel(String nombre, String tipo, int posicion, Jugador duenho, float valor,Grupo grupo){
-        super(nombre,tipo,posicion,duenho,valor,grupo);
+    public IrCarcel(String nombre, String tipo, int posicion, Jugador duenho, Grupo grupo){
+        super(nombre,tipo,posicion,duenho,grupo);
     }
 
     @Override
@@ -25,5 +25,5 @@ public class IrCarcel extends Especial{
         }
         return true;
     }
-    
+     public float getAlquiler(){return 0;}
 }
