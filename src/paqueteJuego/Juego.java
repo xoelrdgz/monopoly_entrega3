@@ -1421,18 +1421,6 @@ public class Juego implements Comando {
         return cartasBarajadas;
     }
 
-    /* / Método para obtener la posición de una casilla en la estructura de casillas
-    private static int obtenerPosicionCasilla(String nombreCasilla, ArrayList<ArrayList<Casilla>> casillas) {
-        for (int i = 0; i < casillas.size(); i++) {
-            for (int j = 0; j < casillas.get(i).size(); j++) {
-                if (casillas.get(i).get(j).getNombre().equals(nombreCasilla)) {
-                    return i * casillas.get(i).size() + j; // Convertir a índice lineal
-                }
-            }
-        }
-        return -1; // Si no se encuentra la casilla
-    }*/
-
     // Metodo que lista los edificios construidos por los jugadores.
     @Override
     public void listarEdificios() {
@@ -1521,18 +1509,19 @@ public class Juego implements Comando {
         // Verificar si la casilla existe y si pertenece al jugador actual
         if (casilla != null && casilla.getDuenho() == jugadorAhora) {
             Edificio edificio = null;
+            Solar solar = (Solar) casilla;
             switch (tipoEdificio.toLowerCase()) {
-                case "casas":
-                    edificio = casilla.getCasas();
+                case "casa": case "casas":
+                    edificio = solar.getCasas();
                     break;
-                case "hoteles":
-                    edificio = casilla.getHoteles();
+                case "hotel": case "hoteles":
+                    edificio = solar.getHoteles();
                     break;
-                case "piscinas":
-                    edificio = casilla.getPiscinas();
+                case "piscinas": case "piscina":
+                    edificio = solar.getPiscinas();
                     break;
-                case "pistasdeporte":
-                    edificio = casilla.getPistasDeporte();
+                case "pistasdeporte": case "pistadeporte": case "pistas": case "pista": case "pistadeportes":
+                    edificio = solar.getPistasDeporte();
                     break;
                 default:
                     System.out.println("Tipo de edificio no válido.");
@@ -1549,7 +1538,7 @@ public class Juego implements Comando {
                     edificio.setNumEdificios(numEdificios - cantidad);
                     jugadorAhora.sumarFortuna(precioVenta);
                     jugadorAhora.premiosinversionesbote = jugadorAhora.premiosinversionesbote + precioVenta;
-                    edificio.getCasilla().casillahagenerado = edificio.getCasilla().casillahagenerado + precioVenta;
+                    edificio.getSolar().casillahagenerado = edificio.getSolar().casillahagenerado + precioVenta;
                     jugadorAhora.valorpropiedades = jugadorAhora.valorpropiedades - precioVenta;
                     // Eliminar los IDs de los edificios vendidos
                     for (int i = 0; i < cantidad; i++) {
