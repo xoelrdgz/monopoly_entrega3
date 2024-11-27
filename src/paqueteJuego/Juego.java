@@ -2,14 +2,13 @@ package paqueteJuego;
 
 import java.util.ArrayList;
 import paqueteAvatar.Avatar;
-import paqueteCasilla.Casilla;
-import paqueteEdificio.Edificio;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 import paqueteConsola.ConsolaNormal;
-import paqueteCasilla.Solar;
+import paqueteCasilla.*;
+import paqueteEdificio.*;
 
 import static paqueteJuego.Valor.SUMA_VUELTA;
 
@@ -540,11 +539,12 @@ public class Juego implements Comando {
         System.out.println("    edificios: {");
         for (Casilla propiedad : jugador.getPropiedades()) {
             if (propiedad.getTipo().equalsIgnoreCase("Solar")) {
+                Solar solar = (Solar) propiedad;
                 System.out.println("        " + propiedad.getNombre() + ": {");
-                System.out.println("            casas: " + propiedad.getCasas().getNumEdificios() + ",");
-                System.out.println("            hoteles: " + propiedad.getHoteles().getNumEdificios() + ",");
-                System.out.println("            piscinas: " + propiedad.getPiscinas().getNumEdificios() + ",");
-                System.out.println("            pistas de deporte: " + propiedad.getPistasDeporte().getNumEdificios());
+                System.out.println("            casas: " + solar.getCasas().getNumEdificios() + ",");
+                System.out.println("            hoteles: " + solar.getHoteles().getNumEdificios() + ",");
+                System.out.println("            piscinas: " + solar.getPiscinas().getNumEdificios() + ",");
+                System.out.println("            pistas de deporte: " + solar.getPistasDeporte().getNumEdificios());
                 System.out.println("        },");
             }
         }
@@ -610,22 +610,24 @@ public class Juego implements Comando {
         System.out.println("{");
         switch (casilla.getTipo().toLowerCase()) {
             case "solar":
+                Solar solar = (Solar) casilla;
                 System.out.println("    tipo: " + casilla.getTipo() + ",");
                 System.out.println("    grupo: " + casilla.getGrupo().getColorGrupo() + ",");
                 System.out.println("    propietario: "
                         + (casilla.getDuenho() != null ? casilla.getDuenho().getNombre() : "Ninguno") + ",");
-                System.out.println("    valor: " + casilla.getValor() + ",");
+                System.out.println("    valor: " + solar.getValor() + ",");
                 System.out.println("    alquiler base: " + casilla.getAlquiler() + ",");
                 System.out.println("    edificios: {");
-                System.out.println("        casas: " + casilla.getCasas().getNumEdificios() + ",");
-                System.out.println("        hoteles: " + casilla.getHoteles().getNumEdificios() + ",");
-                System.out.println("        piscinas: " + casilla.getPiscinas().getNumEdificios() + ",");
-                System.out.println("        pistas de deporte: " + casilla.getPistasDeporte().getNumEdificios());
+                System.out.println("        casas: " + solar.getCasas().getNumEdificios() + ",");
+                System.out.println("        hoteles: " + solar.getHoteles().getNumEdificios() + ",");
+                System.out.println("        piscinas: " + solar.getPiscinas().getNumEdificios() + ",");
+                System.out.println("        pistas de deporte: " + solar.getPistasDeporte().getNumEdificios());
                 System.out.println("    },");
                 break;
             case "impuesto":
+                Impuesto impuesto = (Impuesto) casilla;
                 System.out.println("    tipo: " + casilla.getTipo() + ",");
-                System.out.println("    apagar: " + casilla.getValor());
+                System.out.println("    a pagar: " + impuesto.getImpuesto());
                 break;
             case "parking":
                 System.out.println("    bote: " + Tablero.getBote() + ",");
@@ -792,7 +794,22 @@ public class Juego implements Comando {
 
                 if (propiedadIndex >= 0 && propiedadIndex < propiedades.size()) {
                     Casilla propiedad = propiedades.get(propiedadIndex);
-                    propiedad.hipotecarCasilla(jugador, Tablero.banca);
+                    switch (propiedad.getTipo()){
+                        case "Solar":
+                            Solar solar = (Solar) propiedad;
+                            solar.hipotecarCasilla(jugador, Tablero.banca);
+                            break;
+                        case "Transporte":
+                            Transporte transporte = (Transporte) propiedad;
+                            transporte.hipotecarCasilla(jugador, Tablero.banca);
+                            break;
+                        case "Servicio":
+                            Servicio servicio = (Servicio) propiedad;
+                            servicio.hipotecarCasilla(jugador, Tablero.banca);
+                            break;
+                        default:
+                            System.out.println("Tipo de casilla no válido para hipotecar.");
+                    }
                     System.out.println("Has hipotecado " + propiedad.getNombre() + ".");
                     break;
                 } else {
@@ -1424,7 +1441,8 @@ public class Juego implements Comando {
 
         for (Jugador jugador : jugadores) {
             for (Casilla propiedad : jugador.getPropiedades()) {
-                for (Edificio edificio : propiedad.getEdificios()) {
+                Solar solar = (Solar) propiedad;
+                for (Edificio edificio : solar.getEdificios()) {
                     if (edificio != null && idsUnicos.add(edificio.getIds().toString())) {
                         edificios.add(edificio);
                     }
@@ -1436,9 +1454,9 @@ public class Juego implements Comando {
             for (String id : edificio.getIds()) {
                 System.out.println("{");
                 System.out.println("    id: " + id + ",");
-                System.out.println("    propietario: " + edificio.getCasilla().getDuenho().getNombre() + ",");
-                System.out.println("    casilla: " + edificio.getCasilla().getNombre() + ",");
-                System.out.println("    grupo: " + edificio.getCasilla().getGrupo().getColorGrupo() + ",");
+                System.out.println("    propietario: " + edificio.getSolar().getDuenho().getNombre() + ",");
+                System.out.println("    casilla: " + edificio.getSolar().getNombre() + ",");
+                System.out.println("    grupo: " + edificio.getSolar().getGrupo().getColorGrupo() + ",");
                 System.out.println("    coste: " + edificio.getCosteEdificio());
                 System.out.println("},");
             }
@@ -1459,10 +1477,11 @@ public class Juego implements Comando {
         int casasConstruidas = 0, hotelesConstruidos = 0, piscinasConstruidas = 0, pistasDeporteConstruidas = 0;
 
         for (Casilla propiedad : propiedades) {
-            Edificio casas = propiedad.getCasas();
-            Edificio hoteles = propiedad.getHoteles();
-            Edificio piscinas = propiedad.getPiscinas();
-            Edificio pistasDeporte = propiedad.getPistasDeporte();
+            Solar solar = (Solar) propiedad;
+            Edificio casas = solar.getCasas();
+            Edificio hoteles = solar.getHoteles();
+            Edificio piscinas = solar.getPiscinas();
+            Edificio pistasDeporte = solar.getPistasDeporte();
 
             maxCasas += casas.getMaxEdificios();
             maxHoteles += hoteles.getMaxEdificios();
@@ -1548,7 +1567,7 @@ public class Juego implements Comando {
                     jugadorAhora.sumarFortuna(edificio.getCosteEdificio() * 0.5f * numEdificios);
                     jugadorAhora.premiosinversionesbote = jugadorAhora.premiosinversionesbote
                             + (edificio.getCosteEdificio() * 0.5f * numEdificios);
-                    edificio.getCasilla().casillahagenerado = edificio.getCasilla().casillahagenerado
+                    edificio.getSolar().casillahagenerado = edificio.getSolar().casillahagenerado
                             + (edificio.getCosteEdificio() * 0.5f * numEdificios);
                     jugadorAhora.valorpropiedades = jugadorAhora.valorpropiedades
                             - (edificio.getCosteEdificio() * 0.5f * numEdificios);
