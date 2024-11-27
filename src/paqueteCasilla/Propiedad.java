@@ -4,14 +4,25 @@ import paqueteJuego.Grupo;
 import paqueteJuego.Jugador;
 
 public abstract class Propiedad extends Casilla {
-
+    float valor;
     public Propiedad(String nombre, String tipo, int posicion, float valor, Jugador duenho, Grupo grupo) {
-        super(nombre, tipo, posicion, duenho,grupo,valor);
+        super(nombre, tipo, posicion, duenho,grupo);
+        this.valor = valor;
 
     }
 
 
     public abstract boolean evaluarCasilla(Jugador actual, Jugador banca);
+    public abstract float calcularAlquiler();
+    public abstract float getAlquiler();
+
+    public float getValor() {return valor;}
+
+    //Método para ver si la casilla pertenece a un jugador o no
+    public boolean perteneceAJugador(Jugador jugador) {
+        if(this.duenho.equals(jugador)) {return true;}
+        else{return false;}
+    }
 
     /*
      * Método usado para comprar una casilla determinada. Parámetros:

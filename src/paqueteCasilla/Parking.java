@@ -5,8 +5,8 @@ import paqueteJuego.Grupo;
 import paqueteJuego.Tablero;
 
 public class Parking extends Especial{
-    public Parking(String nombre, String tipo, int posicion, Jugador duenho, float valor,Grupo grupo){
-        super(nombre,tipo,posicion,duenho,valor,grupo);
+    public Parking(String nombre, String tipo, int posicion, Jugador duenho,Grupo grupo){
+        super(nombre,tipo,posicion,duenho,grupo);
     }
 
     @Override
@@ -18,4 +18,6 @@ public class Parking extends Especial{
         Tablero.setBote(0);
         return true;
     }
+
+    public float getAlquiler(){return 0;}
 }

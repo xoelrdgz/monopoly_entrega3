@@ -10,16 +10,17 @@ import static paqueteJuego.Valor.IMPUESTO_2;
 
 public class Impuesto extends Casilla{
     float impuesto;
-    public Impuesto(String nombre, String tipo, int posicion, float impuesto, Jugador duenho, Grupo grupo,float valor){
-        super(nombre, tipo, posicion, duenho,grupo,valor);
+    public Impuesto(String nombre, String tipo, int posicion, float impuesto, Jugador duenho, Grupo grupo){
+        super(nombre, tipo, posicion, duenho,grupo);
         this.impuesto = impuesto;
-        this.valor=0;
+
     }
 
     public float getImpuesto() {
         return impuesto;
     }
-    public float getAlquilerImpuesto(){float alquiler=0; alquiler=this.impuesto; return alquiler;}
+    @Override
+    public float getAlquiler(){float alquiler=0; alquiler=this.impuesto; return alquiler;}
 
     @Override
     public boolean evaluarCasilla(Jugador actual, Jugador banca){

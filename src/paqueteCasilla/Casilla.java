@@ -21,7 +21,6 @@ public abstract class Casilla {
     public String nombre;
     public String tipo;
     public int posicion;
-    public float valor;
     public Jugador duenho;
     public Grupo grupo;
     // private float hipoteca;
@@ -35,7 +34,7 @@ public abstract class Casilla {
 
 
     // Constructor general clase Casilla
-    public Casilla(String nombre, String tipo, int posicion, Jugador duenho, Grupo grupo,float valor) {
+    public Casilla(String nombre, String tipo, int posicion, Jugador duenho, Grupo grupo) {
         String[] partesnombre = nombre.split(" ");
         if (partesnombre.length >= 2) {
             this.nombre = partesnombre[0];
@@ -46,7 +45,6 @@ public abstract class Casilla {
         this.posicion = posicion;
         this.duenho = duenho;
         this.grupo = grupo;
-        this.valor = valor;
         this.avatares = new ArrayList<>();
         this.vecescasilla = 0;
         this.casillahacostado = 0;
@@ -57,6 +55,8 @@ public abstract class Casilla {
     public String getNombre() {
         return nombre;
     }
+
+    public int getVecescasilla(){return vecescasilla;}
 
     public float getCasillahacostado() {
         return casillahacostado;
@@ -77,8 +77,6 @@ public abstract class Casilla {
     public Jugador getDuenho() {
         return duenho;
     }
-
-    public float getValor(){return valor;}
 
     public Grupo getGrupo() {
         return grupo;
@@ -127,6 +125,8 @@ public abstract class Casilla {
 
     //Método abstracto de evaluar casilla
     public abstract boolean evaluarCasilla(Jugador actual, Jugador banca);
+    public abstract float getAlquiler();
+
 
 
     // Método para ver los jugadores en casilla
@@ -166,19 +166,19 @@ public abstract class Casilla {
      * Método para mostrar información sobre una casilla.
      * Devuelve una cadena con información específica de cada tipo de casilla.
      */
-    public String infoCasilla() {
-        String info = "Casilla: " + this.nombre + ", Tipo: " + this.tipo + ", Posición: " + this.posicion + ", Valor: "
-                + this.valor;
+   // public String infoCasilla() {
+        //String info = "Casilla: " + this.nombre + ", Tipo: " + this.tipo + ", Posición: " + this.posicion + ", Valor: "
+               // + this.valor;
 
-        if (this.duenho != null) {
-            info += ", Dueño: " + this.duenho.getNombre(); // Si hay dueño, muestra el nombre del dueño
-        } else {
-            info += ", Dueño: Ninguno"; // Si no hay dueño
-        }
+        //if (this.duenho != null) {
+            //info += ", Dueño: " + this.duenho.getNombre(); // Si hay dueño, muestra el nombre del dueño
+        //} else {
+            //info += ", Dueño: Ninguno"; // Si no hay dueño
+        //}
 
-        return info; // Devuelve la cadena con la información
+        //return info; // Devuelve la cadena con la información
 
-    }
+   // }
 
     // Método para obtener los jugadores que están en la cárcel
     public ArrayList<Jugador> getJugadoresEnCarcel() {

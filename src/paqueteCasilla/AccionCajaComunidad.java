@@ -7,8 +7,8 @@ import paqueteJuego.Tablero;
 
 public class AccionCajaComunidad extends Accion{
 
-    public AccionCajaComunidad(String nombre, String tipo, int posicion, Jugador duenho, float valor,Grupo grupo){
-        super(nombre,tipo,posicion,duenho,valor,grupo);
+    public AccionCajaComunidad(String nombre, String tipo, int posicion, Jugador duenho,Grupo grupo){
+        super(nombre,tipo,posicion,duenho,grupo);
     }
 
     @Override
@@ -17,5 +17,7 @@ public class AccionCajaComunidad extends Accion{
         Juego.accionComunidad(actual, Tablero.getTodasCasillas());
         return true;
     }
+
+    public float getAlquiler(){return 0;}
     
 }
