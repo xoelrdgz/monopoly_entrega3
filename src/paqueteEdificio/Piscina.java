@@ -1,6 +1,6 @@
 package paqueteEdificio;
 
-import paqueteCasilla.Casilla;
+import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteJuego.Jugador;
 
@@ -9,18 +9,18 @@ public class Piscina extends Edificio {
     private ConsolaNormal consola = new ConsolaNormal();
 
     // Constructor
-    public Piscina(Casilla casilla) {
-        super (casilla);
+    public Piscina(Solar solar) {
+        super (solar);
     }
 
     // Método para construir un edificio
     @Override
     public void construirEdificio() {
 
-        Jugador propietario = this.getCasilla().getDuenho();
+        Jugador propietario = this.getSolar().getDuenho();
         calcCostes();
 
-        if (getCasilla().getHipotecada()) {
+        if (getSolar().getHipotecada()) {
             consola.imprimir("Esta casilla esta hipotecada, no puedes construir.");
             return;
         }
@@ -34,15 +34,15 @@ public class Piscina extends Edificio {
             return;
         }
 
-        if (getCasilla().getHoteles().getNumEdificios() == 0 || getCasilla().getCasas().getNumEdificios() < 2) {
+        if (getSolar().getHoteles().getNumEdificios() == 0 || getSolar().getCasas().getNumEdificios() < 2) {
             System.out.println("No puedes construir una piscina, necesitas 1 hotel y 2 casas.");
             return;
         }
 
         propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
         propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
-        getCasilla().getPiscinas().setNumEdificios(getCasilla().getPiscinas().getNumEdificios() + 1);
-        getCasilla().casillahacostado = getCasilla().casillahacostado + getCosteEdificio();
+        getSolar().getPiscinas().setNumEdificios(getSolar().getPiscinas().getNumEdificios() + 1);
+        getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
         setNumEdificios(getNumEdificios() + 1);
         propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
         crearIDedif("Piscina");
@@ -65,7 +65,7 @@ public class Piscina extends Edificio {
     // Método que calcula el coste de un edificio
     @Override
     public void calcCostes() {
-        setCosteEdificio ((int) (getCasilla().getValor() * 0.4));
+        setCosteEdificio ((int) (getSolar().getValor() * 0.4));
     }
     
 }

@@ -1,13 +1,13 @@
 package paqueteEdificio;
 
-import paqueteCasilla.Casilla;
+import paqueteCasilla.Solar;
 
 import java.util.ArrayList;
 
 public abstract class Edificio {
 
     // Atributos de la clase Edificio
-    private final Casilla casilla; // TODO: Cambiar a private final Solar solar;
+    private final Solar solar;
     private int numEdificios;
     private int maxEdificios;
     private int costeEdificio;
@@ -20,12 +20,12 @@ public abstract class Edificio {
     static private int nIDPistasDeporte = 0;
 
     // Constructor de la clase Edificio, recibe una casilla y un tipo de edificio
-    public Edificio(Casilla casilla) {
-        this.casilla = casilla; // TODO: Cambiar a this.solar = solar;
+    public Edificio(Solar solar) {
+        this.solar = solar;
         setNumEdificios(0);
         calcCostes();
         calcMaxEdificios();
-        setIds(casilla.getIds()); // TODO: Cambiar a setIds(solar.getIds());
+        setIds(solar.getIds());
     }
 
     // Getters
@@ -41,8 +41,8 @@ public abstract class Edificio {
         return costeEdificio;
     }
 
-    public Casilla getCasilla() { // TODO: Cambiar a getSolar return solar;
-        return casilla;
+    public Solar getSolar() {
+        return solar;
     }
 
     public ArrayList<String> getIds() {
@@ -78,7 +78,7 @@ public abstract class Edificio {
     // Método que calcula el número máximo de edificios que se pueden construir,
     // dependiendo del color del grupo
     public void calcMaxEdificios() {
-        String color = casilla.getGrupo().getColorGrupo();
+        String color = solar.getGrupo().getColorGrupo();
         maxEdificios = (color.equals("negro") || color.equals("azul")) ? 2 : 3;
     }
 

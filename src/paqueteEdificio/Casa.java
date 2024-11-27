@@ -1,6 +1,6 @@
 package paqueteEdificio;
 
-import paqueteCasilla.Casilla;
+import paqueteCasilla.Solar;
 import paqueteConsola.*;
 import paqueteJuego.Jugador;
 
@@ -9,18 +9,18 @@ public class Casa extends Edificio {
     private ConsolaNormal consola = new ConsolaNormal();
 
     // Constructor
-    public Casa(Casilla casilla) {
-        super (casilla);
+    public Casa(Solar solar) {
+        super (solar);
     }
 
     // Método para construir un edificio
     @Override
     public void construirEdificio() {
 
-        Jugador propietario = this.getCasilla().getDuenho();
+        Jugador propietario = this.getSolar().getDuenho();
         calcCostes();
 
-        if (getCasilla().getHipotecada()) {
+        if (getSolar().getHipotecada()) {
             consola.imprimir("Esta casilla esta hipotecada, no puedes construir.");
             return;
         }
@@ -37,9 +37,9 @@ public class Casa extends Edificio {
         propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
         propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
         setNumEdificios(getNumEdificios() + 1);
-        getCasilla().casillahacostado = getCasilla().casillahacostado + getCosteEdificio();
+        getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
         propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
-        getCasilla().getCasas().setNumEdificios(getCasilla().getCasas().getNumEdificios() + 1);
+        getSolar().getCasas().setNumEdificios(getSolar().getCasas().getNumEdificios() + 1);
         crearIDedif("Casa");
 
         consola.imprimir("Has construido una casa por " + getCosteEdificio());
@@ -53,7 +53,7 @@ public class Casa extends Edificio {
             return -1;
         }
 
-        if (getCasilla().getHoteles().getNumEdificios() == getMaxEdificios()) {
+        if (getSolar().getHoteles().getNumEdificios() == getMaxEdificios()) {
             consola.imprimir("Ya tienes el número máximo de casas y hoteles edificados.");
             return -1;
         }
@@ -64,7 +64,7 @@ public class Casa extends Edificio {
     // Método que calcula el coste de un edificio
     @Override
     public void calcCostes() {
-        setCosteEdificio ((int) (getCasilla().getValor() * 0.6));
+        setCosteEdificio ((int) (getSolar().getValor() * 0.6));
     }
     
 }
