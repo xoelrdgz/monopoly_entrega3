@@ -1,6 +1,6 @@
 package paqueteEdificio;
 
-import paqueteCasilla.Casilla;
+import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteJuego.Jugador;
 
@@ -9,18 +9,18 @@ public class PistaDeporte extends Edificio {
     private ConsolaNormal consola = new ConsolaNormal();
 
     // Constructor
-    public PistaDeporte(Casilla casilla) {
-        super (casilla);
+    public PistaDeporte(Solar solar) {
+        super (solar);
     }
 
     // Método para construir un edificio
     @Override
     public void construirEdificio() {
 
-        Jugador propietario = this.getCasilla().getDuenho();
+        Jugador propietario = this.getSolar().getDuenho();
         calcCostes();
 
-        if (getCasilla().getHipotecada()) {
+        if (getSolar().getHipotecada()) {
             consola.imprimir("Esta casilla esta hipotecada, no puedes construir.");
             return;
         }
@@ -34,16 +34,16 @@ public class PistaDeporte extends Edificio {
             return;
         }
 
-        if (getCasilla().getHoteles().getNumEdificios() < 2) {
+        if (getSolar().getHoteles().getNumEdificios() < 2) {
             System.out.println("No puedes construir una pista de deporte, necesitas 2 hoteles.");
             return;
         }
 
         propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
         propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
-        getCasilla().getPistasDeporte().setNumEdificios(getCasilla().getPistasDeporte().getNumEdificios() + 1);
+        getSolar().getPistasDeporte().setNumEdificios(getSolar().getPistasDeporte().getNumEdificios() + 1);
         setNumEdificios(getNumEdificios() + 1);
-        getCasilla().casillahacostado = getCasilla().casillahacostado + getCosteEdificio();
+        getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
         propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
         crearIDedif("PistaDeporte");
 
@@ -65,7 +65,7 @@ public class PistaDeporte extends Edificio {
     // Método que calcula el coste de un edificio
     @Override
     public void calcCostes() {
-        setCosteEdificio ((int) (getCasilla().getValor() * 1.25));
+        setCosteEdificio ((int) (getSolar().getValor() * 1.25));
     }
     
 }

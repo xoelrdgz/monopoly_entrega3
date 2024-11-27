@@ -1,6 +1,6 @@
 package paqueteEdificio;
 
-import paqueteCasilla.Casilla;
+import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteJuego.Jugador;
 
@@ -9,18 +9,18 @@ public class Hotel extends Edificio {
     private ConsolaNormal consola = new ConsolaNormal();
 
     // Constructor
-    public Hotel(Casilla casilla) {
-        super (casilla);
+    public Hotel(Solar solar) {
+        super (solar);
     }
 
     // Método para construir un edificio
     @Override
     public void construirEdificio() {
 
-        Jugador propietario = this.getCasilla().getDuenho();
+        Jugador propietario = this.getSolar().getDuenho();
         calcCostes();
 
-        if (getCasilla().getHipotecada()) {
+        if (getSolar().getHipotecada()) {
             consola.imprimir("Esta casilla esta hipotecada, no puedes construir.");
             return;
         }
@@ -34,7 +34,7 @@ public class Hotel extends Edificio {
             return;
         }
 
-        if (getCasilla().getCasas().getNumEdificios() < 4) {
+        if (getSolar().getCasas().getNumEdificios() < 4) {
             System.out.println("No puedes construir un hotel, debes tener 4 casas edificadas.");
             return;
         }
@@ -42,15 +42,15 @@ public class Hotel extends Edificio {
         propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
         propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
         // Se eliminan las 4 casas y se añade un hotel
-        getCasilla().getCasas().setNumEdificios(getCasilla().getCasas().getNumEdificios() - 4);
-        getCasilla().casillahacostado = getCasilla().casillahacostado + getCosteEdificio();
+        getSolar().getCasas().setNumEdificios(getSolar().getCasas().getNumEdificios() - 4);
+        getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
         // Se borran las 4 casas de la lista de ids
         for (int i = 0; i < 4; i++) {
-            getCasilla().getCasas().getIds().remove(getCasilla().getCasas().getIds().size() - 1);
+            getSolar().getCasas().getIds().remove(getSolar().getCasas().getIds().size() - 1);
         }
         setNumEdificios(getNumEdificios() + 1);
         propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
-        getCasilla().getHoteles().setNumEdificios(getCasilla().getHoteles().getNumEdificios() + 1);
+        getSolar().getHoteles().setNumEdificios(getSolar().getHoteles().getNumEdificios() + 1);
         crearIDedif("Hotel");
 
         consola.imprimir("Has construido un hotel por " + getCosteEdificio());
@@ -71,7 +71,7 @@ public class Hotel extends Edificio {
     // Método que calcula el coste de un edificio
     @Override
     public void calcCostes() {
-        setCosteEdificio ((int) (getCasilla().getValor() * 0.6));
+        setCosteEdificio ((int) (getSolar().getValor() * 0.6));
     }
     
 }
