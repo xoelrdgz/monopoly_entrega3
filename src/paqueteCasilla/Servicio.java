@@ -9,7 +9,8 @@ public class Servicio extends Propiedad {
 
     public float getAlquilerServicio(){float alquiler=0; alquiler=calcularAlquilerServicio(); return alquiler;}
 
-    public boolean evaluarCasillaServicio(Jugador actual){
+    @Override
+    public boolean evaluarCasilla(Jugador actual, Jugador banca){
         if (this.duenho != null && this.duenho != actual) {
             float alquiler = calcularAlquilerServicio();
             if (actual.getFortuna() >= alquiler) {

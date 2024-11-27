@@ -3,7 +3,7 @@ package paqueteCasilla;
 import paqueteJuego.Jugador;
 import paqueteJuego.Grupo;
 
-public class Especial extends Casilla {
+public abstract class Especial extends Casilla {
 
 
 
@@ -12,6 +12,6 @@ public class Especial extends Casilla {
 
     }
 
-
+public abstract boolean evaluarCasilla(Jugador actual, Jugador banca);
     
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import static paqueteJuego.Valor.IMPUESTO_1;
 import static paqueteJuego.Valor.IMPUESTO_2;
 
-public class Casilla {
+public abstract class Casilla {
 
 
     //Variables a definir
@@ -124,6 +124,9 @@ public class Casilla {
         this.casillahagenerado = casillahagenerado;
     }
 
+
+    //Método abstracto de evaluar casilla
+    public abstract boolean evaluarCasilla(Jugador actual, Jugador banca);
 
 
     // Método para ver los jugadores en casilla

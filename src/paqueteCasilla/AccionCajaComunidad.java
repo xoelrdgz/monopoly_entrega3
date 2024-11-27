@@ -11,7 +11,8 @@ public class AccionCajaComunidad extends Accion{
         super(nombre,tipo,posicion,duenho,valor,grupo);
     }
 
-    public boolean evaluarCasillaCaja(Jugador actual){
+    @Override
+    public boolean evaluarCasilla(Jugador actual, Jugador banca){
         System.out.println("¡Has caido en una casilla de tipo Comunidad!");
         Juego.accionComunidad(actual, Tablero.getTodasCasillas());
         return true;

@@ -9,7 +9,8 @@ public class Parking extends Especial{
         super(nombre,tipo,posicion,duenho,valor,grupo);
     }
 
-    public boolean evaluarCasillaParking(Jugador actual){
+    @Override
+    public boolean evaluarCasilla(Jugador actual, Jugador banca){
         // El jugador cobra el bote de los impuestos
         System.out.println("Se te suma el bote " + Tablero.getBote());
         actual.sumarFortuna(Tablero.getBote());

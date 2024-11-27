@@ -9,7 +9,8 @@ public class IrCarcel extends Especial{
         super(nombre,tipo,posicion,duenho,valor,grupo);
     }
 
-    public boolean evaluarCasillaIrCarcel(Jugador actual){
+    @Override
+    public boolean evaluarCasilla(Jugador actual, Jugador banca){
         String[] partes = this.nombre.split(" ");
         if (partes[0].equals("IrCárcel")) {
             System.out.println("A la Cárcel!!!");

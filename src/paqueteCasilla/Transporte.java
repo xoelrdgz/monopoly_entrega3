@@ -11,7 +11,8 @@ public class Transporte extends Propiedad{
         super(nombre, tipo, posicion, valor, duenho, grupo);}
 
 
-    public boolean evaluarCasillaTransporte(Jugador actual){
+    @Override
+    public boolean evaluarCasilla(Jugador actual,Jugador banca){
         if (this.duenho != null && this.duenho != actual) {
             float alquilerTransporte = calcularAlquilerTransporte();
             if (actual.getFortuna() >= alquilerTransporte) {

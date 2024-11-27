@@ -21,7 +21,8 @@ public class Impuesto extends Casilla{
     }
     public float getAlquilerImpuesto(){float alquiler=0; alquiler=this.impuesto; return alquiler;}
 
-    public boolean evaluarCasillaImpuesto(Jugador actual, Jugador banca){
+    @Override
+    public boolean evaluarCasilla(Jugador actual, Jugador banca){
         String[] partes3 = this.getNombre().split(" ");
 
         if (partes3[0].equals("Impuesto1")) {

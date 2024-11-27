@@ -3,13 +3,15 @@ package paqueteCasilla;
 import paqueteJuego.Grupo;
 import paqueteJuego.Jugador;
 
-public class Propiedad extends Casilla {
+public abstract class Propiedad extends Casilla {
 
     public Propiedad(String nombre, String tipo, int posicion, float valor, Jugador duenho, Grupo grupo) {
         super(nombre, tipo, posicion, duenho,grupo,valor);
 
     }
 
+
+    public abstract boolean evaluarCasilla(Jugador actual, Jugador banca);
 
     /*
      * Método usado para comprar una casilla determinada. Parámetros:

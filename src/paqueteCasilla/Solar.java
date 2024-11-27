@@ -1,6 +1,6 @@
 package paqueteCasilla;
 
-import paqueteEdificio.Edificio;
+import paqueteEdificio.*;
 import paqueteJuego.Grupo;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
@@ -45,16 +45,17 @@ public class Solar extends Propiedad {
     public Solar(String nombre, String tipo, int posicion, float valor, Jugador duenho, Grupo grupo) {
         super(nombre, tipo, posicion, valor, duenho, grupo);
         setIds(new ArrayList<>(12));
-        this.casas = new Edificio(this, "Casa");
-        this.hoteles = new Edificio(this, "Hotel");
-        this.piscinas = new Edificio(this, "Piscina");
-        this.pistasDeporte = new Edificio(this, "PistaDeporte");
+        this.casas = new Casa(this);
+        this.hoteles = new Hotel(this);
+        this.piscinas = new Piscina(this);
+        this.pistasDeporte = new PistaDeporte(this);
 
     }
 
     public float getAlquilerSolar(){float alquiler=0; alquiler=calcularAlquiler(); return alquiler;}
 
-    public boolean evaluarCasillaSolar(Jugador actual, Jugador banca){
+    @Override
+    public boolean evaluarCasilla(Jugador actual, Jugador banca){
         if (this.duenho != null && this.duenho != actual) {
             // Verificar si la casilla está hipotecada
             if (this.estaHipotecada()) {
