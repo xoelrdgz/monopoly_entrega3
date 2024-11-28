@@ -434,9 +434,15 @@ public class Juego implements Comando {
                         return;
                     }
                     String tipoEdific = partes[1];
-                    Solar solar = (Solar) jugadores.get(turno).getAvatar().getLugar();
-                    solar.edificar(tipoEdific);
-                    i = 1;
+                    Casilla pos = jugadores.get(turno).getAvatar().getLugar();
+                    if (pos instanceof Solar) {
+                        Solar solar = (Solar) pos;
+                        solar.edificar(tipoEdific);
+                        i = 1;
+                    } else {
+                        System.out.println("No puedes edificar en esta casilla");
+                        i=2;
+                    }
                     break;
                 case "vender":
                     if (partes.length < 4) {
