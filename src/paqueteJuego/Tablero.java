@@ -1,8 +1,10 @@
 package paqueteJuego;
 
-import paqueteCasilla.Casilla;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import paqueteCasilla.Casilla;
+import paqueteCasilla.Solar;
 
 public class Tablero {
     // Atributos.
@@ -244,7 +246,8 @@ public class Tablero {
             for (Casilla casilla : lado) {
                 // Verificamos si la casilla es de tipo "solar"
                 if (casilla.getTipo().equalsIgnoreCase("solar")) {
-                    casilla.incrementarPrecio(); // Incrementa el precio de la casilla "solar"
+                    Solar solar = (Solar) casilla;
+                    solar.incrementarPrecio(); // Incrementa el precio de la casilla "solar"
                 }
             }
         }

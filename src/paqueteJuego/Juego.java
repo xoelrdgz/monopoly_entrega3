@@ -1,16 +1,20 @@
 package paqueteJuego;
 
-import java.util.ArrayList;
-import paqueteAvatar.Avatar;
-import java.util.Random;
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.Map;
-import paqueteConsola.ConsolaNormal;
-import paqueteCasilla.*;
-import paqueteEdificio.*;
-
 import static paqueteJuego.Valor.SUMA_VUELTA;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
+
+import paqueteAvatar.Avatar;
+import paqueteCasilla.Casilla;
+import paqueteCasilla.Impuesto;
+import paqueteCasilla.Propiedad;
+import paqueteCasilla.Solar;
+import paqueteConsola.ConsolaNormal;
+import paqueteEdificio.Edificio;
 
 public class Juego implements Comando {
 
@@ -418,15 +422,16 @@ public class Juego implements Comando {
                     break;
 
                 case "edificar":
-                if (partes.length < 2) {
-                    System.out.println("Comando incompleto. Uso: edificar [casa/hotel/piscina/pistadeporte] [nombre_casilla]");
-                    i = 2;
-                    return;
-                }
-                String tipoEdific = partes[1];
-                Solar solar = (Solar) jugadores.get(turno).getAvatar().getLugar();
-                solar.edificar(tipoEdific);
-                i = 1;
+                    if (partes.length < 2) {
+                        System.out.println(
+                                "Comando incompleto. Uso: edificar [casa/hotel/piscina/pistadeporte] [nombre_casilla]");
+                        i = 2;
+                        return;
+                    }
+                    String tipoEdific = partes[1];
+                    Solar solar = (Solar) jugadores.get(turno).getAvatar().getLugar();
+                    solar.edificar(tipoEdific);
+                    i = 1;
                     break;
                 case "vender":
                     if (partes.length < 4) {
@@ -538,7 +543,7 @@ public class Juego implements Comando {
         // Listar edificios
         System.out.println("    edificios: {");
         for (Casilla propiedad : jugador.getPropiedades()) {
-            if (propiedad.getTipo().equalsIgnoreCase("Solar")) {
+            if (propiedad instanceof Solar) {
                 Solar solar = (Solar) propiedad;
                 System.out.println("        " + propiedad.getNombre() + ": {");
                 System.out.println("            casas: " + solar.getCasas().getNumEdificios() + ",");
@@ -738,7 +743,8 @@ public class Juego implements Comando {
             acabarTurno();
         } else {
             // Comprobar si ha sacado dobles
-            if (tirada1 == tirada2 && !jugadorActual.getCocheExtra() && !jugadorActual.getCocheProhibido() && !jugadorActual.casosacarmenosdecuatroenunturnoextracocheavanzado) {
+            if (tirada1 == tirada2 && !jugadorActual.getCocheExtra() && !jugadorActual.getCocheProhibido()
+                    && !jugadorActual.casosacarmenosdecuatroenunturnoextracocheavanzado) {
                 System.out.println("¡Has sacado dobles! Tira otra vez.");
                 setTirado(false);
                 System.out.println(tablero);
@@ -793,24 +799,16 @@ public class Juego implements Comando {
                 int propiedadIndex = consola.leerInt() - 1;
 
                 if (propiedadIndex >= 0 && propiedadIndex < propiedades.size()) {
-                    Casilla propiedad = propiedades.get(propiedadIndex);
-                    switch (propiedad.getTipo()){
-                        case "Solar":
-                            Solar solar = (Solar) propiedad;
-                            solar.hipotecarCasilla(jugador, Tablero.banca);
-                            break;
-                        case "Transporte":
-                            Transporte transporte = (Transporte) propiedad;
-                            transporte.hipotecarCasilla(jugador, Tablero.banca);
-                            break;
-                        case "Servicio":
-                            Servicio servicio = (Servicio) propiedad;
-                            servicio.hipotecarCasilla(jugador, Tablero.banca);
-                            break;
-                        default:
-                            System.out.println("Tipo de casilla no válido para hipotecar.");
+                    Casilla casilla = propiedades.get(propiedadIndex);
+                    if (casilla instanceof Propiedad) {
+                        Propiedad propiedad = (Propiedad) casilla;
+                        propiedad.hipotecarCasilla(jugador, Tablero.banca);
+                        System.out.println("Has hipotecado " + casilla.getNombre() + ".");
+                    } else {
+                        System.out.println("Tipo de casilla no válido para hipotecar.");
+                        break;
                     }
-                    System.out.println("Has hipotecado " + propiedad.getNombre() + ".");
+                    System.out.println("Has hipotecado " + casilla.getNombre() + ".");
                     break;
                 } else {
                     System.out.println("Índice de propiedad no válido.");
@@ -879,7 +877,12 @@ public class Juego implements Comando {
                 if (casilla != null) {
                     // Llamar al método comprarCasilla
                     Jugador jugadorActual = jugadores.get(turno);
-                    casilla.comprarCasilla(jugadorActual, Tablero.banca);
+                    if (casilla instanceof Propiedad) {
+                        Propiedad propiedad = (Propiedad) casilla;
+                        propiedad.comprarCasilla(jugadorActual, Tablero.banca);
+                    } else {
+                        System.out.println("Este tipo de casilla no se pude comprar.");
+                    }
                 } else {
                     System.out.println("La casilla " + nombre + " no existe.");
                 }
@@ -887,7 +890,8 @@ public class Juego implements Comando {
         }
     }
 
-    // Método que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
+    // Método que ejecuta todas las acciones relacionadas con el comando 'salir
+    // carcel'.
     @Override
     public void salirCarcel() {
         Jugador jugadorActual = jugadores.get(turno);
@@ -1015,9 +1019,12 @@ public class Juego implements Comando {
                 Casilla casilla = Tablero.getTodasCasillas().get(i).get(j);
 
                 // Verificamos si la casilla está hipotecada
-                if (casilla.estaHipotecada()) {
-                    String[] partes = casilla.getNombre().split(" ");
-                    hipotecadas.add(partes[0]);
+                if (casilla instanceof Propiedad) {
+                    Propiedad propiedad = (Propiedad) casilla;
+                    if (propiedad.estaHipotecada()) {
+                        String[] partes = casilla.getNombre().split(" ");
+                        hipotecadas.add(partes[0]);
+                    }
                 }
             }
         }
@@ -1053,13 +1060,14 @@ public class Juego implements Comando {
             // Listar edificios
             System.out.println("    edificios: {");
             for (Casilla propiedad : jugador.getPropiedades()) {
-                if (propiedad.getTipo().equalsIgnoreCase("Solar")) {
+                if (propiedad instanceof Solar) {
+                    Solar solar = (Solar) propiedad;
                     System.out.println("        " + propiedad.getNombre() + ": {");
-                    System.out.println("            casas: " + propiedad.getCasas().getNumEdificios() + ",");
-                    System.out.println("            hoteles: " + propiedad.getHoteles().getNumEdificios() + ",");
-                    System.out.println("            piscinas: " + propiedad.getPiscinas().getNumEdificios() + ",");
+                    System.out.println("            casas: " + solar.getCasas().getNumEdificios() + ",");
+                    System.out.println("            hoteles: " + solar.getHoteles().getNumEdificios() + ",");
+                    System.out.println("            piscinas: " + solar.getPiscinas().getNumEdificios() + ",");
                     System.out.println(
-                            "            pistas de deporte: " + propiedad.getPistasDeporte().getNumEdificios());
+                            "            pistas de deporte: " + solar.getPistasDeporte().getNumEdificios());
                     System.out.println("        },");
                 }
             }
@@ -1141,10 +1149,11 @@ public class Juego implements Comando {
             if (listarHipoteca().contains(nombre)) {
                 System.out.println("Esa casilla no se puede hipotecar");
             } else {
-                if (casilla != null) {
+                if (casilla != null && casilla instanceof Propiedad) {
+                    Propiedad propiedad = (Propiedad) casilla;
                     // Llamar al método hipotecarCasilla
                     Jugador jugadorAhora = jugadores.get(turno);
-                    casilla.hipotecarCasilla(jugadorAhora, Tablero.banca);
+                    propiedad.hipotecarCasilla(jugadorAhora, Tablero.banca);
                 } else {
                     System.out.println("La casilla " + nombre + " no existe.");
                 }
@@ -1162,17 +1171,25 @@ public class Juego implements Comando {
         // Verificar si la casilla existe y si pertenece al jugador actual
         if (casilla != null && casilla.getDuenho() == jugadorAhora) {
 
+            // Verificar si la casilla es una propiedad
+            if (!(casilla instanceof Propiedad)) {
+                System.out.println("La casilla " + nombre + " no es una propiedad.");
+                return;
+            }
+
+            Propiedad propiedad = (Propiedad) casilla;
+
             // Verificar si la casilla está hipotecada
-            if (casilla.estaHipotecada()) {
+            if (propiedad.estaHipotecada()) {
                 // Calcular el costo de deshipoteca con un recargo del 10%
-                float costoDeshipoteca = casilla.calcularValorHipoteca() * 1.10f;
+                float costoDeshipoteca = propiedad.calcularValorHipoteca() * 1.10f;
 
                 // Verificar si el jugador tiene suficiente dinero para deshipotecar
                 if (jugadorAhora.getFortuna() >= costoDeshipoteca) {
                     // Realizar el pago y deshipotecar
                     jugadorAhora.sumarFortuna(-costoDeshipoteca);
                     jugadorAhora.pagotasasimpuestos = jugadorAhora.pagotasasimpuestos + costoDeshipoteca;
-                    casilla.setHipotecada(false);
+                    propiedad.setHipotecada(false);
                     casilla.casillahacostado = casilla.casillahacostado + costoDeshipoteca;
 
                     // Informar al jugador
@@ -1199,7 +1216,8 @@ public class Juego implements Comando {
         ConsolaNormal consola = new ConsolaNormal();
 
         ArrayList<String> cartasSuerte = new ArrayList<>();
-        cartasSuerte.add("Ve al Transportes1 y coge un avión. Si pasas por la casilla de Salida, cobra la cantidad habitual.");
+        cartasSuerte.add(
+                "Ve al Transportes1 y coge un avión. Si pasas por la casilla de Salida, cobra la cantidad habitual.");
         cartasSuerte.add("Decides hacer un viaje de placer hasta Solar15, sin pasar por la Salida ni cobrar.");
         cartasSuerte.add("Vendes tu billete de avión y cobras 500000€.");
         cartasSuerte.add("Ve a Solar3. Si pasas por la casilla de Salida, cobra la cantidad habitual.");
@@ -1511,16 +1529,23 @@ public class Juego implements Comando {
             Edificio edificio = null;
             Solar solar = (Solar) casilla;
             switch (tipoEdificio.toLowerCase()) {
-                case "casa": case "casas":
+                case "casa":
+                case "casas":
                     edificio = solar.getCasas();
                     break;
-                case "hotel": case "hoteles":
+                case "hotel":
+                case "hoteles":
                     edificio = solar.getHoteles();
                     break;
-                case "piscinas": case "piscina":
+                case "piscinas":
+                case "piscina":
                     edificio = solar.getPiscinas();
                     break;
-                case "pistasdeporte": case "pistadeporte": case "pistas": case "pista": case "pistadeportes":
+                case "pistasdeporte":
+                case "pistadeporte":
+                case "pistas":
+                case "pista":
+                case "pistadeportes":
                     edificio = solar.getPistasDeporte();
                     break;
                 default:
@@ -1580,7 +1605,8 @@ public class Juego implements Comando {
         System.out.println("    lanzar dados");
         System.out.println("    comprar [nombre_casilla]");
         System.out.println("    salir carcel");
-        System.out.println("    listar [jugadores/avatares/enventa/hipotecados/edificios/edificios grupo [color_grupo]]");
+        System.out
+                .println("    listar [jugadores/avatares/enventa/hipotecados/edificios/edificios grupo [color_grupo]]");
         System.out.println("    acabar turno");
         System.out.println("    exit");
         System.out.println("    ver tablero");

@@ -1,14 +1,14 @@
 package paqueteAvatar;
 
-import paqueteJuego.Jugador;
-import paqueteJuego.Tablero;
-import paqueteCasilla.Casilla;
-import paqueteJuego.Juego;
-
 import static paqueteJuego.Valor.SUMA_VUELTA;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import paqueteCasilla.Casilla;
+import paqueteJuego.Juego;
+import paqueteJuego.Jugador;
+import paqueteJuego.Tablero;
 
 public class Avatar {
 

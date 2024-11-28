@@ -1,18 +1,11 @@
 package paqueteCasilla;
 
-import paqueteJuego.Jugador;
-import paqueteAvatar.Avatar;
-import paqueteEdificio.Edificio;
-import paqueteJuego.Grupo;
-import paqueteJuego.Juego;
-import paqueteJuego.Valor;
-import paqueteJuego.Tablero;
-import paqueteJuego.Dado;
-
 import java.util.ArrayList;
 
-import static paqueteJuego.Valor.IMPUESTO_1;
-import static paqueteJuego.Valor.IMPUESTO_2;
+import paqueteAvatar.Avatar;
+import paqueteJuego.Grupo;
+import paqueteJuego.Jugador;
+import paqueteJuego.Tablero;
 
 public abstract class Casilla {
 
