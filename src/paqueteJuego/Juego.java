@@ -16,6 +16,11 @@ import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteEdificio.Edificio;
 
+
+//! IMPORTANTE: Cuando se usa downcasting, se debe comprobar que el objeto es de la clase correcta.
+//! Para evitar errores, se puede usar el operador instanceof para comprobar si un objeto es de una clase concreta.
+//! Ejemplo: if (casilla instanceof Solar) { Solar solar = (Solar) casilla; }
+
 public class Juego implements Comando {
 
     ConsolaNormal consola = new ConsolaNormal();
