@@ -33,6 +33,8 @@ public class Jugador {
     public boolean cocheextra;
     public boolean casosacarmenosdecuatroenunturnoextracocheavanzado;
     public boolean casollegaralcuartoturnosextracocheavanzado;
+    private ArrayList<Tratos> listaTratos = null;
+    private boolean tratosPendientes;
     
     // Constructor vacío (para la banca)
     public Jugador() {
@@ -67,6 +69,8 @@ public class Jugador {
         this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);
         this.casosacarmenosdecuatroenunturnoextracocheavanzado=false;
         this.casollegaralcuartoturnosextracocheavanzado=false;
+        setTratosPendientes(false);
+        listaTratos = new ArrayList<Tratos>();
     }
 
     // Getters y Setters para recuperar los valores de los atributos
@@ -119,6 +123,22 @@ public class Jugador {
     }
     public void setCasollegaralcuartoturnosextracocheavanzado(boolean casollegaralcuartoturnosextracocheavanzado){
         this.casollegaralcuartoturnosextracocheavanzado=casollegaralcuartoturnosextracocheavanzado;
+    }
+
+    public ArrayList<Tratos> getListaTratos() {
+        return listaTratos;
+    }
+
+    public boolean getTratosPendientes() {
+        return tratosPendientes;
+    }
+
+    public void setTratosPendientes(boolean tratosPendientes) {
+        this.tratosPendientes = tratosPendientes;
+    }
+
+    public void setListaTratos(ArrayList<Tratos> listaTratos) {
+        this.listaTratos = listaTratos;
     }
 
     public void setModomovimiento() {
