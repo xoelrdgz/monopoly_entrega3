@@ -1,10 +1,13 @@
 package paqueteJuego;
 
+import static paqueteJuego.Valor.IMPUESTO_1;
+import static paqueteJuego.Valor.IMPUESTO_2;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import paqueteCasilla.Casilla;
-import paqueteCasilla.Solar;
+import paqueteCasilla.*;
+import paqueteJuego.Valor;
 
 public class Tablero {
     // Atributos.
@@ -49,64 +52,64 @@ public class Tablero {
     // Método para insertar las casillas del lado sur.
     private void insertarLadoSur() {
         ArrayList<Casilla> ladoSur = new ArrayList<>();
-        ladoSur.add(new Casilla("Salida", "especial", 0, 0, null)); // Salida
-        ladoSur.add(new Casilla("Solar1", "solar", 1, 600000, banca, grupos.get("negro"))); // Solar1
-        ladoSur.add(new Casilla("Caja", "caja", 2, 0, null)); // Caja de Comunidad
-        ladoSur.add(new Casilla("Solar2", "solar", 3, 600000, banca, grupos.get("negro"))); // Solar2
-        ladoSur.add(new Casilla("Impuesto1", "impuesto", 4, 0, null)); // Impuestos
-        ladoSur.add(new Casilla("Transporte1", "transporte", 5, 1301328.584f, banca)); // Transporte1
-        ladoSur.add(new Casilla("Solar3", "solar", 6, 520000, banca, grupos.get("cian"))); // Solar3
-        ladoSur.add(new Casilla("Suerte", "suerte", 7, 0, null)); // Suerte
-        ladoSur.add(new Casilla("Solar4", "solar", 8, 520000, banca, grupos.get("cian"))); // Solar4
-        ladoSur.add(new Casilla("Solar5", "solar", 9, 520000, banca, grupos.get("cian"))); // Solar5
-        ladoSur.add(new Casilla("Carcel", "especial", 10, 0, null)); // Cárcel
+        ladoSur.add(new Salida("Salida", "especial", 0, 0, null)); // Salida
+        ladoSur.add(new Solar("Solar1", "solar", 1, 600000, banca, grupos.get("negro"))); // Solar1
+        ladoSur.add(new AccionCajaComunidad("Caja", "caja", 2, null, null)); // Caja de Comunidad
+        ladoSur.add(new Solar("Solar2", "solar", 3, 600000, banca, grupos.get("negro"))); // Solar2
+        ladoSur.add(new Impuesto("Impuesto1", "impuesto", 4, IMPUESTO_1, null, null)); // Impuestos
+        ladoSur.add(new Transporte("Transporte1", "transporte", 5, 1301328.584f, banca, null)); // Transporte1
+        ladoSur.add(new Solar("Solar3", "solar", 6, 520000, banca, grupos.get("cian"))); // Solar3
+        ladoSur.add(new AccionSuerte("Suerte", "suerte", 7, null, null)); // Suerte
+        ladoSur.add(new Solar("Solar4", "solar", 8, 520000, banca, grupos.get("cian"))); // Solar4
+        ladoSur.add(new Solar("Solar5", "solar", 9, 520000, banca, grupos.get("cian"))); // Solar5
+        ladoSur.add(new Carcel("Carcel", "especial", 10, 0, null)); // Cárcel
         posiciones.add(ladoSur); // Añadimos el lado sur al tablero
     }
 
     // Método que inserta casillas del lado oeste.
     private void insertarLadoOeste() {
         ArrayList<Casilla> ladoOeste = new ArrayList<>();
-        ladoOeste.add(new Casilla("Solar6", "solar", 11, 676000, banca, grupos.get("magenta"))); // Solar6
-        ladoOeste.add(new Casilla("Servicio1", "servicio", 12, 1301328.584f * 0.75f, banca)); // Servicio1
-        ladoOeste.add(new Casilla("Solar7", "solar", 13, 676000, banca, grupos.get("magenta"))); // Solar7
-        ladoOeste.add(new Casilla("Solar8", "solar", 14, 676000, banca, grupos.get("magenta"))); // Solar8
-        ladoOeste.add(new Casilla("Transporte2", "transporte", 15, 1301328.584f, banca)); // Transporte2
-        ladoOeste.add(new Casilla("Solar9", "solar", 16, 878800, banca, grupos.get("amarillo"))); // Solar9
-        ladoOeste.add(new Casilla("Caja", "caja", 17, 0, null)); // Caja de Comunidad
-        ladoOeste.add(new Casilla("Solar10", "solar", 18, 878800, banca, grupos.get("amarillo"))); // Solar10
-        ladoOeste.add(new Casilla("Solar11", "solar", 19, 878800, banca, grupos.get("amarillo"))); // Solar11
+        ladoOeste.add(new Solar("Solar6", "solar", 11, 676000, banca, grupos.get("magenta"))); // Solar6
+        ladoOeste.add(new Servicio("Servicio1", "servicio", 12, 1301328.584f * 0.75f, banca, null)); // Servicio1
+        ladoOeste.add(new Solar("Solar7", "solar", 13, 676000, banca, grupos.get("magenta"))); // Solar7
+        ladoOeste.add(new Solar("Solar8", "solar", 14, 676000, banca, grupos.get("magenta"))); // Solar8
+        ladoOeste.add(new Transporte("Transporte2", "transporte", 15, 1301328.584f, banca, null)); // Transporte2
+        ladoOeste.add(new Solar("Solar9", "solar", 16, 878800, banca, grupos.get("amarillo"))); // Solar9
+        ladoOeste.add(new AccionCajaComunidad("Caja", "caja", 17, null, null)); // Caja de Comunidad
+        ladoOeste.add(new Solar("Solar10", "solar", 18, 878800, banca, grupos.get("amarillo"))); // Solar10
+        ladoOeste.add(new Solar("Solar11", "solar", 19, 878800, banca, grupos.get("amarillo"))); // Solar11
         posiciones.add(ladoOeste); // Añadimos el lado oeste al tablero
     }
 
     // Método para insertar las casillas del lado norte.
     private void insertarLadoNorte() {
         ArrayList<Casilla> ladoNorte = new ArrayList<>();
-        ladoNorte.add(new Casilla("Parking", "parking", 20, 0, null)); // Parking gratuito
-        ladoNorte.add(new Casilla("Solar12", "solar", 21, 1142440, banca, grupos.get("rojo"))); // Solar12
-        ladoNorte.add(new Casilla("Suerte", "suerte", 22, 0, null)); // Suerte
-        ladoNorte.add(new Casilla("Solar13", "solar", 23, 1142440, banca, grupos.get("rojo"))); // Solar13
-        ladoNorte.add(new Casilla("Solar14", "solar", 24, 1142440, banca, grupos.get("rojo"))); // Solar14
-        ladoNorte.add(new Casilla("Transporte3", "transporte", 25, 1301328.584f, banca)); // Transporte3
-        ladoNorte.add(new Casilla("Solar15", "solar", 26, 1485172, banca, grupos.get("marron"))); // Solar15
-        ladoNorte.add(new Casilla("Solar16", "solar", 27, 1485172, banca, grupos.get("marron"))); // Solar16
-        ladoNorte.add(new Casilla("Servicio2", "servicio", 28, 1301328.584f * 0.75f, banca)); // Servicio2
-        ladoNorte.add(new Casilla("Solar17", "solar", 29, 1485172, banca, grupos.get("marron"))); // Solar16
-        ladoNorte.add(new Casilla("IrCárcel", "especial", 30, 0, null)); // Ir a la Cárcel
+        ladoNorte.add(new Parking("Parking", "parking", 20, null, null)); // Parking gratuito
+        ladoNorte.add(new Solar("Solar12", "solar", 21, 1142440, banca, grupos.get("rojo"))); // Solar12
+        ladoNorte.add(new AccionSuerte("Suerte", "suerte", 22, null, null)); // Suerte
+        ladoNorte.add(new Solar("Solar13", "solar", 23, 1142440, banca, grupos.get("rojo"))); // Solar13
+        ladoNorte.add(new Solar("Solar14", "solar", 24, 1142440, banca, grupos.get("rojo"))); // Solar14
+        ladoNorte.add(new Transporte("Transporte3", "transporte", 25, 1301328.584f, banca, null)); // Transporte3
+        ladoNorte.add(new Solar("Solar15", "solar", 26, 1485172, banca, grupos.get("marron"))); // Solar15
+        ladoNorte.add(new Solar("Solar16", "solar", 27, 1485172, banca, grupos.get("marron"))); // Solar16
+        ladoNorte.add(new Servicio("Servicio2", "servicio", 28, 1301328.584f * 0.75f, banca, null)); // Servicio2
+        ladoNorte.add(new Solar("Solar17", "solar", 29, 1485172, banca, grupos.get("marron"))); // Solar16
+        ladoNorte.add(new IrCarcel("IrCárcel", "especial", 30, null, null)); // Ir a la Cárcel
         posiciones.add(ladoNorte); // Añadimos el lado norte al tablero
     }
 
     // Método que inserta las casillas del lado este.
     private void insertarLadoEste() {
         ArrayList<Casilla> ladoEste = new ArrayList<>();
-        ladoEste.add(new Casilla("Solar18", "solar", 31, 1930723.6f, banca, grupos.get("verde"))); // Solar18
-        ladoEste.add(new Casilla("Solar19", "solar", 32, 1930723.6f, banca, grupos.get("verde"))); // Solar19
-        ladoEste.add(new Casilla("Caja", "caja", 33, 0, null)); // Caja de Comunidad
-        ladoEste.add(new Casilla("Solar20", "solar", 34, 1930723.6f, banca, grupos.get("verde"))); // Solar20
-        ladoEste.add(new Casilla("Transporte4", "transporte", 35, 1301328.584f, banca)); // Transporte4
-        ladoEste.add(new Casilla("Suerte", "suerte", 36, 0, null)); // Suerte
-        ladoEste.add(new Casilla("Solar21", "solar", 37, 3764911.02f, banca, grupos.get("azul"))); // Solar21
-        ladoEste.add(new Casilla("Impuesto2", "impuesto", 38, 0, null)); // Impuestos
-        ladoEste.add(new Casilla("Solar22", "solar", 39, 3764911.02f, banca, grupos.get("azul"))); // Solar22
+        ladoEste.add(new Solar("Solar18", "solar", 31, 1930723.6f, banca, grupos.get("verde"))); // Solar18
+        ladoEste.add(new Solar("Solar19", "solar", 32, 1930723.6f, banca, grupos.get("verde"))); // Solar19
+        ladoEste.add(new AccionCajaComunidad("Caja", "caja", 33, null, null)); // Caja de Comunidad
+        ladoEste.add(new Solar("Solar20", "solar", 34, 1930723.6f, banca, grupos.get("verde"))); // Solar20
+        ladoEste.add(new Transporte("Transporte4", "transporte", 35, 1301328.584f, banca, null)); // Transporte4
+        ladoEste.add(new AccionSuerte("Suerte", "suerte", 36, null, null)); // Suerte
+        ladoEste.add(new Solar("Solar21", "solar", 37, 3764911.02f, banca, grupos.get("azul"))); // Solar21
+        ladoEste.add(new Impuesto("Impuesto2", "impuesto", 38, IMPUESTO_2, null, null)); // Impuestos
+        ladoEste.add(new Solar("Solar22", "solar", 39, 3764911.02f, banca, grupos.get("azul"))); // Solar22
         posiciones.add(ladoEste); // Añadimos el lado este al tablero
     }
 

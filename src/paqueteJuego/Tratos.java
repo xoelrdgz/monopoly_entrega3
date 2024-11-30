@@ -90,8 +90,6 @@ public class Tratos {
     // Método para proponer un trato
     public void proponerTrato(Jugador jugador1, Jugador jugador2, int cantidadDinero1, int cantidadDinero2, Propiedad propiedad1, Propiedad propiedad2) {
 
-        Tratos nuevoTrato = new Tratos(jugador1, jugador2);
-
         // Comprobar si los jugadores son distintos
         if (jugador1 == jugador2){
             consola.imprimir("No se puede proponer el trato: los jugadores son iguales.");
@@ -99,15 +97,15 @@ public class Tratos {
         }
 
         if (propiedad1 != null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 == 0){
-            nuevoTrato.setTipoTrato(1);
+            this.setTipoTrato(1);
         } else if (propiedad1 != null && propiedad2 == null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
-            nuevoTrato.setTipoTrato(2);
+            this.setTipoTrato(2);
         } else if (propiedad1 == null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 != 0){
-            nuevoTrato.setTipoTrato(3);
+            this.setTipoTrato(3);
         } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 != 0){
-            nuevoTrato.setTipoTrato(4);
+            this.setTipoTrato(4);
         } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 != 0){
-            nuevoTrato.setTipoTrato(5);
+            this.setTipoTrato(5);
         } else {
             consola.imprimir("No se puede proponer el trato.");
             return;
@@ -118,21 +116,21 @@ public class Tratos {
             return;
         }
 
-        switch (nuevoTrato.getTipoTrato()) {
+        switch (this.getTipoTrato()) {
             case 1:
-                nuevoTrato.trato1(jugador1, jugador2, propiedad1, propiedad2);
+                this.trato1(jugador1, jugador2, propiedad1, propiedad2);
                 break;
             case 2:
-                nuevoTrato.trato2(jugador1, jugador2, propiedad1, cantidadDinero2);
+                this.trato2(jugador1, jugador2, propiedad1, cantidadDinero2);
                 break;
             case 3:
-                nuevoTrato.trato3(jugador1, jugador2, cantidadDinero1, propiedad2);
+                this.trato3(jugador1, jugador2, cantidadDinero1, propiedad2);
                 break;
             case 4:
-                nuevoTrato.trato4(jugador1, jugador2, propiedad1, propiedad2, cantidadDinero2);
+                this.trato4(jugador1, jugador2, propiedad1, propiedad2, cantidadDinero2);
                 break;
             case 5:
-                nuevoTrato.trato5(jugador1, jugador2, propiedad1, cantidadDinero1, propiedad2);
+                this.trato5(jugador1, jugador2, propiedad1, cantidadDinero1, propiedad2);
                 break;
             default:
                 consola.imprimir("No se puede proponer el trato.");
