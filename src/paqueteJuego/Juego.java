@@ -26,7 +26,7 @@ public class Juego implements Comando {
     ConsolaNormal consola = new ConsolaNormal();
 
     // Atributos
-    private static ArrayList<Jugador> jugadores; // Jugadores de la partida.
+    public static ArrayList<Jugador> jugadores; // Jugadores de la partida.
     private static ArrayList<Avatar> avatares; // Avatares en la partida.
     private ArrayList<String> tipoavatar;// Lista con los tipos de avatares (sirve para generar la ID)
     public static int turno = 0; // Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
