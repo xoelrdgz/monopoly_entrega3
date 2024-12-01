@@ -1,17 +1,19 @@
 package paqueteCarta;
 import paqueteCasilla.Casilla;
-import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
-import paqueteJuego.Grupo;
 import paqueteJuego.Tablero;
-
+import paqueteConsola.*;
 import java.util.ArrayList;
 
 import static paqueteJuego.Juego.*;
 
 public class CartaCajaComunidad extends Carta{
+    Consola consola = new ConsolaNormal();
+
+
+
     @Override
-    public void accion() { ArrayList<String> cartasComunidad = new ArrayList<>();
+    public void accion(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas) { ArrayList<String> cartasComunidad = new ArrayList<>();
         cartasComunidad.add("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
         cartasComunidad.add("Te investigan por fraude de identidad. Ve a la Cárcel sin pasar por la Salida ni cobrar.");
         cartasComunidad.add("Colócate en la casilla de Salida y cobra la cantidad habitual.");
@@ -19,16 +21,14 @@ public class CartaCajaComunidad extends Carta{
         cartasComunidad.add("Paga 1000000€ por invitar a todos tus amigos a un viaje a Solar14.");
         cartasComunidad.add("Alquilas una villa en Solar7 y pagas 200000€ a cada jugador.");
 
-        // Barajar manualmente las cartas
-        ArrayList<String> cartasBarajadas = barajarCartas(cartasComunidad);
 
         // Selección de carta por parte del jugador
-        System.out.print("Elige un número de carta entre 1 y " + cartasComunidad.size() + ": ");
-        int eleccion =
+        consola.imprimir("Elige un número de carta entre 1 y " + cartasComunidad.size() + ": ");
+        int eleccion = consola.leerInt();
 
 
         if (eleccion < 1 || eleccion > cartasComunidad.size()) {
-            System.out.println("Número de carta inválido. Debe ser entre 1 y " + cartasComunidad.size() + ".");
+            consola.imprimir("Número de carta inválido. Debe ser entre 1 y " + cartasComunidad.size() + ".");
             return;
         }
         Jugador jugadorActual = jugadores.get(turno);
@@ -36,7 +36,7 @@ public class CartaCajaComunidad extends Carta{
         // Ejecutar la acción basada en el texto de la carta
         switch (eleccion) {
             case 1:
-                System.out.println("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
+                consola.imprimir("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
                 jugadorActual.sumarFortuna(-500000);
 
                 if (jugadorActual.getFortuna() < 0) {
@@ -45,7 +45,7 @@ public class CartaCajaComunidad extends Carta{
 
                 break;
             case 2:
-                System.out.println("Te investigan por fraude de identidad. Ve a la Cárcel. Ve directamente sin pasar por la casilla de Salida y sin cobrar la cantidad habitual.");
+                consola.imprimir("Te investigan por fraude de identidad. Ve a la Cárcel. Ve directamente sin pasar por la casilla de Salida y sin cobrar la cantidad habitual.");
                 jugadorActual.setEnCarcel(true);
                 jugadorActual.setTiradasCarcel(0);
 
@@ -54,29 +54,28 @@ public class CartaCajaComunidad extends Carta{
                 jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                 jugadorActual.getAvatar().setLugar(carcel);
                 jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
-                System.out.println(tablero);
                 break;
             case 3:
-                System.out.println("Colócate en la casilla de Salida y cobra la cantidad habitual.");
+                consola.imprimir("Colócate en la casilla de Salida y cobra la cantidad habitual.");
                 jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                 jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 0);
-                System.out.println("¡Has pasado por la casilla de salida cobras 1301328.584 ");
+                consola.imprimir("¡Has pasado por la casilla de salida cobras 1301328.584 ");
                 jugadorActual.sumarFortuna(1301328.584f);
 
                 break;
             case 4:
-                System.out.println("Tu compañía de Internet obtiene beneficios. Recibe 2000000€.");
+                consola.imprimir("Tu compañía de Internet obtiene beneficios. Recibe 2000000€.");
                 jugadorActual.sumarFortuna(2000000);
                 break;
             case 5:
-                System.out.println("Paga 1000000€ por invitar a todos tus amigos a un viaje a Solar14.");
+                consola.imprimir("Paga 1000000€ por invitar a todos tus amigos a un viaje a Solar14.");
                 jugadorActual.sumarFortuna(-1000000);
                 if (jugadorActual.getFortuna() < 0) {
                     sinDinero(jugadorActual, Tablero.banca);
                 }
                 break;
             case 6:
-                System.out.println("Alquilas una villa en Solar7 y pagas 200000€ a cada jugador.");
+                consola.imprimir("Alquilas una villa en Solar7 y pagas 200000€ a cada jugador.");
 
                 int cantidad = 200000;
                 for (int i = 0; i < jugadores.size(); i++) {  // Itera sobre todos los jugadores
@@ -93,7 +92,7 @@ public class CartaCajaComunidad extends Carta{
 
                 break;
             default:
-                System.out.println("No se reconoce la carta seleccionada.");
+                consola.imprimir("No se reconoce la carta seleccionada.");
                 break;
         }
 
