@@ -35,7 +35,7 @@ public class PistaDeporte extends Edificio {
         }
 
         if (getSolar().getHoteles().getNumEdificios() < 2) {
-            System.out.println("No puedes construir una pista de deporte, necesitas 2 hoteles.");
+            consola.imprimir("No puedes construir una pista de deporte, necesitas 2 hoteles.");
             return;
         }
 

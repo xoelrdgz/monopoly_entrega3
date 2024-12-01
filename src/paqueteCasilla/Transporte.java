@@ -26,8 +26,8 @@ public class Transporte extends Propiedad{
                 return false; // No puede pagar el alquiler
             }
         } else if (this.duenho == null) {
-            System.out.println("La casilla " + this.nombre + " está en venta por " + this.valor);
-            System.out.println("Si desea comprarla, escriba 'comprar " + this.nombre + "'");
+            consola.imprimir("La casilla " + this.nombre + " está en venta por " + this.valor);
+            consola.imprimir("Si desea comprarla, escriba 'comprar " + this.nombre + "'");
         }
         return true;
     }

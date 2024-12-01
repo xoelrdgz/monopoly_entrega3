@@ -35,7 +35,7 @@ public class Hotel extends Edificio {
         }
 
         if (getSolar().getCasas().getNumEdificios() < 4) {
-            System.out.println("No puedes construir un hotel, debes tener 4 casas edificadas.");
+            consola.imprimir("No puedes construir un hotel, debes tener 4 casas edificadas.");
             return;
         }
 

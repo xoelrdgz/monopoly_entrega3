@@ -9,8 +9,11 @@ import paqueteCasilla.Casilla;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
 import paqueteJuego.Tablero;
+import paqueteConsola.*;
 
 public class Avatar {
+
+    Consola consola = new ConsolaNormal();
 
     // Atributos
     private String id; // Identificador: una letra generada aleatoriamente
@@ -130,13 +133,13 @@ public class Avatar {
             // Verificar si el jugador pasó por la casilla de salida (casilla 0)
             if (nuevaPosicion > 39 && posicionActual <= 39) {
                 jugador.incrementarVueltas();  // Aumentar el contador de vueltas del jugador
-                System.out.println("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
+                consola.imprimir("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
                 jugador.sumarFortuna(SUMA_VUELTA); jugador.pasarporcasillasalida=jugador.pasarporcasillasalida+1301328.584f; // Añadir el valor de la vuelta a la fortuna del jugador
                 jugador.vecesvueltas++;
                 // Verificar si todos los jugadores han completado al menos 4 vueltas
                 if (Juego.todosHanCompletadoCuatroVueltas()) {
                     Juego.getTablero().incrementarPrecioSolares();  // Incrementar el precio de los solares en un 5%
-                    System.out.println("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
+                    consola.imprimir("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
                 }
             }
 
@@ -159,13 +162,13 @@ public class Avatar {
                     // Verificar si el jugador pasó por la casilla de salida (casilla 0)
                     if (nuevaPosicion > 39 && posicionActual <= 39) {
                         jugador.incrementarVueltas();  // Aumentar el contador de vueltas del jugador
-                        System.out.println("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
+                        consola.imprimir("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
                         jugador.sumarFortuna(SUMA_VUELTA); jugador.pasarporcasillasalida=jugador.pasarporcasillasalida+1301328.584f; // Añadir el valor de la vuelta a la fortuna del jugador
                         jugador.vecesvueltas++;
                         // Verificar si todos los jugadores han completado al menos 4 vueltas
                         if (Juego.todosHanCompletadoCuatroVueltas()) {
                             Juego.getTablero().incrementarPrecioSolares();  // Incrementar el precio de los solares en un 5%
-                            System.out.println("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
+                            consola.imprimir("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
                         }
                     }
 
@@ -192,7 +195,7 @@ public class Avatar {
                         casillasintermedias.add(2);
                     }if (valorTirada%2==0){casillasintermedias.add(1);}
                 }
-                else{System.out.println("Error raro en mov avanzado de pelota");}
+                else{consola.imprimir("Error raro en mov avanzado de pelota");}
 
                     // Ajustar la nueva posición en el tablero si excede el número de casillas
                     nuevaPosicion = nuevaPosicion % 40;
@@ -219,7 +222,7 @@ public class Avatar {
                     // Verificar si el jugador pasó por la casilla de salida (casilla 0)
                     if (nuevaPosicion<0 && posicionActual>0) {
                         jugador.disminuirVueltas();  // Aumentar el contador de vueltas del jugador
-                        System.out.println("¡Has retrocdido por la casilla de salida! Pagas " + SUMA_VUELTA + " monedas.");
+                        consola.imprimir("¡Has retrocdido por la casilla de salida! Pagas " + SUMA_VUELTA + " monedas.");
                         if(jugador.getFortuna()>=SUMA_VUELTA){
                             jugador.sumarFortuna(-SUMA_VUELTA); }
                         else{Juego.sinDinero(jugador,Tablero.banca);}// Añadir el valor de la vuelta a la fortuna del jugador
@@ -254,7 +257,7 @@ public class Avatar {
                         casillasintermedias.add(1);
                     }
 
-                    else{System.out.println("Error raro en mov avanzado de pelota");}
+                    else{consola.imprimir("Error raro en mov avanzado de pelota");}
 
 
 
@@ -287,18 +290,18 @@ public class Avatar {
                 if (valorTirada<=4){movercocheavanzadomenor4(jugador,valorTirada, posicionActual);
                 }
             }
-            else {System.out.println("No hay movimiento avanzado permitido para este tipo de avatar aún");
+            else {consola.imprimir("No hay movimiento avanzado permitido para este tipo de avatar aún");
                 nuevaPosicion = posicionActual + valorTirada;
                 // Verificar si el jugador pasó por la casilla de salida (casilla 0)
                 if (nuevaPosicion > 39 && posicionActual <= 39) {
                     jugador.incrementarVueltas();  // Aumentar el contador de vueltas del jugador
-                    System.out.println("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
+                    consola.imprimir("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
                     jugador.sumarFortuna(SUMA_VUELTA); jugador.pasarporcasillasalida=jugador.pasarporcasillasalida+1301328.584f; // Añadir el valor de la vuelta a la fortuna del jugador
                     jugador.vecesvueltas++;
                     // Verificar si todos los jugadores han completado al menos 4 vueltas
                     if (Juego.todosHanCompletadoCuatroVueltas()) {
                         Juego.getTablero().incrementarPrecioSolares();  // Incrementar el precio de los solares en un 5%
-                        System.out.println("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
+                        consola.imprimir("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
                     }
                 }
 
@@ -313,7 +316,7 @@ public class Avatar {
                 // Evaluar la casilla en la que cayó
                 casillaActual.evaluarCasilla(jugador, Tablero.banca, valorTirada);}
         }
-        else {System.out.println("Hay problemas detectando si el movimiento es básico o avanzado, no se ha podido mover al jugador");}
+        else {consola.imprimir("Hay problemas detectando si el movimiento es básico o avanzado, no se ha podido mover al jugador");}
 
     }
 
@@ -324,13 +327,13 @@ public class Avatar {
         // Verificar si el jugador pasó por la casilla de salida (casilla 0)
         if (nuevaPosicion > 39 && posicionActual <= 39) {
             jugador.incrementarVueltas();  // Aumentar el contador de vueltas del jugador
-            System.out.println("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
+            consola.imprimir("¡Has pasado por la casilla de salida! Recibes " + SUMA_VUELTA + " monedas.");
             jugador.sumarFortuna(SUMA_VUELTA);jugador.pasarporcasillasalida=jugador.pasarporcasillasalida+1301328.584f;  // Añadir el valor de la vuelta a la fortuna del jugador
             jugador.vecesvueltas++;
             // Verificar si todos los jugadores han completado al menos 4 vueltas
             if (Juego.todosHanCompletadoCuatroVueltas()) {
                 Juego.getTablero().incrementarPrecioSolares();  // Incrementar el precio de los solares en un 5%
-                System.out.println("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
+                consola.imprimir("Todos los jugadores han dado 4 vueltas. El precio de los solares ha aumentado un 5%.");
             }
         }
         // Ajustar la nueva posición en el tablero si excede el número de casillas
@@ -346,9 +349,9 @@ public class Avatar {
         // Evaluar la casilla en la que cayó
         casillaActual.evaluarCasilla(jugador, Tablero.banca, valorTirada);
         if (!jugador.getCocheExtra() && !jugador.casollegaralcuartoturnosextracocheavanzado){
-        System.out.println("Coche modo avanzado: sacaste más de 4, así que tienes máximo 3 turnos");
-        System.out.println("Atención!!!: solo se puede realizar una compra de propiedades, servicio o transporte a lo largo de estos 4 turnos, pero se puede edificar libremente");
-        System.out.println("Atención!!!: si se llega al último turno extra (hay 3 como máximo), en ese turno sí cuentan los dados dobles, pero si en ese turno sale doble, si la siguiente tirada también sale doble NO se vuelve a tirar");
+        consola.imprimir("Coche modo avanzado: sacaste más de 4, así que tienes máximo 3 turnos");
+        consola.imprimir("Atención!!!: solo se puede realizar una compra de propiedades, servicio o transporte a lo largo de estos 4 turnos, pero se puede edificar libremente");
+        consola.imprimir("Atención!!!: si se llega al último turno extra (hay 3 como máximo), en ese turno sí cuentan los dados dobles, pero si en ese turno sale doble, si la siguiente tirada también sale doble NO se vuelve a tirar");
         jugador.setCocheExtra(true);}
 
     }
@@ -359,7 +362,7 @@ public class Avatar {
         // Verificar si el jugador pasó por la casilla de salida (casilla 0)
         if (nuevaPosicion<0 && posicionActual>0) {
             jugador.disminuirVueltas();  // Aumentar el contador de vueltas del jugador
-            System.out.println("¡Has retrocedido por la casilla de salida! Pagas " + SUMA_VUELTA + " monedas.");
+            consola.imprimir("¡Has retrocedido por la casilla de salida! Pagas " + SUMA_VUELTA + " monedas.");
             if(jugador.getFortuna()>=SUMA_VUELTA){
             jugador.sumarFortuna(-SUMA_VUELTA); }
             else{Juego.sinDinero(jugador,Tablero.banca);}// Añadir el valor de la vuelta a la fortuna del jugador
@@ -379,10 +382,10 @@ public class Avatar {
         // Evaluar la casilla en la que cayó
         casillaActual.evaluarCasilla(jugador, Tablero.banca, valorTirada);
         if(!jugador.getCocheExtra()){
-        System.out.println("Coche modo avanzado: sacaste menos de 4, así que pierdes los siguientes dos turnos");
+        consola.imprimir("Coche modo avanzado: sacaste menos de 4, así que pierdes los siguientes dos turnos");
         jugador.setCocheProhibido(true);jugador.setCocheExtra(false);jugador.turnoscocheavanzado=0;}
         else if(jugador.getCocheExtra()){
-            System.out.println("Sacaste menos de 4, perdiste los turnos extra");
+            consola.imprimir("Sacaste menos de 4, perdiste los turnos extra");
             jugador.setCasosacarmenosdecuatroenunturnoextracocheavanzado(true);
             jugador.setCocheExtra(false);jugador.turnoscocheavanzado=0;
         }

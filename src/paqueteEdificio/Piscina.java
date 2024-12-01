@@ -35,7 +35,7 @@ public class Piscina extends Edificio {
         }
 
         if (getSolar().getHoteles().getNumEdificios() == 0 || getSolar().getCasas().getNumEdificios() < 2) {
-            System.out.println("No puedes construir una piscina, necesitas 1 hotel y 2 casas.");
+            consola.imprimir("No puedes construir una piscina, necesitas 1 hotel y 2 casas.");
             return;
         }
 

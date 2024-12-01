@@ -62,7 +62,7 @@ public class Solar extends Propiedad {
         if (this.duenho != null && this.duenho != actual) {
             // Verificar si la casilla está hipotecada
             if (this.estaHipotecada()) {
-                System.out.println("La casilla " + this.nombre + " está hipotecada. No se paga alquiler.");
+                consola.imprimir("La casilla " + this.nombre + " está hipotecada. No se paga alquiler.");
                 return true; // El alquiler no se paga, pero no se considera un fallo
             }
 
@@ -74,13 +74,13 @@ public class Solar extends Propiedad {
                 this.duenho.cobroalquileres = this.duenho.cobroalquileres + alquiler;
                 this.casillahagenerado = this.casillahagenerado + alquiler;
             } else {
-                System.out.println("No puedes pagar el alquiler");
+                consola.imprimir("No puedes pagar el alquiler");
                 Juego.sinDinero(actual, this.duenho);
                 return false; // No puede pagar el alquiler
             }
         } else if (this.duenho == null) {
-            System.out.println("La casilla " + this.nombre + " está en venta por " + this.valor);
-            System.out.println("Si desea comprarla, escriba 'comprar " + this.nombre + "'");
+            consola.imprimir("La casilla " + this.nombre + " está en venta por " + this.valor);
+            consola.imprimir("Si desea comprarla, escriba 'comprar " + this.nombre + "'");
         }
         return true;
     }

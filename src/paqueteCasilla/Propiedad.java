@@ -2,8 +2,12 @@ package paqueteCasilla;
 
 import paqueteJuego.Grupo;
 import paqueteJuego.Jugador;
+import paqueteConsola.*;
 
 public abstract class Propiedad extends Casilla {
+
+    Consola consola = new ConsolaNormal();
+
     float valor;
     public Propiedad(String nombre, String tipo, int posicion, float valor, Jugador duenho, Grupo grupo) {
         super(nombre, tipo, posicion, duenho,grupo);
@@ -39,10 +43,10 @@ public abstract class Propiedad extends Casilla {
             comprador.anhadirPropiedad(this);
             this.setDuenho(comprador);
             String[] partes = this.nombre.split(" ");
-            System.out.println(comprador.getNombre() + " ha comprado la casilla " + partes[0]);
+            consola.imprimir(comprador.getNombre() + " ha comprado la casilla " + partes[0]);
         } else {
             String[] partes = this.nombre.split(" ");
-            System.out.println("No se puede comprar la casilla " + partes[0]);
+            consola.imprimir("No se puede comprar la casilla " + partes[0]);
         }
     }
 
@@ -67,7 +71,7 @@ public abstract class Propiedad extends Casilla {
             // Verifica si la casilla ya está hipotecada
             if (this.estaHipotecada()) {
                 String[] partes = this.nombre.split(" ");
-                System.out.println("La casilla " + partes[0] + " ya está hipotecada.");
+                consola.imprimir("La casilla " + partes[0] + " ya está hipotecada.");
             } else {
                 // Calcular la cantidad a obtener por la hipoteca
                 float cantidadHipoteca = calcularValorHipoteca();
@@ -82,13 +86,13 @@ public abstract class Propiedad extends Casilla {
 
                 // Informar al jugador sobre la hipoteca
                 String[] partes = this.nombre.split(" ");
-                System.out.println(hipotecador.getNombre() + " ha hipotecado la casilla " + partes[0]
+                consola.imprimir(hipotecador.getNombre() + " ha hipotecado la casilla " + partes[0]
                         + " y ha recibido " + cantidadHipoteca + " monedas.");
             }
         } else {
             // Mensaje de error si no puede hipotecar
             String[] partes = this.nombre.split(" ");
-            System.out.println("No se puede hipotecar la casilla " + partes[0]);
+            consola.imprimir("No se puede hipotecar la casilla " + partes[0]);
         }
     }
 

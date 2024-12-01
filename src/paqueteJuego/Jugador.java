@@ -3,8 +3,12 @@ package paqueteJuego;
 import java.util.ArrayList;
 import paqueteCasilla.Casilla;
 import paqueteAvatar.Avatar;
+import paqueteConsola.Consola;
+import paqueteConsola.ConsolaNormal;
 
 public class Jugador {
+
+    Consola consola = new ConsolaNormal();
 
     // Atributos:
     private String nombre; // Nombre del jugador
@@ -208,7 +212,7 @@ public class Jugador {
 
     // Método para mostrar estadísticas de un jugador
     public void mostrarEstadisticasJugador() {
-        System.out.println("{\n Dinero Invertido: " + this.dineroinvertido + "\n" +
+        consola.imprimir("{\n Dinero Invertido: " + this.dineroinvertido + "\n" +
                 "pagoTasaseImpuestos: " + this.pagotasasimpuestos + "\n" +
                 "pagodeAlquileres: " + this.pagoalquileres + "\n" +
                 "cobrodeAlquileres: " + this.cobroalquileres + "\n" +
