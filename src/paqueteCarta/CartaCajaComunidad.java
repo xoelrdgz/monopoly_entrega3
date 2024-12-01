@@ -10,8 +10,6 @@ import static paqueteJuego.Juego.*;
 public class CartaCajaComunidad extends Carta{
     Consola consola = new ConsolaNormal();
 
-
-
     @Override
     public void accion(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas) { ArrayList<String> cartasComunidad = new ArrayList<>();
         cartasComunidad.add("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
@@ -97,5 +95,6 @@ public class CartaCajaComunidad extends Carta{
         }
 
     }
-    
+
+
 }

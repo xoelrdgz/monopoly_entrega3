@@ -12,7 +12,7 @@ public abstract class CartaSuerte extends Carta{
 
     Consola consola = new ConsolaNormal();
     @Override
-    public void accion() {
+    public void accion(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas) {
         ArrayList<String> cartasSuerte = new ArrayList<>();
         cartasSuerte.add("Ve al Transportes1 y coge un avión. Si pasas por la casilla de Salida, cobra la cantidad habitual.");
         cartasSuerte.add("Decides hacer un viaje de placer hasta Solar15, sin pasar por la Salida ni cobrar.");

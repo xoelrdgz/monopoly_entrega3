@@ -8,5 +8,5 @@ import java.util.ArrayList;
 public abstract class Carta   {
     public abstract void accion(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas);
 
-    public abstract void accion();
+
 }
