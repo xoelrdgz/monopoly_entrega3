@@ -26,5 +26,6 @@ public interface Comando {
     void deshipotecar(String nombre);
     void venderEdificios(String tipoEdificio, String nombreCasilla, int cantidad);
     void bancarrotamenu(Jugador jugador, Jugador acreedor);
+    void listarTratos(Jugador jugador);
     
 }

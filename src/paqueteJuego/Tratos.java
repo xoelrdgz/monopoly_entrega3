@@ -100,11 +100,11 @@ public class Tratos {
             this.setTipoTrato(1);
         } else if (propiedad1 != null && propiedad2 == null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
             this.setTipoTrato(2);
-        } else if (propiedad1 == null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 != 0){
+        } else if (propiedad1 == null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
             this.setTipoTrato(3);
-        } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 != 0){
+        } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 != 0){
             this.setTipoTrato(4);
-        } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 != 0){
+        } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
             this.setTipoTrato(5);
         } else {
             consola.imprimir("No se puede proponer el trato.");
@@ -137,8 +137,6 @@ public class Tratos {
                 break;
         }
     }
-
-    // TODO: borrar tratos despues de aceptar.
 
     // Los tratos se proponen y se añaden a la lista de tratos del jugador (en Jugador.java)
 
@@ -183,6 +181,10 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
+    
+        // Borrar trato de la lista de tratos de los jugadores
+        jugador1.getListaTratos().remove(this);
+        jugador2.getListaTratos().remove(this);
     }
 
     // Trato de tipo 2, cambiar propiedad por dinero
@@ -230,6 +232,10 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + cantidadDinero2 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
+    
+        // Borrar trato de la lista de tratos de los jugadores
+        jugador1.getListaTratos().remove(this);
+        jugador2.getListaTratos().remove(this);
     }
 
     // Trato de tipo 3, cambiar dinero por propiedad
@@ -277,6 +283,10 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + cantidadDinero1 + ".");
+    
+        // Borrar trato de la lista de tratos de los jugadores
+        jugador1.getListaTratos().remove(this);
+        jugador2.getListaTratos().remove(this);
     }
 
     // Trato de tipo 4, cambiar propiedad por propiedad y dinero
@@ -331,6 +341,10 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + cantidadDinero2 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
+    
+        // Borrar trato de la lista de tratos de los jugadores
+        jugador1.getListaTratos().remove(this);
+        jugador2.getListaTratos().remove(this);
     }
 
     // Trato de tipo 5, cambiar propiedad y dinero por propiedad
@@ -391,6 +405,10 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + cantidadDinero1 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
+
+        // Borrar trato de la lista de tratos de los jugadores
+        jugador1.getListaTratos().remove(this);
+        jugador2.getListaTratos().remove(this);
     }
 
     // Método para aceptar un trato
@@ -435,6 +453,14 @@ public class Tratos {
         }
         if (tratoAEliminar != null) {
             jugador.getListaTratos().remove(tratoAEliminar);
+            if (jugador.getListaTratos().isEmpty()) {
+                jugador.setTratosPendientes(false);
+            }
+            if (jugador != jugador1) {
+                jugador1.getListaTratos().remove(tratoAEliminar);
+            } else {
+                jugador2.getListaTratos().remove(tratoAEliminar);
+            }
             consola.imprimir("Trato eliminado correctamente.");
         } else {
             consola.imprimir("No se puede eliminar el trato. Puede que ya haya sido aceptado o no exista.");

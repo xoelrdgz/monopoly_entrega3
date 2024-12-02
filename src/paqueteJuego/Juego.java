@@ -17,10 +17,6 @@ import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteEdificio.Edificio;
 
-//! IMPORTANTE: Cuando se usa downcasting, se debe comprobar que el objeto es de la clase correcta.
-//! Para evitar errores, se puede usar el operador instanceof para comprobar si un objeto es de una clase concreta.
-//! Ejemplo: if (casilla instanceof Solar) { Solar solar = (Solar) casilla; }
-
 public class Juego implements Comando {
 
     ConsolaNormal consola = new ConsolaNormal();
@@ -355,6 +351,10 @@ public class Juego implements Comando {
                             listarEdificiosGrupo(colorGrupo);
                             i = 1;
                             break;
+                        case "tratos":
+                            listarTratos(jugadores.get(turno));
+                            i = 1;
+                            break;
                         default:
                             consola.imprimir(
                                     "Opción de lista no válida. Uso: listar [jugadores/avatares/enventa/hipotecados/edificios]");
@@ -588,6 +588,47 @@ public class Juego implements Comando {
                     } else {
                         consola.imprimir("Comando no reconocido.");
                     }
+                    i = 1;
+                    break;
+
+                case "aceptar":
+                    if (partes.length < 2) {
+                        consola.imprimir("Comando incompleto. Uso: aceptar [id_trato]");
+                        i = 2;
+                        return;
+                    }
+                    String idTrato = partes[1];
+
+                    // Buscar el trato por ID en la lista de tratos del jugador
+                    Tratos trato = null;
+                    for (Tratos t : jugadores.get(turno).getListaTratos()) {
+                        if (t.getIdTrato().equals(idTrato)) {
+                            trato = t;
+                            break;
+                        }
+                    }
+                    trato.aceptar(idTrato);
+                    i = 1;
+                    break;
+
+        
+                case "eliminar":
+                    if (partes.length < 2) {
+                        consola.imprimir("Comando incompleto. Uso: eliminar [id_trato]");
+                        i = 2;
+                        return;
+                    }
+                    String idTratoE = partes[1];
+
+                    // Buscar el trato por ID en la lista de tratos del jugador
+                    Tratos tratoE = null;
+                    for (Tratos t : jugadores.get(turno).getListaTratos()) {
+                        if (t.getIdTrato().equals(idTratoE)) {
+                            tratoE = t;
+                            break;
+                        }
+                    }
+                    tratoE.eliminar(idTratoE, jugadores.get(turno));
                     i = 1;
                     break;
                 default:
@@ -1713,6 +1754,39 @@ public class Juego implements Comando {
         }
     }
 
+    // Método para listar los tratos activos de un jugador, no podrá ver los de los demás
+    @Override
+    public void listarTratos(Jugador jugador) {
+        consola.imprimir("Tratos de " + jugador.getNombre() + ":");
+        for (Tratos trato : jugador.getListaTratos()) {
+            if (trato.getJugador1() != jugador) {
+                consola.imprimir("{");
+                consola.imprimir("    id: " + trato.getIdTrato() + ",");
+                consola.imprimir("    jugador: " + trato.getJugador1().getNombre() + ",");
+                switch (trato.getTipoTrato()) {
+                    case 1:
+                        consola.imprimir("    cambiar: (" + trato.getPropiedad1().getNombre() + ", " + trato.getPropiedad2().getNombre() + ")");
+                        break;
+                    case 2:
+                        consola.imprimir("    cambiar: (" + trato.getPropiedad1().getNombre() + ", " + trato.getCantidadDinero2() + ")");
+                        break;
+                    case 3:
+                        consola.imprimir("    cambiar: (" + trato.getCantidadDinero1() + ", " + trato.getPropiedad2().getNombre() + ")");
+                        break;
+                    case 4:
+                        consola.imprimir("    cambiar: (" + trato.getPropiedad1() + ", " + trato.getPropiedad2().getNombre() + " y " + trato.getCantidadDinero2() + ")");
+                        break;
+                        case 5:
+                        consola.imprimir("    cambiar: (" + trato.getPropiedad1().getNombre() + " y " + trato.getCantidadDinero1() + ", " + trato.getPropiedad2().getNombre() + ")");
+                    default:
+                        consola.imprimir("Tipo de trato no válido.");
+                        break;
+                }
+                consola.imprimir("},");
+            }
+        }
+    }
+
     // Método que muestra la lista de comandos disponibles.
     @Override
     public void mostrarAyuda() {
@@ -1723,7 +1797,7 @@ public class Juego implements Comando {
         consola.imprimir("    lanzar dados");
         consola.imprimir("    comprar [nombre_casilla]");
         consola.imprimir("    salir carcel");
-        consola.imprimir("    listar [jugadores/avatares/enventa/hipotecados/edificios/edificios grupo [color_grupo]]");
+        consola.imprimir("    listar [jugadores/avatares/enventa/hipotecados/edificios/edificios grupo [color_grupo]]/tratos");
         consola.imprimir("    acabar turno");
         consola.imprimir("    exit");
         consola.imprimir("    ver tablero");
@@ -1735,6 +1809,9 @@ public class Juego implements Comando {
         consola.imprimir("    vender [casas/hoteles/piscinas/pistasdeporte] [nombre_casilla] [cantidad]");
         consola.imprimir("    bancarrota");
         consola.imprimir("    cambiar movimiento");
+        consola.imprimir("    trato [jugador]: cambiar [detalles]");
+        consola.imprimir("    aceptar [ID_trato]");
+        consola.imprimir("    eliminar [ID_trato]");
         consola.imprimir("}");
         consola.imprimir("");
     }

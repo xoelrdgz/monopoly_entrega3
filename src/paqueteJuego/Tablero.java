@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import paqueteCasilla.*;
-import paqueteJuego.Valor;
-
 public class Tablero {
     // Atributos.
     private static ArrayList<ArrayList<Casilla>> posiciones; // Posiciones del tablero: se define como un arraylist de arraylists de casillas (uno por cada lado del tablero).
