@@ -1,6 +1,6 @@
 package paqueteExcepcion.avatar;
 
-import paqueteExcepcion.finanzas.AvatarException;
+import paqueteExcepcion.avatar.AvatarException;
 
 public class MovimientoCocheException extends AvatarException {
   public MovimientoCocheException() {

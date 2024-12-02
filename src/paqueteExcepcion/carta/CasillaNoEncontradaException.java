@@ -1,6 +1,6 @@
 package paqueteExcepcion.carta;
 
-import paqueteExcepcion.finanzas.FinanzasException;
+import paqueteExcepcion.carta.CartaException;
 
 public class CasillaNoEncontradaException extends CartaException {
     public CasillaNoEncontradaException() {

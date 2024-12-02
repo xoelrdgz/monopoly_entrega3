@@ -1,6 +1,6 @@
 package paqueteExcepcion.carta;
 
-import paqueteExcepcion.finanzas.FinanzasException;
+import paqueteExcepcion.carta.CartaException;
 
 public class EleccionCartaInvalidaException extends CartaException {
     public EleccionCartaInvalidaException() {

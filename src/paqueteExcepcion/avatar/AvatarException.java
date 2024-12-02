@@ -1,4 +1,4 @@
-package paqueteExcepcion.finanzas;
+package paqueteExcepcion.avatar;
 import paqueteConsola.*;
 
 import paqueteExcepcion.JuegoExcepcion;
