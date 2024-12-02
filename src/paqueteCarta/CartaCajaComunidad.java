@@ -1,5 +1,7 @@
 package paqueteCarta;
 import paqueteCasilla.Casilla;
+import paqueteExcepcion.Comando.ComandoNoReconocidoException;
+import paqueteExcepcion.carta.EleccionCartaInvalidaException;
 import paqueteJuego.Jugador;
 import paqueteJuego.Tablero;
 import paqueteConsola.*;
@@ -27,8 +29,12 @@ public class CartaCajaComunidad extends Carta{
 
 
         if (eleccion < 1 || eleccion > cartasComunidad.size()) {
-            consola.imprimir("Número de carta inválido. Debe ser entre 1 y " + cartasComunidad.size() + ".");
-            return;
+            try{
+                throw new EleccionCartaInvalidaException("Número de carta inválido. Debe ser entre 1 y " + cartasComunidad.size() + ".");
+
+            } catch (EleccionCartaInvalidaException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
         Jugador jugadorActual = jugadores.get(turno);
 
@@ -90,12 +96,15 @@ public class CartaCajaComunidad extends Carta{
                 }
 
                 break;
-            default:
-                consola.imprimir("No se reconoce la carta seleccionada.");
-                break;
-        }
 
+                default:
+                try{
+                    throw new ComandoNoReconocidoException("No se reconoce la carta seleccionada.");
+
+                } catch (ComandoNoReconocidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
     }
 
-
+    }
 }

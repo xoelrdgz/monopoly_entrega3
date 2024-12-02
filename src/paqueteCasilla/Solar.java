@@ -1,6 +1,8 @@
 package paqueteCasilla;
 
 import paqueteEdificio.*;
+import paqueteExcepcion.edificio.EdificioInvalidoException;
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
 import paqueteJuego.Grupo;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
@@ -74,9 +76,13 @@ public class Solar extends Propiedad {
                 this.duenho.cobroalquileres = this.duenho.cobroalquileres + alquiler;
                 this.casillahagenerado = this.casillahagenerado + alquiler;
             } else {
-                consola.imprimir("No puedes pagar el alquiler");
-                Juego.sinDinero(actual, this.duenho);
-                return false; // No puede pagar el alquiler
+                try{
+                    Juego.sinDinero(actual, this.duenho);
+                    throw new FondosInsuficientesException("No puedes pagar el alquiler");
+
+            } catch (FondosInsuficientesException e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
         } else if (this.duenho == null) {
             consola.imprimir("La casilla " + this.nombre + " está en venta por " + this.valor);
@@ -148,8 +154,12 @@ public class Solar extends Propiedad {
                 getPistasDeporte().construirEdificio();
                 break;
             default:
-                consola.imprimir("Tipo de edificio no válido.");
-                break;
+                try{
+                    throw new EdificioInvalidoException("Tipo de edificio no válido.");
+
+        } catch (EdificioInvalidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
         }
     }
 

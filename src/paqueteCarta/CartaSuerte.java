@@ -1,6 +1,9 @@
 package paqueteCarta;
 
 import paqueteCasilla.Casilla;
+import paqueteExcepcion.Comando.ComandoNoReconocidoException;
+import paqueteExcepcion.carta.EleccionCartaInvalidaException;
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
 import paqueteJuego.Jugador;
 import paqueteJuego.Tablero;
 import paqueteConsola.*;
@@ -27,8 +30,12 @@ public  class CartaSuerte extends Carta{
         int eleccion = consola.leerInt();
 
         if (eleccion < 1 || eleccion > cartasSuerte.size()) {
-            consola.imprimir("Número de carta inválido. Debe ser entre 1 y " + cartasSuerte.size() + ".");
-            return;
+            try{
+                throw new EleccionCartaInvalidaException("Número de carta inválido. Debe ser entre 1 y " + cartasSuerte.size() + ".");
+
+        } catch (EleccionCartaInvalidaException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Obtener la carta seleccionada
@@ -84,8 +91,12 @@ public  class CartaSuerte extends Carta{
                 break;
 
             default:
-                consola.imprimir("No se reconoce la carta seleccionada.");
-                break;
+                try{
+                    throw new ComandoNoReconocidoException("No se reconoce la carta seleccionada.");
+
+        } catch (ComandoNoReconocidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
         }
 
     }

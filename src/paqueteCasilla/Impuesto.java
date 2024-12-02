@@ -1,5 +1,6 @@
 package paqueteCasilla;
 
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
 import paqueteJuego.Grupo;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
@@ -38,10 +39,13 @@ public class Impuesto extends Casilla{
                 Tablero.setBote(Tablero.getBote() + IMPUESTO_1);
                 actual.pagotasasimpuestos = actual.pagotasasimpuestos + IMPUESTO_1;
             } else {
-                consola.imprimir("No puedes pagar el impuesto");
-                Juego.sinDinero(actual, Tablero.banca);
-                return false; // No puede pagar el impuesto BANCARROTA LUEGO
-            }
+                try{
+                    Juego.sinDinero(actual, Tablero.banca);
+                    throw new FondosInsuficientesException("No puedes pagar el impuesto");
+
+                } catch (FondosInsuficientesException  e) {
+                    consola.imprimir(e.getMessage());
+                } }
             return true;
 
         }
@@ -53,9 +57,13 @@ public class Impuesto extends Casilla{
                 Tablero.setBote(Tablero.getBote() + IMPUESTO_2);
                 actual.pagotasasimpuestos = actual.pagotasasimpuestos + IMPUESTO_2;
             } else {
-                consola.imprimir("No puedes pagar el impuesto");
-                Juego.sinDinero(actual, Tablero.banca);
-                return false; // No puede pagar el impuesto BANCARROTA LUEGO
+                try{
+                    Juego.sinDinero(actual, Tablero.banca);
+                    throw new FondosInsuficientesException("No puedes pagar el impuesto");
+
+            } catch (FondosInsuficientesException  e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
     }return true;
     }

@@ -1,5 +1,8 @@
 package paqueteCasilla;
 
+import paqueteExcepcion.Comando.ComandoIncompletoException;
+import paqueteExcepcion.edificio.SolarHipotecadoException;
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
 import paqueteJuego.Grupo;
 import paqueteJuego.Jugador;
 import paqueteConsola.*;
@@ -45,8 +48,12 @@ public abstract class Propiedad extends Casilla {
             String[] partes = this.nombre.split(" ");
             consola.imprimir(comprador.getNombre() + " ha comprado la casilla " + partes[0]);
         } else {
-            String[] partes = this.nombre.split(" ");
-            consola.imprimir("No se puede comprar la casilla " + partes[0]);
+            try{
+                String[] partes = this.nombre.split(" ");
+                throw new FondosInsuficientesException("No se puede comprar la casilla " + partes[0]);
+        } catch (Exception e) {
+                consola.imprimir(e.getMessage());
+            }
         }
     }
 
@@ -58,6 +65,7 @@ public abstract class Propiedad extends Casilla {
         if (this.duenho == null) { // Si no hay dueño, la casilla está en venta
             return "La casilla " + this.nombre + " está en venta por " + this.valor;
         } else {
+
             return "La casilla " + this.nombre + " ya tiene dueño.";
         }
     }
@@ -70,9 +78,13 @@ public abstract class Propiedad extends Casilla {
         if (this.duenho == hipotecador) {
             // Verifica si la casilla ya está hipotecada
             if (this.estaHipotecada()) {
-                String[] partes = this.nombre.split(" ");
-                consola.imprimir("La casilla " + partes[0] + " ya está hipotecada.");
-            } else {
+                try{
+                    String[] partes = this.nombre.split(" ");
+                    throw new SolarHipotecadoException("La casilla " + partes[0] + " ya está hipotecada.");
+            } catch (SolarHipotecadoException e) {
+                    consola.imprimir(e.getMessage());
+                }
+            }else {
                 // Calcular la cantidad a obtener por la hipoteca
                 float cantidadHipoteca = calcularValorHipoteca();
 
@@ -90,9 +102,14 @@ public abstract class Propiedad extends Casilla {
                         + " y ha recibido " + cantidadHipoteca + " monedas.");
             }
         } else {
+                try{
             // Mensaje de error si no puede hipotecar
-            String[] partes = this.nombre.split(" ");
-            consola.imprimir("No se puede hipotecar la casilla " + partes[0]);
+                String[] partes = this.nombre.split(" ");
+                throw new ComandoIncompletoException("No se puede hipotecar la casilla " + partes[0]);
+        } catch (ComandoIncompletoException e) {
+                    consola.imprimir(e.getMessage());
+
+                }
         }
     }
 

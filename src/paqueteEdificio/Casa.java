@@ -2,6 +2,9 @@ package paqueteEdificio;
 
 import paqueteCasilla.Solar;
 import paqueteConsola.*;
+import paqueteExcepcion.edificio.LimiteEdificiosException;
+import paqueteExcepcion.edificio.SolarHipotecadoException;
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
 import paqueteJuego.Jugador;
 
 public class Casa extends Edificio {
@@ -19,19 +22,26 @@ public class Casa extends Edificio {
 
         Jugador propietario = this.getSolar().getDuenho();
         calcCostes();
+        try{
+            if (getSolar().getHipotecada()) {
+                throw new SolarHipotecadoException("Esta casilla esta hipotecada, no puedes construir.");
 
-        if (getSolar().getHipotecada()) {
-            consola.imprimir("Esta casilla esta hipotecada, no puedes construir.");
-            return;
+            }
+        } catch (SolarHipotecadoException e) {
+            consola.imprimir(e.getMessage());
         }
+
 
         if (esMaxEdificios() == -1) {
             return;
         }
+        try{
+            if (propietario.getFortuna() < getCosteEdificio()) {
+                throw new FondosInsuficientesException("No tienes suficiente dinero para construir.");
 
-        if (propietario.getFortuna() < getCosteEdificio()) {
-            consola.imprimir("No tienes suficiente dinero para construir.");
-            return;
+            }
+        } catch (FondosInsuficientesException e) {
+            consola.imprimir(e.getMessage());
         }
 
         propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
@@ -48,14 +58,21 @@ public class Casa extends Edificio {
     // Método que comprueba si se ha alcanzado el número máximo de edificios
     @Override
     public int esMaxEdificios() {
-        if (getNumEdificios() == 4) {
-            consola.imprimir("Ya tienes el número máximo de casas edificadas, debes edificar un hotel.");
-            return -1;
-        }
+        try {
+            if (getNumEdificios() == 4) {
+                throw new LimiteEdificiosException("Ya tienes el número máximo de casas edificadas, debes edificar un hotel.");
 
-        if (getSolar().getHoteles().getNumEdificios() == getMaxEdificios()) {
-            consola.imprimir("Ya tienes el número máximo de casas y hoteles edificados.");
-            return -1;
+            }
+        } catch (LimiteEdificiosException e) {
+            consola.imprimir(e.getMessage());
+        }
+        try {
+            if (getSolar().getHoteles().getNumEdificios() == getMaxEdificios()) {
+                throw new LimiteEdificiosException("Ya tienes el número máximo de casas y hoteles edificados.");
+
+            }
+        }catch (LimiteEdificiosException e) {
+            consola.imprimir(e.getMessage());
         }
 
         return 0;

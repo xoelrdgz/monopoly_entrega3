@@ -133,7 +133,8 @@ public abstract class Avatar {
         else if (jugador.getModomovimiento().equalsIgnoreCase("avanzado")){
             moverenavanzado(jugador,valorTirada,avatar,posicionActual,nuevaPosicion);
         }
-        else {consola.imprimir("Hay problemas detectando si el movimiento es básico o avanzado, no se ha podido mover al jugador");}
+        else {
+            consola.imprimir("Hay problemas detectando si el movimiento es básico o avanzado, no se ha podido mover al jugador");}
 
     }
 
