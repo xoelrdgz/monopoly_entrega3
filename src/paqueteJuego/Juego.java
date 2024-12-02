@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,8 +29,7 @@ public class Juego implements Comando {
     public static ArrayList<Jugador> jugadores; // Jugadores de la partida.
     private static ArrayList<Avatar> avatares; // Avatares en la partida.
     private ArrayList<String> tipoavatar;// Lista con los tipos de avatares (sirve para generar la ID)
-    public static int turno = 0; // Índice correspondiente a la posición en el arrayList del jugador (y el
-                                 // avatar) que tienen el turno
+    public static int turno = 0; // Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     private int lanzamientos; // Variable para contar el número de lanzamientos de un jugador en un turno.
     public static Tablero tablero; // Tablero en el que se juega.
     private Dado dado1; // Dos dados para lanzar y avanzar casillas.
@@ -66,7 +64,7 @@ public class Juego implements Comando {
         Tablero.banca = new Jugador();
 
         // Paso 2: Imprimir el tablero
-        System.out.print(tablero); // Esto imprimirá el tablero en el formato del método toString()
+        consola.imprimir(tablero.toString()); // Esto imprimirá el tablero en el formato del método toString()
 
         // Paso 3: Pedir la cantidad de jugadores
         int numJugadores = 0;
@@ -137,7 +135,7 @@ public class Juego implements Comando {
             inicio.setNombreAnhadirID(jugadores.get(i).getAvatar());
         }
 
-        System.out.print(tablero);
+        consola.imprimir(tablero.toString());
 
         // Ahora el juego sigue en bucle a la espera de comandos de los jugadores
 
@@ -264,8 +262,7 @@ public class Juego implements Comando {
                             i = 1;
                             break;
                         default:
-                            System.out
-                                    .println("Tipo de descripción no válido. Uso: describir [jugador/avatar/casilla]");
+                            consola.imprimir("Tipo de descripción no válido. Uso: describir [jugador/avatar/casilla]");
                             i = 2;
                     }
                     break;
@@ -448,8 +445,7 @@ public class Juego implements Comando {
                     break;
                 case "vender":
                     if (partes.length < 4) {
-                        System.out
-                                .println("Comando incompleto. Uso: vender [tipo_edificio] [nombre_casilla] [cantidad]");
+                        consola.imprimir("Comando incompleto. Uso: vender [tipo_edificio] [nombre_casilla] [cantidad]");
                         i = 2;
                         return;
                     }
@@ -786,7 +782,7 @@ public class Juego implements Comando {
         // Mover avatar
 
         jugadorActual.getAvatar().moverJugador(jugadorActual, Dado.getSuma());
-        System.out.print(tablero);
+        consola.imprimir(tablero.toString());
 
         if (jugadorActual.isEnCarcel()) {
             acabarTurno();
@@ -796,7 +792,7 @@ public class Juego implements Comando {
                     && !jugadorActual.casosacarmenosdecuatroenunturnoextracocheavanzado) {
                 consola.imprimir("¡Has sacado dobles! Tira otra vez.");
                 setTirado(false);
-                System.out.print(tablero);
+                consola.imprimir(tablero.toString());
                 if (lanzamientos == 3) {
                     consola.imprimir("Has sacado dobles 3 veces seguidas. Vas a la cárcel.");
                     jugadorActual.setEnCarcel(true);
@@ -808,7 +804,7 @@ public class Juego implements Comando {
                         jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                         jugadorActual.getAvatar().setLugar(carcel);
                         jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
-                        System.out.print(tablero);
+                        consola.imprimir(tablero.toString());
                     } else {
                         consola.imprimir("Error: No se encontró la casilla de la cárcel.");
                     }
@@ -832,10 +828,10 @@ public class Juego implements Comando {
         // Usar solo una instancia de Scanner
 
         // Leer los dos números de entrada
-        System.out.print("Introduce el valor del primer dado: ");
+        consola.imprimir("Introduce el valor del primer dado: ");
         int tirada1 = consola.leerInt();
 
-        System.out.print("Introduce el valor del segundo dado: ");
+        consola.imprimir("Introduce el valor del segundo dado: ");
         int tirada2 = consola.leerInt();
 
         Jugador jugadorActual = jugadores.get(turno);
@@ -844,10 +840,10 @@ public class Juego implements Comando {
         jugadorActual.vecesdados++;
         setTirado(true);
         lanzamientos++;
-        // Mover avatar
 
+        // Mover avatar
         jugadorActual.getAvatar().moverJugador(jugadorActual, Dado.getSuma());
-        System.out.print(tablero);
+        consola.imprimir(tablero.toString());
         if (jugadorActual.isEnCarcel()) {
             acabarTurno();
         } else {
@@ -856,7 +852,7 @@ public class Juego implements Comando {
                     && !jugadorActual.casosacarmenosdecuatroenunturnoextracocheavanzado) {
                 consola.imprimir("¡Has sacado dobles! Tira otra vez.");
                 setTirado(false);
-                System.out.print(tablero);
+                consola.imprimir(tablero.toString());
                 if (lanzamientos == 3) {
                     consola.imprimir("Has sacado dobles 3 veces seguidas. Vas a la cárcel.");
                     jugadorActual.setEnCarcel(true);
@@ -868,7 +864,7 @@ public class Juego implements Comando {
                         jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                         jugadorActual.getAvatar().setLugar(carcel);
                         jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
-                        System.out.print(tablero);
+                        consola.imprimir(tablero.toString());
                     } else {
                         consola.imprimir("Error: No se encontró la casilla de la cárcel.");
                     }
@@ -941,6 +937,8 @@ public class Juego implements Comando {
     // @Override
     public static void bancarrota(Jugador jugador, Jugador acreedor) {
 
+        ConsolaNormal consola = new ConsolaNormal();
+
         if (acreedor == Tablero.banca) {
             // Transferir toda la fortuna del jugador a la banca
             acreedor.sumarFortuna(jugador.getFortuna());
@@ -950,8 +948,7 @@ public class Juego implements Comando {
                 acreedor.anhadirPropiedad(propiedad);
                 propiedad.setDuenho(acreedor);
             }
-            System.out.println(jugador.getNombre()
-                    + " se ha declarado en bancarrota. Toda su fortuna y propiedades se han transferido a la banca.");
+            consola.imprimir(jugador.getNombre() + " se ha declarado en bancarrota. Toda su fortuna y propiedades se han transferido a la banca.");
         } else {
             // Transferir toda la fortuna del jugador al acreedor
             acreedor.sumarFortuna(jugador.getFortuna());
@@ -962,7 +959,7 @@ public class Juego implements Comando {
                 acreedor.anhadirPropiedad(propiedad);
                 propiedad.setDuenho(acreedor);
             }
-            System.out.println(jugador.getNombre()
+            consola.imprimir(jugador.getNombre()
                     + " se ha declarado en bancarrota. Toda su fortuna y propiedades se han transferido a "
                     + acreedor.getNombre() + ".");
         }
@@ -1114,7 +1111,7 @@ public class Juego implements Comando {
             }
         }
         consola.imprimir("Las casillas en venta son:");
-        System.out.print(enVenta);
+        consola.imprimir(enVenta.toString());
         return enVenta;
     }
 
@@ -1144,7 +1141,7 @@ public class Juego implements Comando {
             consola.imprimir("No hay casillas hipotecadas.");
         } else {
             consola.imprimir("Las casillas hipotecadas son:");
-            System.out.print(hipotecadas);
+            consola.imprimir(hipotecadas.toString());
         }
 
         return hipotecadas;
@@ -1233,7 +1230,7 @@ public class Juego implements Comando {
     // Método que muestra el tablero.
     @Override
     public void verTablero() {
-        System.out.print(tablero);
+        consola.imprimir(tablero.toString());
     }
 
     // Método que realiza las acciones asociadas al comando 'mover'.
@@ -1241,7 +1238,7 @@ public class Juego implements Comando {
     public void mover(int casillas) {
         Jugador jugadorActual = jugadores.get(turno);
         jugadorActual.getAvatar().moverJugador(jugadorActual, casillas);
-        System.out.print(tablero);
+        consola.imprimir(tablero.toString());
         if (jugadorActual.isEnCarcel()) {
             acabarTurno();
         }
@@ -1320,6 +1317,7 @@ public class Juego implements Comando {
         }
     }
 
+    /*
     // Método que realiza las acciones asociadas a las cartas de Suerte.
     public static void accionSuerte(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas) {
 
@@ -1337,7 +1335,7 @@ public class Juego implements Comando {
         barajarCartas(cartasSuerte);
 
         // Selección de carta por parte del jugador
-        System.out.print("Elige un número de carta entre 1 y " + cartasSuerte.size() + ": ");
+        consola.imprimir("Elige un número de carta entre 1 y " + cartasSuerte.size() + ": ");
         int eleccion = consola.leerInt();
 
         if (eleccion < 1 || eleccion > cartasSuerte.size()) {
@@ -1358,7 +1356,7 @@ public class Juego implements Comando {
                 int pppp = jugadorActual.getAvatar().getLugar().getPosicion();
                 jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                 jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 5);
-                System.out.print(tablero);
+                consola.imprimir(tablero);
 
                 if (pppp > 5) {
                     consola.imprimir("¡Has pasado por la casilla de salida cobras 1301328.584 ");
@@ -1373,7 +1371,7 @@ public class Juego implements Comando {
                         "Decides hacer un viaje de placer. Avanza hasta Solar15 directamente, sin pasar por la casilla de Salida y sin cobrar la cantidad habitual.");
                 jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                 jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 26);
-                System.out.print(tablero);
+                consola.imprimir(tablero);
 
                 break;
 
@@ -1395,7 +1393,7 @@ public class Juego implements Comando {
                     jugador.pasarporcasillasalida = jugador.pasarporcasillasalida + 1301328.584f;
                 }
                 jugador.vecesvueltas++;
-                System.out.print(tablero);
+                consola.imprimir(tablero);
                 break;
 
             case 5:
@@ -1410,7 +1408,7 @@ public class Juego implements Comando {
                 jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                 jugadorActual.getAvatar().setLugar(carcel);
                 jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
-                System.out.print(tablero);
+                consola.imprimir(tablero);
                 break;
 
             case 6:
@@ -1443,7 +1441,7 @@ public class Juego implements Comando {
         barajarCartas(cartasComunidad);
 
         // Selección de carta por parte del jugador
-        System.out.print("Elige un número de carta entre 1 y " + cartasComunidad.size() + ": ");
+        consola.imprimir("Elige un número de carta entre 1 y " + cartasComunidad.size() + ": ");
         int eleccion = consola.leerInt();
 
         if (eleccion < 1 || eleccion > cartasComunidad.size()) {
@@ -1476,7 +1474,7 @@ public class Juego implements Comando {
                 jugadorActual.getAvatar().getLugar().setNombreEliminarID(jugadorActual.getAvatar());
                 jugadorActual.getAvatar().setLugar(carcel);
                 jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
-                System.out.print(tablero);
+                consola.imprimir(tablero);
                 break;
             case 3:
                 consola.imprimir("Colócate en la casilla de Salida y cobra la cantidad habitual.");
@@ -1547,7 +1545,7 @@ public class Juego implements Comando {
         }
 
         return cartasBarajadas;
-    }
+    } */
 
     // Metodo que lista los edificios construidos por los jugadores.
     @Override
@@ -1715,8 +1713,7 @@ public class Juego implements Comando {
         consola.imprimir("    lanzar dados");
         consola.imprimir("    comprar [nombre_casilla]");
         consola.imprimir("    salir carcel");
-        System.out
-                .println("    listar [jugadores/avatares/enventa/hipotecados/edificios/edificios grupo [color_grupo]]");
+        consola.imprimir("    listar [jugadores/avatares/enventa/hipotecados/edificios/edificios grupo [color_grupo]]");
         consola.imprimir("    acabar turno");
         consola.imprimir("    exit");
         consola.imprimir("    ver tablero");
