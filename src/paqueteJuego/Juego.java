@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import paqueteAvatar.Avatar;
 import paqueteCasilla.Casilla;
@@ -489,13 +491,108 @@ public class Juego implements Comando {
                         i = 2;
                     }
 
-                    break;
+                    case "trato":
+
+                        if (partes.length < 2) {
+                            consola.imprimir("Comando incompleto. Uso: trato [jugador] [detalles]");
+                            i = 2;
+                            return;
+                        }
+
+                        String regex = "trato\\s+(\\w+):\\s+cambiar\\s*\\(([^,]+),\\s*([^\\)]+)\\)";
+                        Pattern pattern = Pattern.compile(regex);
+                        Matcher matcher = pattern.matcher(comando);
+
+                        if (matcher.find()) {
+                            String jugador = matcher.group(1); // Nombre del jugador
+                            String detalle1 = matcher.group(2).trim(); // Primer detalle
+                            String detalle2 = matcher.group(3).trim(); // Segundo detalle
+
+                            String propiedad1 = null, propiedad2 = null;
+                            int cantidadDinero1 = 0, cantidadDinero2 = 0;
+
+                            // Analizar detalle1
+                            if (detalle1.contains("y")) {
+                                // Caso: "Solar1 y 25000"
+                                partes = detalle1.split("y");
+                                for (String parte : partes) {
+                                    parte = parte.trim();
+                                    if (esNumero(parte)) {
+                                        cantidadDinero1 = Integer.parseInt(parte);
+                                    } else {
+                                        propiedad1 = parte;
+                                    }
+                                }
+                            } else {
+                                // Caso simple: "Solar1" o "25000"
+                                if (esNumero(detalle1)) {
+                                    cantidadDinero1 = Integer.parseInt(detalle1);
+                                } else {
+                                    propiedad1 = detalle1;
+                                }
+                            }
+
+                            // Analizar detalle2
+                            if (detalle2.contains("y")) {
+                                // Caso complejo con "y"
+                                partes = detalle2.split("y");
+                                propiedad2 = partes[0].trim();
+                                cantidadDinero2 = Integer.parseInt(partes[1].trim());
+                            } else if (esNumero(detalle2)) {
+                                cantidadDinero2 = Integer.parseInt(detalle2);
+                            } else {
+                                propiedad2 = detalle2;
+                            }
+
+                            Jugador jugador1 = jugadores.get(turno);
+                            Jugador jugador2 = null;
+                            for (Jugador j : jugadores) {
+                                if (j.getNombre().equalsIgnoreCase(jugador)) {
+                                    jugador2 = j;
+                                    break;
+                                }
+                            }
+                            if (jugador2 == null) {
+                                consola.imprimir("Jugador no encontrado: " + jugador);
+                                return;
+                            }
+
+                            // Convertir prpiedad1 y propiedad2 a objetos Propiedad
+                            Propiedad propiedad1Obj = null, propiedad2Obj = null;
+                            for (ArrayList<Casilla> casillaList : Tablero.getTodasCasillas()) {
+                                for (Casilla casilla : casillaList) {
+                                    if (casilla.getNombre().equalsIgnoreCase(propiedad1)) {
+                                        propiedad1Obj = (Propiedad) casilla;
+                                    } else if (casilla.getNombre().equalsIgnoreCase(propiedad2)) {
+                                        propiedad2Obj = (Propiedad) casilla;
+                                    }
+                                }
+                            }
+
+                            Tratos trato = new Tratos(jugador1, jugador2);
+
+                            // Llamar al método correspondiente
+                            trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
+                        } else {
+                            consola.imprimir("Comando no reconocido.");
+                        }
+                        i = 1;
+                        break;
                 default:
                     consola.imprimir("Comando no reconocido.");
                     i = 2;
             }
         } while (i == 2);
 
+    }
+
+    private boolean esNumero(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     // Método para ver las estadísticas de la partida
