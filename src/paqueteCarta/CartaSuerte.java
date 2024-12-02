@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import static paqueteJuego.Juego.*;
 
-public abstract class CartaSuerte extends Carta{
+public  class CartaSuerte extends Carta{
 
     Consola consola = new ConsolaNormal();
     @Override

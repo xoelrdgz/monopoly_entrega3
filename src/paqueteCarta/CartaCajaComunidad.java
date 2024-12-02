@@ -11,7 +11,8 @@ public class CartaCajaComunidad extends Carta{
     Consola consola = new ConsolaNormal();
 
     @Override
-    public void accion(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas) { ArrayList<String> cartasComunidad = new ArrayList<>();
+    public void accion(Jugador jugador, ArrayList<ArrayList<Casilla>> casillas) {
+        ArrayList<String> cartasComunidad = new ArrayList<>();
         cartasComunidad.add("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
         cartasComunidad.add("Te investigan por fraude de identidad. Ve a la Cárcel sin pasar por la Salida ni cobrar.");
         cartasComunidad.add("Colócate en la casilla de Salida y cobra la cantidad habitual.");

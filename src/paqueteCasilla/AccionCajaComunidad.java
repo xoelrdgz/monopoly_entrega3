@@ -1,5 +1,6 @@
 package paqueteCasilla;
 
+import paqueteCarta.CartaCajaComunidad;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
 import paqueteJuego.Grupo;
@@ -18,6 +19,10 @@ public class AccionCajaComunidad extends Accion{
     public boolean evaluarCasilla(Jugador actual, Jugador banca){
         consola.imprimir("¡Has caido en una casilla de tipo Comunidad!");
         Juego.accionComunidad(actual, Tablero.getTodasCasillas());
+        CartaCajaComunidad cartaCajaComunidad = new CartaCajaComunidad();
+
+        // Llamada al método `accion`
+        cartaCajaComunidad.accion(actual, Tablero.getTodasCasillas());
         return true;
     }
 

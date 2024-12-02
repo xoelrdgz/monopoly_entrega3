@@ -1,5 +1,6 @@
 package paqueteCasilla;
 
+import paqueteCarta.CartaSuerte;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
 import paqueteJuego.Grupo;
@@ -16,7 +17,12 @@ public class AccionSuerte extends Accion{
     @Override
     public boolean evaluarCasilla(Jugador actual,Jugador banca){
         consola.imprimir("¡Has caído en una casilla de tipo suerte!");
-        Juego.accionSuerte(actual, Tablero.getTodasCasillas());
+
+        // Crear instancia de CartaSuerte
+        CartaSuerte cartaSuerte = new CartaSuerte();
+
+        // Llamar al método `accion`
+        cartaSuerte.accion(actual, Tablero.getTodasCasillas());
         return true;
     }
 
