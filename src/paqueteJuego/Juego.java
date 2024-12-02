@@ -1300,20 +1300,15 @@ public class Juego implements Comando {
                     casilla.casillahacostado = casilla.casillahacostado + costoDeshipoteca;
 
                     // Informar al jugador
-                    consola.imprimir(jugadorAhora.getNombre() + " paga " + costoDeshipoteca + "€ por deshipotecar "
-                            + nombre +
-                            ". Ahora puede recibir alquileres y edificar en el grupo " + casilla.getNombre() + ".");
+                    consola.imprimir(jugadorAhora.getNombre() + " paga " + costoDeshipoteca + " por deshipotecar " + nombre + ". Ahora puede recibir alquileres y edificar en el grupo " + casilla.getNombre() + ".");
                 } else {
-                    consola.imprimir(
-                            jugadorAhora.getNombre() + " no tiene suficiente dinero para deshipotecar " + nombre + ".");
+                    consola.imprimir(jugadorAhora.getNombre() + " no tiene suficiente dinero para deshipotecar " + nombre + ".");
                 }
             } else {
-                consola.imprimir(
-                        jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No está hipotecada.");
+                consola.imprimir(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No está hipotecada.");
             }
         } else {
-            consola.imprimir(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre
-                    + ". No es una propiedad que le pertenece.");
+            consola.imprimir(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No es una propiedad que le pertenece.");
         }
     }
 
@@ -1327,10 +1322,10 @@ public class Juego implements Comando {
         cartasSuerte.add(
                 "Ve al Transportes1 y coge un avión. Si pasas por la casilla de Salida, cobra la cantidad habitual.");
         cartasSuerte.add("Decides hacer un viaje de placer hasta Solar15, sin pasar por la Salida ni cobrar.");
-        cartasSuerte.add("Vendes tu billete de avión y cobras 500000€.");
+        cartasSuerte.add("Vendes tu billete de avión y cobras 500000.");
         cartasSuerte.add("Ve a Solar3. Si pasas por la casilla de Salida, cobra la cantidad habitual.");
         cartasSuerte.add("Los acreedores te persiguen. Ve a la Cárcel sin pasar por la Salida ni cobrar.");
-        cartasSuerte.add("¡Has ganado el bote de la lotería! Recibe 1000000€.");
+        cartasSuerte.add("¡Has ganado el bote de la lotería! Recibe 1000000.");
 
         barajarCartas(cartasSuerte);
 
@@ -1377,7 +1372,7 @@ public class Juego implements Comando {
 
             case 3:
                 System.out
-                        .println("Vendes tu billete de avión para Solar17 en una subasta por Internet. Cobra 500000€.");
+                        .println("Vendes tu billete de avión para Solar17 en una subasta por Internet. Cobra 500000.");
                 jugador.sumarFortuna(500000);
                 jugador.premiosinversionesbote = jugador.premiosinversionesbote + 500000;
                 break;
@@ -1412,7 +1407,7 @@ public class Juego implements Comando {
                 break;
 
             case 6:
-                consola.imprimir("¡Has ganado el bote de la lotería! Recibe 1000000€.");
+                consola.imprimir("¡Has ganado el bote de la lotería! Recibe 1000000.");
                 jugador.sumarFortuna(1000000);
                 jugador.premiosinversionesbote = jugador.premiosinversionesbote + 1000000;
                 break;
@@ -1430,12 +1425,12 @@ public class Juego implements Comando {
         ConsolaNormal consola = new ConsolaNormal();
 
         ArrayList<String> cartasComunidad = new ArrayList<>();
-        cartasComunidad.add("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
+        cartasComunidad.add("Paga 500000 por un fin de semana en un balneario de 5 estrellas.");
         cartasComunidad.add("Te investigan por fraude de identidad. Ve a la Cárcel sin pasar por la Salida ni cobrar.");
         cartasComunidad.add("Colócate en la casilla de Salida y cobra la cantidad habitual.");
-        cartasComunidad.add("Tu compañía de Internet obtiene beneficios. Recibe 2000000€.");
-        cartasComunidad.add("Paga 1000000€ por invitar a todos tus amigos a un viaje a Solar14.");
-        cartasComunidad.add("Alquilas una villa en Solar7 y pagas 200000€ a cada jugador.");
+        cartasComunidad.add("Tu compañía de Internet obtiene beneficios. Recibe 2000000.");
+        cartasComunidad.add("Paga 1000000 por invitar a todos tus amigos a un viaje a Solar14.");
+        cartasComunidad.add("Alquilas una villa en Solar7 y pagas 200000 a cada jugador.");
 
         // Barajar manualmente las cartas
         barajarCartas(cartasComunidad);
@@ -1453,7 +1448,7 @@ public class Juego implements Comando {
         // Ejecutar la acción basada en el texto de la carta
         switch (eleccion) {
             case 1:
-                consola.imprimir("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
+                consola.imprimir("Paga 500000 por un fin de semana en un balneario de 5 estrellas.");
                 jugador.sumarFortuna(-500000);
                 jugador.pagotasasimpuestos = jugador.pagotasasimpuestos + 500000;
 
@@ -1487,12 +1482,12 @@ public class Juego implements Comando {
                 // dddjJJDD
                 break;
             case 4:
-                consola.imprimir("Tu compañía de Internet obtiene beneficios. Recibe 2000000€.");
+                consola.imprimir("Tu compañía de Internet obtiene beneficios. Recibe 2000000.");
                 jugador.sumarFortuna(2000000);
                 jugador.premiosinversionesbote = jugador.premiosinversionesbote + 2000000;
                 break;
             case 5:
-                consola.imprimir("Paga 1000000€ por invitar a todos tus amigos a un viaje a Solar14.");
+                consola.imprimir("Paga 1000000 por invitar a todos tus amigos a un viaje a Solar14.");
                 jugador.sumarFortuna(-1000000);
                 jugador.pagotasasimpuestos = jugador.pagotasasimpuestos + 1000000;
                 if (jugador.getFortuna() < 0) {
@@ -1500,7 +1495,7 @@ public class Juego implements Comando {
                 }
                 break;
             case 6:
-                consola.imprimir("Alquilas una villa en Solar7 y pagas 200000€ a cada jugador.");
+                consola.imprimir("Alquilas una villa en Solar7 y pagas 200000 a cada jugador.");
 
                 int cantidad = 200000;
                 for (int i = 0; i < jugadores.size(); i++) { // Itera sobre todos los jugadores
@@ -1680,11 +1675,11 @@ public class Juego implements Comando {
 
                     // Informar al jugador
                     consola.imprimir(jugadorAhora.getNombre() + " ha vendido " + cantidad + " " + tipoEdificio
-                            + " en " + nombreCasilla + ", recibiendo " + precioVenta + "€. En la propiedad queda "
+                            + " en " + nombreCasilla + ", recibiendo " + precioVenta + ". En la propiedad queda "
                             + (numEdificios - cantidad) + " " + tipoEdificio + ".");
                 } else {
                     consola.imprimir("Solamente se puede vender " + numEdificios + " " + tipoEdificio
-                            + ", recibiendo " + (edificio.getCosteEdificio() * 0.5f * numEdificios) + "€.");
+                            + ", recibiendo " + (edificio.getCosteEdificio() * 0.5f * numEdificios) + ".");
                     edificio.setNumEdificios(0);
                     jugadorAhora.sumarFortuna(edificio.getCosteEdificio() * 0.5f * numEdificios);
                     jugadorAhora.premiosinversionesbote = jugadorAhora.premiosinversionesbote

@@ -138,7 +138,9 @@ public class Tratos {
         }
     }
 
-    // Los tratos se proponen y se añaaden a la lista de tratos del jugador (en Jugador.java)
+    // TODO: borrar tratos despues de aceptar.
+
+    // Los tratos se proponen y se añaden a la lista de tratos del jugador (en Jugador.java)
 
     // Trato de tipo 1, cambiar propiedad por propiedad, si hay hipoteca, se pasa la hipoteca
     public void trato1(Jugador jugador1, Jugador jugador2, Propiedad propiedad1, Propiedad propiedad2) {
@@ -175,7 +177,9 @@ public class Tratos {
         jugador2.eliminarPropiedad(propiedad2);
 
         // Marcar que jugador2 no tiene tratos pendientes
-        jugador2.setTratosPendientes(false);
+        if (jugador2.getListaTratos().isEmpty()) {
+            jugador2.setTratosPendientes(false);
+        }
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
@@ -220,7 +224,9 @@ public class Tratos {
         jugador2.dineroinvertido += cantidadDinero2;
 
         // Marcar que jugador2 no tiene tratos pendientes
-        jugador2.setTratosPendientes(false);
+        if (jugador2.getListaTratos().isEmpty()) {
+            jugador2.setTratosPendientes(false);
+        }
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + cantidadDinero2 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
@@ -265,7 +271,9 @@ public class Tratos {
         jugador2.setFortuna(jugador2.getFortuna() + cantidadDinero1);
 
         // Marcar que jugador2 no tiene tratos pendientes
-        jugador2.setTratosPendientes(false);
+        if (jugador2.getListaTratos().isEmpty()) {
+            jugador2.setTratosPendientes(false);
+        }
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + cantidadDinero1 + ".");
@@ -317,7 +325,9 @@ public class Tratos {
         jugador2.dineroinvertido += cantidadDinero2;
 
         // Marcar que jugador2 no tiene tratos pendientes
-        jugador2.setTratosPendientes(false);
+        if (jugador2.getListaTratos().isEmpty()) {
+            jugador2.setTratosPendientes(false);
+        }
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + cantidadDinero2 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
@@ -374,8 +384,10 @@ public class Tratos {
         jugador1.dineroinvertido += cantidadDinero1;
         jugador2.setFortuna(jugador2.getFortuna() + cantidadDinero1);
 
-        // Marcar que jugador2 no tiene tratos pendientes
-        jugador2.setTratosPendientes(false);
+        // Marcar que jugador2 no tiene tratos pendientes si su lista de tratos está vacía
+        if (jugador2.getListaTratos().isEmpty()) {
+            jugador2.setTratosPendientes(false);
+        }
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + cantidadDinero1 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
@@ -410,6 +422,23 @@ public class Tratos {
                     }
                 }
             }
+    }
+
+
+    public void eliminar(String idTrato, Jugador jugador) {
+        Tratos tratoAEliminar = null;
+        for (Tratos trato : jugador.getListaTratos()) {
+            if (trato.getIdTrato().equals(idTrato)) {
+                tratoAEliminar = trato;
+                break;
+            }
+        }
+        if (tratoAEliminar != null) {
+            jugador.getListaTratos().remove(tratoAEliminar);
+            consola.imprimir("Trato eliminado correctamente.");
+        } else {
+            consola.imprimir("No se puede eliminar el trato. Puede que ya haya sido aceptado o no exista.");
+        }
     }
 
 }
