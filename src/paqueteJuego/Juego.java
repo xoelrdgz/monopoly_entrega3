@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import paqueteAvatar.Avatar;
+import paqueteAvatar.*;
 import paqueteCasilla.Casilla;
 import paqueteCasilla.Impuesto;
 import paqueteCasilla.Propiedad;
@@ -107,8 +107,23 @@ public class Juego implements Comando {
 
                         Jugador jugador = new Jugador(nombreJugador, tipoAvatar, inicio, avatares);
                         jugadores.add(jugador);
-                        Avatar avatar = new Avatar(tipoAvatar, jugador, inicio, avatares);
-                        avatares.add(avatar);
+
+                        if(tipoAvatar.equalsIgnoreCase("coche")){
+                        Avatar avatar = new Coche(tipoAvatar, jugador, inicio, avatares);
+                        avatares.add(avatar);}
+                        else if(tipoAvatar.equalsIgnoreCase("esfinge")){
+                            Avatar avatar = new Esfinge(tipoAvatar, jugador, inicio, avatares);
+                            avatares.add(avatar);
+                        }
+                        else if(tipoAvatar.equalsIgnoreCase("sombrero")){
+                            Avatar avatar = new Sombrero(tipoAvatar, jugador, inicio, avatares);
+                            avatares.add(avatar);
+                        }
+                        else if(tipoAvatar.equalsIgnoreCase("pelota")){
+                            Avatar avatar = new Pelota(tipoAvatar, jugador, inicio, avatares);
+                            avatares.add(avatar);
+                        }
+
 
                         consola.imprimir("Jugador creado: " + nombreJugador + " con avatar " + tipoAvatar);
                     } else {

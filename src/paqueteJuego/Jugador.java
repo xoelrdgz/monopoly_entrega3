@@ -1,8 +1,9 @@
 package paqueteJuego;
 
 import java.util.ArrayList;
+
+import paqueteAvatar.*;
 import paqueteCasilla.Casilla;
-import paqueteAvatar.Avatar;
 import paqueteConsola.Consola;
 import paqueteConsola.ConsolaNormal;
 
@@ -70,7 +71,18 @@ public class Jugador {
         this.turnossinjugarcocheavanzado = 0;
         this.cocheprohibido = false;
         this.cocheextra = false;
-        this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);
+        if(tipoAvatar.equalsIgnoreCase("coche")){
+            this.avatar =new Coche(tipoAvatar, this, inicio, avCreados);}
+        else if(tipoAvatar.equalsIgnoreCase("esfinge")){
+            this.avatar = new Esfinge(tipoAvatar, this, inicio, avCreados);
+        }
+        else if(tipoAvatar.equalsIgnoreCase("sombrero")){
+            this.avatar = new Sombrero(tipoAvatar, this, inicio, avCreados);
+        }
+        else if(tipoAvatar.equalsIgnoreCase("pelota")){
+            this.avatar = new Pelota(tipoAvatar, this, inicio, avCreados);
+        }
+
         this.casosacarmenosdecuatroenunturnoextracocheavanzado=false;
         this.casollegaralcuartoturnosextracocheavanzado=false;
         setTratosPendientes(false);

@@ -71,6 +71,10 @@ public abstract class Casilla {
         return duenho;
     }
 
+    public ArrayList<Avatar> getAvatares() {
+        return avatares;
+    }
+
     public Grupo getGrupo() {
         return grupo;
     }
@@ -223,4 +227,15 @@ public abstract class Casilla {
         }
         return ppp.get(posicioncasilla).casillahagenerado - ppp.get(posicioncasilla).casillahacostado;
     }
+
+    public boolean estaAvatar(Avatar avatar){
+        ArrayList<Avatar> avatares1;
+        Avatar avatar1;
+        avatares1=this.avatares;
+        for (int i=0;i<avatares1.size();i++){
+            avatar1=avatares1.get(i);
+            if(avatar1.equals(avatar)){return true;}
+    }
+        return false;}
+
 }

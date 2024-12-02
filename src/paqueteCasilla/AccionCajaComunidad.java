@@ -18,7 +18,7 @@ public class AccionCajaComunidad extends Accion{
     @Override
     public boolean evaluarCasilla(Jugador actual, Jugador banca){
         consola.imprimir("¡Has caido en una casilla de tipo Comunidad!");
-        Juego.accionComunidad(actual, Tablero.getTodasCasillas());
+
         CartaCajaComunidad cartaCajaComunidad = new CartaCajaComunidad();
 
         // Llamada al método `accion`
