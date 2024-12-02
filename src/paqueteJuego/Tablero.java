@@ -52,7 +52,7 @@ public class Tablero {
     // Método para insertar las casillas del lado sur.
     private void insertarLadoSur() {
         ArrayList<Casilla> ladoSur = new ArrayList<>();
-        ladoSur.add(new Salida("Salida", "especial", 0, 0, null)); // Salida
+        ladoSur.add(new Salida("Salida", "especial", 0, null, null)); // Salida
         ladoSur.add(new Solar("Solar1", "solar", 1, 600000, banca, grupos.get("negro"))); // Solar1
         ladoSur.add(new AccionCajaComunidad("Caja", "caja", 2, null, null)); // Caja de Comunidad
         ladoSur.add(new Solar("Solar2", "solar", 3, 600000, banca, grupos.get("negro"))); // Solar2
@@ -62,7 +62,7 @@ public class Tablero {
         ladoSur.add(new AccionSuerte("Suerte", "suerte", 7, null, null)); // Suerte
         ladoSur.add(new Solar("Solar4", "solar", 8, 520000, banca, grupos.get("cian"))); // Solar4
         ladoSur.add(new Solar("Solar5", "solar", 9, 520000, banca, grupos.get("cian"))); // Solar5
-        ladoSur.add(new Carcel("Carcel", "especial", 10, 0, null)); // Cárcel
+        ladoSur.add(new Carcel("Carcel", "especial", 10, null, null)); // Cárcel
         posiciones.add(ladoSur); // Añadimos el lado sur al tablero
     }
 
