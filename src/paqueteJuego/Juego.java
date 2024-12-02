@@ -18,7 +18,6 @@ import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteEdificio.Edificio;
 
-
 //! IMPORTANTE: Cuando se usa downcasting, se debe comprobar que el objeto es de la clase correcta.
 //! Para evitar errores, se puede usar el operador instanceof para comprobar si un objeto es de una clase concreta.
 //! Ejemplo: if (casilla instanceof Solar) { Solar solar = (Solar) casilla; }
@@ -31,7 +30,8 @@ public class Juego implements Comando {
     public static ArrayList<Jugador> jugadores; // Jugadores de la partida.
     private static ArrayList<Avatar> avatares; // Avatares en la partida.
     private ArrayList<String> tipoavatar;// Lista con los tipos de avatares (sirve para generar la ID)
-    public static int turno = 0; // Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
+    public static int turno = 0; // Índice correspondiente a la posición en el arrayList del jugador (y el
+                                 // avatar) que tienen el turno
     private int lanzamientos; // Variable para contar el número de lanzamientos de un jugador en un turno.
     public static Tablero tablero; // Tablero en el que se juega.
     private Dado dado1; // Dos dados para lanzar y avanzar casillas.
@@ -443,7 +443,7 @@ public class Juego implements Comando {
                         i = 1;
                     } else {
                         consola.imprimir("No puedes edificar en esta casilla");
-                        i=2;
+                        i = 2;
                     }
                     break;
                 case "vender":
@@ -491,93 +491,94 @@ public class Juego implements Comando {
                         i = 2;
                     }
 
-                    case "trato":
+                case "trato":
 
-                        if (partes.length < 2) {
-                            consola.imprimir("Comando incompleto. Uso: trato [jugador] [detalles]");
-                            i = 2;
+                    if (partes.length < 2) {
+                        consola.imprimir("Comando incompleto. Uso: trato [jugador] [detalles]");
+                        i = 2;
+                        return;
+                    }
+
+                    String regex = "trato\\s+(\\w+):\\s+cambiar\\s*\\(([^,]+),\\s*([^\\)]+)\\)";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(comando);
+
+                    if (matcher.find()) {
+                        String jugador = matcher.group(1); // Nombre del jugador
+                        String detalle1 = matcher.group(2).trim(); // Primer detalle
+                        String detalle2 = matcher.group(3).trim(); // Segundo detalle
+
+                        String propiedad1 = null, propiedad2 = null;
+                        int cantidadDinero1 = 0, cantidadDinero2 = 0;
+
+                        // Analizar detalle1
+                        if (detalle1.contains("y")) {
+                            // Caso: "Solar1 y 25000"
+                            partes = detalle1.split("y");
+                            for (String parte : partes) {
+                                parte = parte.trim();
+                                if (esNumero(parte)) {
+                                    cantidadDinero1 = Integer.parseInt(parte);
+                                } else {
+                                    propiedad1 = parte;
+                                }
+                            }
+                        } else {
+                            // Caso simple: "Solar1" o "25000"
+                            if (esNumero(detalle1)) {
+                                cantidadDinero1 = Integer.parseInt(detalle1);
+                            } else {
+                                propiedad1 = detalle1;
+                            }
+                        }
+
+                        // Analizar detalle2
+                        if (detalle2.contains("y")) {
+                            // Caso complejo con "y"
+                            partes = detalle2.split("y");
+                            propiedad2 = partes[0].trim();
+                            cantidadDinero2 = Integer.parseInt(partes[1].trim());
+                        } else if (esNumero(detalle2)) {
+                            cantidadDinero2 = Integer.parseInt(detalle2);
+                        } else {
+                            propiedad2 = detalle2;
+                        }
+
+                        Jugador jugador1 = jugadores.get(turno);
+                        Jugador jugador2 = null;
+                        for (Jugador j : jugadores) {
+                            if (j.getNombre().equalsIgnoreCase(jugador)) {
+                                jugador2 = j;
+                                break;
+                            }
+                        }
+                        if (jugador2 == null) {
+                            consola.imprimir("Jugador no encontrado: " + jugador);
                             return;
                         }
 
-                        String regex = "trato\\s+(\\w+):\\s+cambiar\\s*\\(([^,]+),\\s*([^\\)]+)\\)";
-                        Pattern pattern = Pattern.compile(regex);
-                        Matcher matcher = pattern.matcher(comando);
-
-                        if (matcher.find()) {
-                            String jugador = matcher.group(1); // Nombre del jugador
-                            String detalle1 = matcher.group(2).trim(); // Primer detalle
-                            String detalle2 = matcher.group(3).trim(); // Segundo detalle
-
-                            String propiedad1 = null, propiedad2 = null;
-                            int cantidadDinero1 = 0, cantidadDinero2 = 0;
-
-                            // Analizar detalle1
-                            if (detalle1.contains("y")) {
-                                // Caso: "Solar1 y 25000"
-                                partes = detalle1.split("y");
-                                for (String parte : partes) {
-                                    parte = parte.trim();
-                                    if (esNumero(parte)) {
-                                        cantidadDinero1 = Integer.parseInt(parte);
-                                    } else {
-                                        propiedad1 = parte;
-                                    }
-                                }
-                            } else {
-                                // Caso simple: "Solar1" o "25000"
-                                if (esNumero(detalle1)) {
-                                    cantidadDinero1 = Integer.parseInt(detalle1);
-                                } else {
-                                    propiedad1 = detalle1;
+                        // Convertir prpiedad1 y propiedad2 a objetos Propiedad
+                        Propiedad propiedad1Obj = null, propiedad2Obj = null;
+                        for (ArrayList<Casilla> casillaList : Tablero.getTodasCasillas()) {
+                            for (Casilla casilla : casillaList) {
+                                if (casilla.getNombre().equalsIgnoreCase(propiedad1)) {
+                                    propiedad1Obj = (Propiedad) casilla;
+                                } else if (casilla.getNombre().equalsIgnoreCase(propiedad2)) {
+                                    propiedad2Obj = (Propiedad) casilla;
                                 }
                             }
-
-                            // Analizar detalle2
-                            if (detalle2.contains("y")) {
-                                // Caso complejo con "y"
-                                partes = detalle2.split("y");
-                                propiedad2 = partes[0].trim();
-                                cantidadDinero2 = Integer.parseInt(partes[1].trim());
-                            } else if (esNumero(detalle2)) {
-                                cantidadDinero2 = Integer.parseInt(detalle2);
-                            } else {
-                                propiedad2 = detalle2;
-                            }
-
-                            Jugador jugador1 = jugadores.get(turno);
-                            Jugador jugador2 = null;
-                            for (Jugador j : jugadores) {
-                                if (j.getNombre().equalsIgnoreCase(jugador)) {
-                                    jugador2 = j;
-                                    break;
-                                }
-                            }
-                            if (jugador2 == null) {
-                                consola.imprimir("Jugador no encontrado: " + jugador);
-                                return;
-                            }
-
-                            // Convertir prpiedad1 y propiedad2 a objetos Propiedad
-                            Propiedad propiedad1Obj = null, propiedad2Obj = null;
-                            for (ArrayList<Casilla> casillaList : Tablero.getTodasCasillas()) {
-                                for (Casilla casilla : casillaList) {
-                                    if (casilla.getNombre().equalsIgnoreCase(propiedad1)) {
-                                        propiedad1Obj = (Propiedad) casilla;
-                                    } else if (casilla.getNombre().equalsIgnoreCase(propiedad2)) {
-                                        propiedad2Obj = (Propiedad) casilla;
-                                    }
-                                }
-                            }
-
-                            Tratos trato = new Tratos(jugador1, jugador2);
-
-                            // Llamar al método correspondiente
-                            trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
-                        } else {
-                            consola.imprimir("Comando no reconocido.");
                         }
-                        i = 1;
-                        break;
+
+                        Tratos trato = new Tratos(jugador1, jugador2);
+
+                        // Llamar al método correspondiente
+                        trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj,
+                                propiedad2Obj);
+                    } else {
+                        consola.imprimir("Comando no reconocido.");
+                    }
+                    i = 1;
+                    break;
                 default:
                     consola.imprimir("Comando no reconocido.");
                     i = 2;
