@@ -612,6 +612,8 @@ public class Juego implements Comando {
                         } catch (ComandoIncompletoException e) {
                             consola.imprimir(e.getMessage());
                         }}
+
+                    // trato jugador: cambiar (detalles1, detalles2) detalles puede ser (propiedad/dinero) o (propiedad y dinero)
                     String regex = "trato\\s+(\\w+):\\s+cambiar\\s*\\(([^,]+),\\s*([^\\)]+)\\)";
                     Pattern pattern = Pattern.compile(regex);
                     Matcher matcher = pattern.matcher(comando);
