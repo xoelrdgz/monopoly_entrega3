@@ -58,8 +58,10 @@ public class Casa extends Edificio {
     // Método que comprueba si se ha alcanzado el número máximo de edificios
     @Override
     public int esMaxEdificios() {
+        int i = 0;
         try {
             if (getNumEdificios() == 4) {
+                i = -1;
                 throw new LimiteEdificiosException("Ya tienes el número máximo de casas edificadas, debes edificar un hotel.");
 
             }
@@ -68,6 +70,7 @@ public class Casa extends Edificio {
         }
         try {
             if (getSolar().getHoteles().getNumEdificios() == getMaxEdificios()) {
+                i = -1;
                 throw new LimiteEdificiosException("Ya tienes el número máximo de casas y hoteles edificados.");
 
             }
@@ -75,7 +78,7 @@ public class Casa extends Edificio {
             consola.imprimir(e.getMessage());
         }
 
-        return 0;
+        return i;
     }
 
     // Método que calcula el coste de un edificio
