@@ -67,7 +67,6 @@ public class Juego implements Comando {
         tablero = new Tablero();
         tablero.generarCasillas(); // Generar las 40 casillas del tablero
         Casilla inicio = Tablero.getTodasCasillas().get(0).get(0);// Casilla de salida
-        Tablero.banca = new Jugador();
 
         // Paso 2: Imprimir el tablero
         consola.imprimir(tablero.toString()); // Esto imprimirá el tablero en el formato del método toString()
