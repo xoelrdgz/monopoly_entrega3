@@ -792,13 +792,11 @@ public class Juego implements Comando {
                     i = 1;
                     break;
                 default:
-                    try{
-                        i = 2;
-                        throw new ComandoNoReconocidoException("Comando no reconocido.");
 
-            } catch (ComandoNoReconocidoException e) {
-                        consola.imprimir(e.getMessage());
-                    }
+
+                        consola.imprimir("Comando no reconocido.");
+                        i = 2;
+
             }
         } while (i == 2);
 
