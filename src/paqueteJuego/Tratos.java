@@ -2,6 +2,9 @@ package paqueteJuego;
 
 import paqueteConsola.ConsolaNormal;
 import paqueteCasilla.Propiedad;
+import paqueteExcepcion.Comando.ComandoInvalidoException;
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
+import paqueteExcepcion.trato.TratoInvalidoException;
 
 public class Tratos {
 
@@ -92,8 +95,12 @@ public class Tratos {
 
         // Comprobar si los jugadores son distintos
         if (jugador1 == jugador2){
-            consola.imprimir("No se puede proponer el trato: los jugadores son iguales.");
-            return;
+             try {
+                throw new TratoInvalidoException("No se puede proponer el trato: los jugadores son iguales.");
+
+        } catch (TratoInvalidoException e) {
+                 consola.imprimir(e.getMessage());
+             }
         }
 
         if (propiedad1 != null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 == 0){
@@ -107,13 +114,24 @@ public class Tratos {
         } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
             this.setTipoTrato(5);
         } else {
-            consola.imprimir("No se puede proponer el trato.");
-            return;
+            try {
+                throw new TratoInvalidoException("No se puede proponer el trato.");
+
+
+        }catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
+
+
         if (getTipoTrato() == 0){
-            consola.imprimir("No se puede proponer el trato.");
-            return;
+            try {
+                throw new TratoInvalidoException("No se puede proponer el trato.");
+
+        }catch (TratoInvalidoException e) {
+            consola.imprimir(e.getMessage());
+        }
         }
 
         switch (this.getTipoTrato()) {
@@ -133,8 +151,13 @@ public class Tratos {
                 this.trato5(jugador1, jugador2, propiedad1, cantidadDinero1, propiedad2);
                 break;
             default:
-                consola.imprimir("No se puede proponer el trato.");
-                break;
+                try {
+                    throw new TratoInvalidoException("No se puede proponer el trato.");
+
+
+                }catch (TratoInvalidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
         }
     }
 
@@ -144,14 +167,18 @@ public class Tratos {
     public void trato1(Jugador jugador1, Jugador jugador2, Propiedad propiedad1, Propiedad propiedad2) {
 
         // Comprobar si los jugadores tienen las propiedades
-        if (!jugador1.getPropiedades().contains(propiedad1)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
-            return;
-        }
+        try {
+            if (!jugador1.getPropiedades().contains(propiedad1)){
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
 
-        if (!jugador2.getPropiedades().contains(propiedad2)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
-            return;
+            }
+
+            if (!jugador2.getPropiedades().contains(propiedad2)){
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
+
+            }
+        }catch (TratoInvalidoException e) {
+            consola.imprimir(e.getMessage());
         }
 
         // Añadir trato a la lista de tratos de los jugadores
@@ -192,8 +219,12 @@ public class Tratos {
 
         // Comprobar si los jugadores tienen las propiedades
         if (!jugador1.getPropiedades().contains(propiedad1)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
-            return;
+            try{
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
+
+        } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Añadir trato a la lista de tratos de los jugadores
@@ -212,8 +243,12 @@ public class Tratos {
 
         // Comprobar si el jugador2 tiene el dinero suficiente
         if (cantidadDinero2 > jugador2.getFortuna()){
-            consola.imprimir("No se puede aceptar el trato: " + jugador2.getNombre() + " no tiene suficiente dinero.");
-            return;
+            try {
+                throw new FondosInsuficientesException("No se puede aceptar el trato: " + jugador2.getNombre() + " no tiene suficiente dinero.");
+
+        } catch (FondosInsuficientesException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Realizar el intercambio de propiedades
@@ -243,16 +278,23 @@ public class Tratos {
 
         // Comprobar si los jugadores tienen las propiedades
         if (!jugador2.getPropiedades().contains(propiedad2)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
-            return;
+            try{
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
+
+        } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Comprobar si jugador1 tiene el dinero suficiente
         if (cantidadDinero1 > jugador1.getFortuna()){
-            consola.imprimir("No se puede proponer el trato: " + jugador1.getNombre() + " no tiene suficiente dinero.");
-            return;
-        }
+            try {
+                throw new FondosInsuficientesException("No se puede aceptar el trato: " + jugador1.getNombre() + " no tiene suficiente dinero.");
 
+            } catch (FondosInsuficientesException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
         // Añadir trato a la lista de tratos de los jugadores
         jugador1.getListaTratos().add(this);
         jugador2.getListaTratos().add(this);
@@ -294,15 +336,22 @@ public class Tratos {
 
         // Comprobar si los jugadores tienen las propiedades
         if (!jugador1.getPropiedades().contains(propiedad1)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
-            return;
+            try{
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
+
+            } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         if (!jugador2.getPropiedades().contains(propiedad2)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
-            return;
-        }
+            try{
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
 
+            } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
         // Añadir trato a la lista de tratos de los jugadores
         jugador1.getListaTratos().add(this);
         jugador2.getListaTratos().add(this);
@@ -319,8 +368,12 @@ public class Tratos {
 
         // Comprobar si el jugador2 tiene el dinero suficiente
         if (cantidadDinero2 > jugador2.getFortuna()){
-            consola.imprimir("No se puede aceptar el trato: " + jugador2.getNombre() + " no tiene suficiente dinero.");
-            return;
+            try {
+                throw new FondosInsuficientesException("No se puede aceptar el trato: " + jugador2.getNombre() + " no tiene suficiente dinero.");
+
+            } catch (FondosInsuficientesException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Realizar el intercambio de propiedades
@@ -352,19 +405,29 @@ public class Tratos {
 
         // Comprobar si los jugadores tienen las propiedades
         if (!jugador1.getPropiedades().contains(propiedad1)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
-            return;
-        }
+            try{
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad1.getNombre() + " no pertenece a " + jugador1.getNombre() + ".");
 
+            } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
         if (!jugador2.getPropiedades().contains(propiedad2)){
-            consola.imprimir("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
-            return;
-        }
+            try{
+                throw new TratoInvalidoException("No se puede proponer el trato: " + propiedad2.getNombre() + " no pertenece a " + jugador2.getNombre() + ".");
 
+            } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
         // Comprobar si jugador1 tiene el dinero suficiente
         if (cantidadDinero1 > jugador1.getFortuna()){
-            consola.imprimir("No se puede proponer el trato: " + jugador1.getNombre() + " no tiene suficiente dinero.");
-            return;
+            try {
+                throw new FondosInsuficientesException("No se puede aceptar el trato: " + jugador1.getNombre() + " no tiene suficiente dinero.");
+
+            } catch (FondosInsuficientesException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Añadir trato a la lista de tratos de los jugadores
@@ -383,10 +446,13 @@ public class Tratos {
 
         // Comprobar si el jugador2 tiene el dinero suficiente
         if (cantidadDinero1 > jugador2.getFortuna()){
-            consola.imprimir("No se puede aceptar el trato: " + jugador2.getNombre() + " no tiene suficiente dinero.");
-            return;
-        }
+            try {
+                throw new FondosInsuficientesException("No se puede aceptar el trato: " + jugador2.getNombre() + " no tiene suficiente dinero.");
 
+            } catch (FondosInsuficientesException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
         // Realizar el intercambio de propiedades
         jugador1.anhadirPropiedad(propiedad2);
         jugador1.eliminarPropiedad(propiedad1);
@@ -435,8 +501,12 @@ public class Tratos {
                             trato.aceptarTrato5(jugador1, jugador2, propiedad1, cantidadDinero1, propiedad2);
                             break;
                         default:
-                            consola.imprimir("No se puede aceptar el trato.");
-                            break;
+                             try   {
+                                throw new TratoInvalidoException("No se puede aceptar el trato.");
+
+                    } catch (TratoInvalidoException e) {
+                                 consola.imprimir(e.getMessage());
+                             }
                     }
                 }
             }
@@ -463,7 +533,12 @@ public class Tratos {
             }
             consola.imprimir("Trato eliminado correctamente.");
         } else {
-            consola.imprimir("No se puede eliminar el trato. Puede que ya haya sido aceptado o no exista.");
+            try   {
+                throw new TratoInvalidoException("No se puede eliminar el trato. Puede que ya haya sido aceptado o no exista.");
+
+            } catch (TratoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
     }
 
