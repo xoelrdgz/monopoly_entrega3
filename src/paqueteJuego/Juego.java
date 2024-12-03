@@ -651,11 +651,14 @@ public class Juego implements Comando {
                             partes = detalle2.split("y");
                             propiedad2 = partes[0].trim();
                             cantidadDinero2 = Integer.parseInt(partes[1].trim());
-                        } else if (esNumero(detalle2)) {
-                            cantidadDinero2 = Integer.parseInt(detalle2);
                         } else {
-                            propiedad2 = detalle2;
+                            if (esNumero(detalle2)) {
+                            cantidadDinero2 = Integer.parseInt(detalle2);
+                            } else {
+                                propiedad2 = detalle2;
+                            }
                         }
+
 
                         Jugador jugador1 = jugadores.get(turno);
                         Jugador jugador2 = null;
@@ -670,7 +673,8 @@ public class Juego implements Comando {
                                 throw new ComandoIncompletoException("Jugador no encontrado" + jugador);
                             } catch (ComandoIncompletoException e) {
                                 consola.imprimir(e.getMessage());
-                            }}
+                            }
+                        }
 
                         // Convertir prpiedad1 y propiedad2 a objetos Propiedad
                         Propiedad propiedad1Obj = null, propiedad2Obj = null;
@@ -685,13 +689,14 @@ public class Juego implements Comando {
                         Tratos trato = new Tratos(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
 
                         // Llamar al método correspondiente
-                        trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
+                        trato.proponerTrato();
                     } else {
                         try{
                             throw new ComandoNoReconocidoException("Comando no reconocido");
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
-                        }}
+                        }
+                    }
                     i = 1;
                     break;
 
@@ -715,6 +720,16 @@ public class Juego implements Comando {
                         }
                     }
 
+                    if (trato == null) {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Trato no encontrado");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                            break;
+                        }
+                    }
+
                     if (trato.getJugador2() == jugadores.get(turno)) {
                         trato.aceptar(idTrato, jugadores.get(turno));
                         i = 1;
@@ -729,7 +744,7 @@ public class Juego implements Comando {
                     i = 1;
                     break;
 
-        
+
                 case "eliminar":
                     if (partes.length < 2) {
                         try{
@@ -755,6 +770,7 @@ public class Juego implements Comando {
                             throw new ComandoNoReconocidoException("Trato no encontrado");
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
+                            break;
                         }
                     }
 

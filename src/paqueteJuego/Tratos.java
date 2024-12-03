@@ -83,22 +83,22 @@ public class Tratos {
 
     // Constructor
     public Tratos(Jugador jugador1, Jugador jugador2, int cantidadDinero1, int cantidadDinero2, Propiedad propiedad1, Propiedad propiedad2) {
-        setJugador1(jugador1);
-        setJugador2(jugador2);
-        setIdTrato("trato-" + getIds());
-        setIds(getIds() + 1);
-        setTipoTrato(0);
-        setPropiedad1(propiedad1);
-        setPropiedad2(propiedad2);
-        setCantidadDinero1(cantidadDinero1);
-        setCantidadDinero2(cantidadDinero2);
+        this.setJugador1(jugador1);
+        this.setJugador2(jugador2);
+        this.setIdTrato("trato-" + getIds());
+        this.setIds(getIds() + 1);
+        this.setTipoTrato(0);
+        this.setPropiedad1(propiedad1);
+        this.setPropiedad2(propiedad2);
+        this.setCantidadDinero1(cantidadDinero1);
+        this.setCantidadDinero2(cantidadDinero2);
     }
 
     // Método para proponer un trato
-    public void proponerTrato(Jugador jugador1, Jugador jugador2, int cantidadDinero1, int cantidadDinero2, Propiedad propiedad1, Propiedad propiedad2) {
+    public void proponerTrato() {
 
         // Comprobar si los jugadores son distintos
-        if (jugador1 == jugador2){
+        if (this.getJugador1() == this.getJugador2()){
              try {
                 throw new TratoInvalidoException("No se puede proponer el trato: los jugadores son iguales.");
 
@@ -107,15 +107,21 @@ public class Tratos {
              }
         }
 
-        if (propiedad1 != null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 == 0){
+        // DEBUG
+        consola.imprimir("Propiedad 1: " + this.getPropiedad1());
+        consola.imprimir("Propiedad 2: " + this.getPropiedad2());
+        consola.imprimir("Cantidad de dinero 1: " + this.getCantidadDinero1());
+        consola.imprimir("Cantidad de dinero 2: " + this.getCantidadDinero2());
+
+        if (this.getPropiedad1() != null && this.getPropiedad2() != null && this.getCantidadDinero1() == 0 && this.getCantidadDinero2() == 0){
             this.setTipoTrato(1);
-        } else if (propiedad1 != null && propiedad2 == null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
+        } else if (this.getPropiedad1() != null && this.getPropiedad2() == null && this.getCantidadDinero1() == 0 && this.getCantidadDinero2() != 0){
             this.setTipoTrato(2);
-        } else if (propiedad1 == null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
+        } else if (this.getPropiedad1() == null && this.getPropiedad2() != null && this.getCantidadDinero1() != 0 && this.getCantidadDinero2() == 0){
             this.setTipoTrato(3);
-        } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 == 0 && cantidadDinero2 != 0){
+        } else if (this.getPropiedad1() != null && this.getPropiedad2() != null && this.getCantidadDinero1() == 0 && this.getCantidadDinero2() != 0){
             this.setTipoTrato(4);
-        } else if (propiedad1 != null && propiedad2 != null && cantidadDinero1 != 0 && cantidadDinero2 == 0){
+        } else if (this.getPropiedad1() != null && this.getPropiedad2() != null && this.getCantidadDinero1() != 0 && this.getCantidadDinero2() == 0){
             this.setTipoTrato(5);
         } else {
             try {
@@ -127,7 +133,7 @@ public class Tratos {
             }
         }
 
-        if (getTipoTrato() == 0){
+        if (this.getTipoTrato() == 0){
             try {
                 throw new TratoInvalidoException("No se puede proponer el trato.");
 
@@ -138,19 +144,19 @@ public class Tratos {
 
         switch (this.getTipoTrato()) {
             case 1:
-                this.trato1(jugador1, jugador2, propiedad1, propiedad2);
+                this.trato1(this.getJugador1(), this.getJugador2(), this.getPropiedad1(), this.getPropiedad2());
                 break;
             case 2:
-                this.trato2(jugador1, jugador2, propiedad1, cantidadDinero2);
+                this.trato2(this.getJugador1(), this.getJugador2(), this.getPropiedad1(), this.getCantidadDinero2());
                 break;
             case 3:
-                this.trato3(jugador1, jugador2, cantidadDinero1, propiedad2);
+                this.trato3(this.getJugador1(), this.getJugador2(), this.getCantidadDinero1(), this.getPropiedad2());
                 break;
             case 4:
-                this.trato4(jugador1, jugador2, propiedad1, propiedad2, cantidadDinero2);
+                this.trato4(this.getJugador1(), this.getJugador2(), this.getPropiedad1(), this.getPropiedad2(), this.getCantidadDinero2());
                 break;
             case 5:
-                this.trato5(jugador1, jugador2, propiedad1, cantidadDinero1, propiedad2);
+                this.trato5(this.getJugador1(), this.getJugador2(), this.getPropiedad1(), this.getCantidadDinero1(), this.getPropiedad2());
                 break;
             default:
                 try {
@@ -210,7 +216,7 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
-    
+
         // Borrar trato de la lista de tratos de los jugadores
         jugador1.getListaTratos().remove(this);
         jugador2.getListaTratos().remove(this);
@@ -269,7 +275,7 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + cantidadDinero2 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
-    
+
         // Borrar trato de la lista de tratos de los jugadores
         jugador1.getListaTratos().remove(this);
         jugador2.getListaTratos().remove(this);
@@ -327,7 +333,7 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + cantidadDinero1 + ".");
-    
+
         // Borrar trato de la lista de tratos de los jugadores
         jugador1.getListaTratos().remove(this);
         jugador2.getListaTratos().remove(this);
@@ -363,7 +369,7 @@ public class Tratos {
 
         // Mensaje de trato propuesto
         consola.imprimir(jugador2.getNombre() + ", te doy " + propiedad1.getNombre() + " y " + cantidadDinero2 + " y tú me das " + propiedad2.getNombre() + ".");
-    } 
+    }
 
     // Aceptar trato de tipo 4, realiza el intercambio de propiedad por propiedad y dinero
     public void aceptarTrato4 (Jugador jugador1, Jugador jugador2, Propiedad propiedad1, Propiedad propiedad2, int cantidadDinero2) {
@@ -396,7 +402,7 @@ public class Tratos {
 
         // Mensaje de trato aceptado
         consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + cantidadDinero2 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
-    
+
         // Borrar trato de la lista de tratos de los jugadores
         jugador1.getListaTratos().remove(this);
         jugador2.getListaTratos().remove(this);
