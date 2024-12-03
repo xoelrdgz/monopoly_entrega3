@@ -605,7 +605,6 @@ public class Juego implements Comando {
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
                         }}break;
-                    break;
                 case "trato":
 
                     if (partes.length < 2) {
