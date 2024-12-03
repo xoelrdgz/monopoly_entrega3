@@ -82,12 +82,16 @@ public class Tratos {
     }
 
     // Constructor
-    public Tratos(Jugador jugador1, Jugador jugador2) {
+    public Tratos(Jugador jugador1, Jugador jugador2, int cantidadDinero1, int cantidadDinero2, Propiedad propiedad1, Propiedad propiedad2) {
         setJugador1(jugador1);
         setJugador2(jugador2);
         setIdTrato("trato-" + getIds());
         setIds(getIds() + 1);
         setTipoTrato(0);
+        setPropiedad1(propiedad1);
+        setPropiedad2(propiedad2);
+        setCantidadDinero1(cantidadDinero1);
+        setCantidadDinero2(cantidadDinero2);
     }
 
     // Método para proponer un trato
@@ -122,8 +126,6 @@ public class Tratos {
                 consola.imprimir(e.getMessage());
             }
         }
-
-
 
         if (getTipoTrato() == 0){
             try {
@@ -189,7 +191,7 @@ public class Tratos {
         jugador2.setTratosPendientes(true);
 
         // Mensaje de trato propuesto
-        consola.imprimir(jugador2.getNombre() + ", te doy " + propiedad1.getNombre() + " y tú me das " + propiedad2.getNombre() + ".");
+        consola.imprimir(jugador2.getNombre() + ", te doy " + propiedad1.getNombre() + " y tú me das " + propiedad2.getNombre() + ". ID del trato: " + getIdTrato() + ".");
     }
 
     // Aceptar trato de tipo 1, realiza el intercambio de propiedades (y de hipotecas si las hubiera)
@@ -478,58 +480,50 @@ public class Tratos {
     }
 
     // Método para aceptar un trato
-    public void aceptar(String idTrato) {
-            
-            // Buscar el trato en la lista de tratos del jugador
-            for (Tratos trato : jugador2.getListaTratos()) {
-                if (trato.getIdTrato().equals(idTrato)) {
-                    // Aceptar el trato según el tipo de trato
-                    switch (trato.getTipoTrato()) {
-                        case 1:
-                            trato.aceptarTrato1(jugador1, jugador2, propiedad1, propiedad2);
-                            break;
-                        case 2:
-                            trato.aceptarTrato2(jugador1, jugador2, propiedad1, cantidadDinero2);
-                            break;
-                        case 3:
-                            trato.aceptarTrato3(jugador1, jugador2, cantidadDinero1, propiedad2);
-                            break;
-                        case 4:
-                            trato.aceptarTrato4(jugador1, jugador2, propiedad1, propiedad2, cantidadDinero2);
-                            break;
-                        case 5:
-                            trato.aceptarTrato5(jugador1, jugador2, propiedad1, cantidadDinero1, propiedad2);
-                            break;
-                        default:
-                             try   {
-                                throw new TratoInvalidoException("No se puede aceptar el trato.");
+    public void aceptar(String idTrato, Jugador jugador) {
 
-                    } catch (TratoInvalidoException e) {
-                                 consola.imprimir(e.getMessage());
-                             }
-                    }
-                }
+        if (this.getIdTrato().equals(idTrato)) {
+            // Aceptar el trato según el tipo de trato
+            switch (this.getTipoTrato()) {
+                case 1:
+                    this.aceptarTrato1(this.getJugador1(), jugador, this.getPropiedad1(), this.getPropiedad2());
+                    break;
+                case 2:
+                    this.aceptarTrato2(this.getJugador1(), jugador, this.getPropiedad1(), getCantidadDinero2());
+                    break;
+                case 3:
+                    this.aceptarTrato3(this.getJugador1(), jugador, this.getCantidadDinero1(), this.getPropiedad2());
+                    break;
+                case 4:
+                    this.aceptarTrato4(this.getJugador1(), jugador, this.getPropiedad1(), this.getPropiedad2(), getCantidadDinero2());
+                    break;
+                case 5:
+                    this.aceptarTrato5(this.getJugador1(), jugador, this.getPropiedad1(), this.getCantidadDinero1(), this.getPropiedad2());
+                    break;
+                default:
+                     try   {
+                        throw new TratoInvalidoException("No se puede aceptar el trato.");
+
+            } catch (TratoInvalidoException e) {
+                         consola.imprimir(e.getMessage());
+                     }
             }
+        }
+
     }
 
 
     public void eliminar(String idTrato, Jugador jugador) {
-        Tratos tratoAEliminar = null;
-        for (Tratos trato : jugador.getListaTratos()) {
-            if (trato.getIdTrato().equals(idTrato)) {
-                tratoAEliminar = trato;
-                break;
-            }
-        }
-        if (tratoAEliminar != null) {
-            jugador.getListaTratos().remove(tratoAEliminar);
+
+        if (idTrato != null) {
+            jugador.getListaTratos().remove(this);
             if (jugador.getListaTratos().isEmpty()) {
                 jugador.setTratosPendientes(false);
             }
             if (jugador != jugador1) {
-                jugador1.getListaTratos().remove(tratoAEliminar);
+                this.getJugador1().getListaTratos().remove(this);
             } else {
-                jugador2.getListaTratos().remove(tratoAEliminar);
+                this.getJugador2().getListaTratos().remove(this);
             }
             consola.imprimir("Trato eliminado correctamente.");
         } else {

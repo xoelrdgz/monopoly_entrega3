@@ -468,11 +468,13 @@ public class Juego implements Comando {
                     break;
 
                 case "mover":
-                    try{
-                        i = 2;
-                        throw new ComandoInvalidoException("Comando no valido: Uso ver mover [numero_casillas]");
-                    } catch (ComandoInvalidoException e) {
-                        consola.imprimir(e.getMessage());
+                    if (partes.length < 2) {
+                        try {
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando no valido: Uso ver mover [numero_casillas]");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
 
                     int casillas = Integer.parseInt(partes[1]);
@@ -493,7 +495,6 @@ public class Juego implements Comando {
                         } catch (ComandoInvalidoException e) {
                             consola.imprimir(e.getMessage());
                         }
-
                     }
                     String nombreCasillaHipoteca = partes[1];
                     hipotecar(nombreCasillaHipoteca);
@@ -673,21 +674,18 @@ public class Juego implements Comando {
 
                         // Convertir prpiedad1 y propiedad2 a objetos Propiedad
                         Propiedad propiedad1Obj = null, propiedad2Obj = null;
-                        for (ArrayList<Casilla> casillaList : Tablero.getTodasCasillas()) {
-                            for (Casilla casilla : casillaList) {
-                                if (casilla.getNombre().equalsIgnoreCase(propiedad1)) {
-                                    propiedad1Obj = (Propiedad) casilla;
-                                } else if (casilla.getNombre().equalsIgnoreCase(propiedad2)) {
-                                    propiedad2Obj = (Propiedad) casilla;
-                                }
-                            }
+
+                        if (propiedad1 != null) {
+                            propiedad1Obj = (Propiedad) tablero.encontrar_casilla(propiedad1);
+                        }
+                        if (propiedad2 != null) {
+                            propiedad2Obj = (Propiedad) tablero.encontrar_casilla(propiedad2);
                         }
 
-                        Tratos trato = new Tratos(jugador1, jugador2);
+                        Tratos trato = new Tratos(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
 
                         // Llamar al método correspondiente
-                        trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj,
-                                propiedad2Obj);
+                        trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
                     } else {
                         try{
                             throw new ComandoNoReconocidoException("Comando no reconocido");
@@ -704,7 +702,8 @@ public class Juego implements Comando {
                             throw new ComandoNoReconocidoException("Comando Incompleto: Uso aceptar [id_trato]");
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
-                        }}
+                        }
+                    }
                     String idTrato = partes[1];
 
                     // Buscar el trato por ID en la lista de tratos del jugador
@@ -715,7 +714,18 @@ public class Juego implements Comando {
                             break;
                         }
                     }
-                    trato.aceptar(idTrato);
+
+                    if (trato.getJugador2() == jugadores.get(turno)) {
+                        trato.aceptar(idTrato, jugadores.get(turno));
+                        i = 1;
+                    } else {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("No puedes aceptar un trato que no te han propuesto");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+                    }
                     i = 1;
                     break;
 
@@ -738,7 +748,27 @@ public class Juego implements Comando {
                             break;
                         }
                     }
-                    tratoE.eliminar(idTratoE, jugadores.get(turno));
+
+                    if (tratoE == null) {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Trato no encontrado");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+                    }
+
+                    if (tratoE.getJugador1() == jugadores.get(turno) || tratoE.getJugador2() == jugadores.get(turno)) {
+                        tratoE.eliminar(idTratoE, jugadores.get(turno));
+                        i = 1;
+                    } else {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("No puedes eliminar un trato que no has propuesto o recibido");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+                    }
                     i = 1;
                     break;
                 default:
