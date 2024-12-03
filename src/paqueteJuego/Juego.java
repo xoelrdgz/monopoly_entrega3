@@ -16,6 +16,16 @@ import paqueteCasilla.Propiedad;
 import paqueteCasilla.Solar;
 import paqueteConsola.ConsolaNormal;
 import paqueteEdificio.Edificio;
+import paqueteExcepcion.Comando.ComandoIncompletoException;
+import paqueteExcepcion.Comando.ComandoInvalidoException;
+import paqueteExcepcion.Comando.ComandoNoReconocidoException;
+import paqueteExcepcion.avatar.AvatarNoEncontradoException;
+import paqueteExcepcion.casilla.CasillaInvalidaException;
+import paqueteExcepcion.casilla.CasillaNoEncontradaException;
+import paqueteExcepcion.edificio.EdificioInvalidoException;
+import paqueteExcepcion.finanzas.FondosInsuficientesException;
+import paqueteExcepcion.propiedad.EstadoCasillaInvalidoException;
+import paqueteExcepcion.propiedad.NoTienesPropiedadesException;
 
 public class Juego implements Comando {
 
@@ -65,13 +75,17 @@ public class Juego implements Comando {
         // Paso 3: Pedir la cantidad de jugadores
         int numJugadores = 0;
         while (numJugadores < 2 || numJugadores > 6) {
-            consola.imprimir("¿Cuántos jugadores participarán? (Entre 2 y 6 jugadores)");
-            numJugadores = consola.leerInt();
+                consola.imprimir("¿Cuántos jugadores participarán? (Entre 2 y 6 jugadores)");
+                numJugadores = consola.leerInt();
 
-            if (numJugadores < 2) {
-                consola.imprimir("El número mínimo de jugadores es 2.");
-            } else if (numJugadores > 6) {
-                consola.imprimir("Solo se permiten hasta 6 jugadores.");
+            try {
+                if (numJugadores < 2) {
+                    throw new ComandoInvalidoException("El número mínimo de jugadores es 2.");
+                } else if (numJugadores > 6) {
+                    throw new ComandoInvalidoException("Solo se permiten hasta 6 jugadores.");
+                }
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir( e.getMessage());
             }
         }
 
@@ -82,57 +96,58 @@ public class Juego implements Comando {
         // Paso 4: Registrar jugadores esperando comandos como 'crear jugador Pedro
         // coche'
         while (jugadores.size() < numJugadores) {
-            consola.imprimir(
-                    "Introduce el comando para crear un jugador: (ej. crear jugador Pedro coche. Los avatares son: Coche, esfinge, sombrero y pelota)");
-            String comando = consola.leer();
+            try {
+                consola.imprimir(
+                        "Introduce el comando para crear un jugador: (ej. crear jugador Pedro coche. Los avatares son: Coche, esfinge, sombrero y pelota)");
+                String comando = consola.leer();
 
-            // Verificar si el comando empieza con 'crear jugador'
-            if (comando.startsWith("crear jugador")) {
-                // Extraer el nombre del jugador y el tipo de avatar
-                String[] partes = comando.split(" ");
-                if (partes.length == 4) {
-                    String nombreJugador = partes[2];
-                    String tipoAvatar = partes[3];
-                    tipoavatar.add(tipoAvatar);
+                // Verificar si el comando empieza con 'crear jugador'
+                if (comando.startsWith("crear jugador")) {
+                    // Extraer el nombre del jugador y el tipo de avatar
+                    String[] partes = comando.split(" ");
+                    if (partes.length == 4) {
+                        String nombreJugador = partes[2];
+                        String tipoAvatar = partes[3];
+                        tipoavatar.add(tipoAvatar);
 
-                    // Validar el tipo de avatar
-                    if (tipoAvatar.equalsIgnoreCase("coche") || tipoAvatar.equalsIgnoreCase("esfinge")
-                            || tipoAvatar.equalsIgnoreCase("sombrero") || tipoAvatar.equalsIgnoreCase("pelota")) {
+                        // Validar el tipo de avatar
+                        if (tipoAvatar.equalsIgnoreCase("coche") || tipoAvatar.equalsIgnoreCase("esfinge")
+                                || tipoAvatar.equalsIgnoreCase("sombrero") || tipoAvatar.equalsIgnoreCase("pelota")) {
 
-                        // Crear el jugador y su avatar
+                            // Crear el jugador y su avatar
+                            Jugador jugador = new Jugador(nombreJugador, tipoAvatar, inicio, avatares);
+                            jugadores.add(jugador);
 
-                        Jugador jugador = new Jugador(nombreJugador, tipoAvatar, inicio, avatares);
-                        jugadores.add(jugador);
+                            if (tipoAvatar.equalsIgnoreCase("coche")) {
+                                Avatar avatar = new Coche(tipoAvatar, jugador, inicio, avatares);
+                                avatares.add(avatar);
+                            } else if (tipoAvatar.equalsIgnoreCase("esfinge")) {
+                                Avatar avatar = new Esfinge(tipoAvatar, jugador, inicio, avatares);
+                                avatares.add(avatar);
+                            } else if (tipoAvatar.equalsIgnoreCase("sombrero")) {
+                                Avatar avatar = new Sombrero(tipoAvatar, jugador, inicio, avatares);
+                                avatares.add(avatar);
+                            } else if (tipoAvatar.equalsIgnoreCase("pelota")) {
+                                Avatar avatar = new Pelota(tipoAvatar, jugador, inicio, avatares);
+                                avatares.add(avatar);
+                            }
 
-                        if(tipoAvatar.equalsIgnoreCase("coche")){
-                        Avatar avatar = new Coche(tipoAvatar, jugador, inicio, avatares);
-                        avatares.add(avatar);}
-                        else if(tipoAvatar.equalsIgnoreCase("esfinge")){
-                            Avatar avatar = new Esfinge(tipoAvatar, jugador, inicio, avatares);
-                            avatares.add(avatar);
+                            consola.imprimir("Jugador creado: " + nombreJugador + " con avatar " + tipoAvatar);
+
+                        } else {
+                            throw new AvatarNoEncontradoException("Tipo de avatar no válido. Usa 'coche', 'esfinge', 'sombrero' o 'pelota'.");
                         }
-                        else if(tipoAvatar.equalsIgnoreCase("sombrero")){
-                            Avatar avatar = new Sombrero(tipoAvatar, jugador, inicio, avatares);
-                            avatares.add(avatar);
-                        }
-                        else if(tipoAvatar.equalsIgnoreCase("pelota")){
-                            Avatar avatar = new Pelota(tipoAvatar, jugador, inicio, avatares);
-                            avatares.add(avatar);
-                        }
-
-
-                        consola.imprimir("Jugador creado: " + nombreJugador + " con avatar " + tipoAvatar);
                     } else {
-                        consola.imprimir("Tipo de avatar no válido. Usa 'coche', 'esfinge', 'sombrero' o 'pelota'.");
+                        throw new ComandoInvalidoException("Comando incorrecto. Usa: crear jugador <nombre> <avatar>");
                     }
                 } else {
-                    consola.imprimir("Comando incorrecto. Usa: crear jugador <nombre> <avatar>");
+                    throw new ComandoNoReconocidoException("Comando no reconocido. Usa: crear jugador <nombre> <avatar>");
                 }
-            } else {
-                consola.imprimir("Comando no reconocido. Usa: crear jugador <nombre> <avatar>");
+            } catch (ComandoNoReconocidoException | ComandoInvalidoException | AvatarNoEncontradoException e) {
+                consola.imprimir( e.getMessage());
             }
-
         }
+
 
         consola.imprimir("¡Todos los jugadores han sido creados! Iniciando el juego...");
         for (int i = 0; i <= jugadores.size() - 1; i++) {
@@ -250,10 +265,16 @@ public class Juego implements Comando {
 
             switch (accion.toLowerCase()) {
                 case "describir":
-                    if (partes.length < 3) {
-                        consola.imprimir("Comando incompleto. Uso: describir [jugador/avatar/casilla] [nombre/ID]");
-                        i = 2;// Comando erróneo, se repite el proceso
-                        return;
+                    try {
+                        if (partes.length < 3) {
+                            i = 2;
+                            throw new ComandoIncompletoException("Comando incompleto. Uso: describir [jugador/avatar/casilla] [nombre/ID]");
+
+                        }
+
+                        // Aquí puedes agregar más código para procesar el comando si es necesario
+                    } catch (ComandoIncompletoException e) {
+                        consola.imprimir(e.getMessage());
                     }
                     // Subcomando que puede ser jugador, avatar o casilla
                     String tipoDescripcion = partes[1];
@@ -273,10 +294,14 @@ public class Juego implements Comando {
                             i = 1;
                             break;
                         default:
-                            consola.imprimir("Tipo de descripción no válido. Uso: describir [jugador/avatar/casilla]");
-                            i = 2;
-                    }
-                    break;
+                            try {
+                                i = 2; // Comando erróneo, se repite el proceso
+                                throw new ComandoInvalidoException("Tipo de descripción no válido. Uso: describir [jugador/avatar/casilla]");
+                            } catch (ComandoInvalidoException e) {
+                                consola.imprimir(e.getMessage());
+                            }}
+
+                            break;
 
                 case "lanzar":
                     if (partes.length > 1 && partes[1].equalsIgnoreCase("dados")) {
@@ -286,16 +311,24 @@ public class Juego implements Comando {
                         lanzarTrucados();
                         i = 1;
                     } else {
-                        consola.imprimir("Comando no válido. Uso: lanzar dados");
-                        i = 2;
-                    }
+                        try {
+                            i = 2; // Comando erróneo, se repite el proceso
+                            throw new ComandoInvalidoException("Comando no válido. Uso: lanzar dados");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
                     break;
 
                 case "comprar":
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: comprar [nombre_casilla]");
-                        i = 2;
-                        return;
+                        try {
+                            i = 2;
+                            throw new ComandoIncompletoException("Comando incompleto. Uso: comprar [nombre_casilla]");
+
+
+                        } catch (ComandoIncompletoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                     String nombreCasilla = partes[1];
                     comprar(nombreCasilla);
@@ -307,16 +340,24 @@ public class Juego implements Comando {
                         salirCarcel();
                         i = 1;
                     } else {
-                        consola.imprimir("Comando no válido. Uso: salir carcel");
-                        i = 2;
-                    }
+                        try {
+                            i = 2; // Comando erróneo, se repite el proceso
+                            throw new ComandoInvalidoException("Comando no válido. Uso: salir carcel");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
                     break;
 
                 case "listar":
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: listar [jugadores/avatares/enventa]");
-                        i = 2;
-                        return;
+                        try {
+                            i = 2;
+                            throw new ComandoIncompletoException("Comando incompleto. Uso: listar [jugadores/avatares/enventa]");
+
+
+                        } catch (ComandoIncompletoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                     String tipoLista = partes[1];
 
@@ -343,9 +384,14 @@ public class Juego implements Comando {
                             break;
                         case "edificios grupo":
                             if (partes.length < 3) {
-                                consola.imprimir("Comando incompleto. Uso: listar edificios grupo [color_grupo]");
-                                i = 2;
-                                return;
+                                try {
+                                    i = 2;
+                                    throw new ComandoIncompletoException("Comando incompleto. Uso: listar edificios grupo [color_grupo]");
+
+
+                                } catch (ComandoIncompletoException e) {
+                                    consola.imprimir(e.getMessage());
+                                }
                             }
                             String colorGrupo = partes[2];
                             listarEdificiosGrupo(colorGrupo);
@@ -356,9 +402,15 @@ public class Juego implements Comando {
                             i = 1;
                             break;
                         default:
-                            consola.imprimir(
-                                    "Opción de lista no válida. Uso: listar [jugadores/avatares/enventa/hipotecados/edificios]");
-                            i = 2;
+
+                            try {
+                                i = 2;
+                                throw new ComandoIncompletoException("Opción de lista no válida. Uso: listar [jugadores/avatares/enventa/hipotecados/edificios]");
+
+
+                            } catch (ComandoIncompletoException e) {
+                                consola.imprimir(e.getMessage());
+                            }
                     }
                     break;
 
@@ -368,7 +420,12 @@ public class Juego implements Comando {
                     } else if (partes[1].equalsIgnoreCase(jugadores.get(turno).getNombre())) {
                         jugadores.get(turno).mostrarEstadisticasJugador();
                     } else {
-                        consola.imprimir("Nombre no reconocido");
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Nombre no reconocido");
+                    } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                     break;
 
@@ -377,8 +434,12 @@ public class Juego implements Comando {
                         acabarTurno();
                         i = 1;
                     } else {
-                        consola.imprimir("Comando no válido. Uso: acabar turno");
-                        i = 2;
+                        try{
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando no valido: Uso - acabar [turno]");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                     break;
 
@@ -398,17 +459,23 @@ public class Juego implements Comando {
                         verTablero();
                         i = 1;
                     } else {
-                        consola.imprimir("Comando no válido. Uso: ver tablero");
-                        i = 2;
+                        try{
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando no valido: Uso ver tablero");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                     break;
 
                 case "mover":
-                    if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: mover [numero_casillas]");
+                    try{
                         i = 2;
-                        return;
+                        throw new ComandoInvalidoException("Comando no valido: Uso ver mover [numero_casillas]");
+                    } catch (ComandoInvalidoException e) {
+                        consola.imprimir(e.getMessage());
                     }
+
                     int casillas = Integer.parseInt(partes[1]);
                     mover(casillas);
                     i = 1;
@@ -420,9 +487,14 @@ public class Juego implements Comando {
                     break;
                 case "hipotecar":
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: hipotecar [nombre_casilla]");
-                        i = 2;
-                        return;
+                        try{
+
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando no valido: Uso hipotecar [nombre_casilla]");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+
                     }
                     String nombreCasillaHipoteca = partes[1];
                     hipotecar(nombreCasillaHipoteca);
@@ -431,9 +503,13 @@ public class Juego implements Comando {
 
                 case "deshipotecar":
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: deshipotecar [nombre_casilla]");
-                        i = 2;
-                        return;
+                        try{
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando no valido: Uso deshipotecar [nombre_casilla]");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+
                     }
                     String nombreCasillaDeshipoteca = partes[1];
                     deshipotecar(nombreCasillaDeshipoteca);
@@ -442,10 +518,13 @@ public class Juego implements Comando {
 
                 case "edificar":
                     if (partes.length < 2) {
-                        consola.imprimir(
-                                "Comando incompleto. Uso: edificar [casa/hotel/piscina/pistadeporte] [nombre_casilla]");
-                        i = 2;
-                        return;
+                        try{
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando incompleto. Uso: edificar [casa/hotel/piscina/pistadeporte] [nombre_casilla]");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+
                     }
                     String tipoEdific = partes[1];
                     Casilla pos = jugadores.get(turno).getAvatar().getLugar();
@@ -454,15 +533,26 @@ public class Juego implements Comando {
                         solar.edificar(tipoEdific);
                         i = 1;
                     } else {
-                        consola.imprimir("No puedes edificar en esta casilla");
-                        i = 2;
+                         try{
+                             i = 2;
+                             throw new CasillaInvalidaException("No puedes edificar en esta casilla");
+
+                    } catch (Exception e) {
+                             throw new RuntimeException(e);
+                         }
                     }
                     break;
+
                 case "vender":
                     if (partes.length < 4) {
-                        consola.imprimir("Comando incompleto. Uso: vender [tipo_edificio] [nombre_casilla] [cantidad]");
-                        i = 2;
-                        return;
+                        try{
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando incompleto. Uso: vender [tipo_edificio] [nombre_casilla] [cantidad]");
+
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+
                     }
                     String tipoEdificio = partes[1];
                     String nombreCasillaVenta = partes[2];
@@ -485,12 +575,20 @@ public class Juego implements Comando {
 
                 case "cambiar":
                     if (partes.length < 2) {
-                        consola.imprimir("El uso correcto del comando es: cambiar movimiento");
-                        i = 2;
+                        try{
+                            i = 2;
+                            throw new ComandoInvalidoException("El uso correcto del comando es: cambiar movimiento");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     } else if (partes.length == 2 && partes[1].equalsIgnoreCase("movimiento")) {
                         if (getTirado()) {
-                            consola.imprimir("No se puede cambiar el modo movim ya que ya se lanzaron los dados");
-                            i = 1;
+                            try{
+                                i = 1;
+                                throw new ComandoInvalidoException("No se puede cambiar el tipo de movimiento ya que ya se lanzaron los dados");
+                            } catch (ComandoInvalidoException e) {
+                                consola.imprimir(e.getMessage());
+                            }
                         } else {
                             jugadores.get(turno).setModomovimiento();
                             consola.imprimir("El avatar " + jugadores.get(turno).getAvatar().getId()
@@ -498,18 +596,22 @@ public class Juego implements Comando {
                             i = 1;
                         }
                     } else {
-                        consola.imprimir("Error reconciendo el comando cambiar movimiento");
-                        i = 2;
-                    }
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Error reconociendo el comando introducido");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
 
                 case "trato":
 
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: trato [jugador] [detalles]");
-                        i = 2;
-                        return;
-                    }
-
+                        try{
+                            i = 2;
+                            throw new ComandoIncompletoException("Comando incompleto: Uso [jugador] [detalles]");
+                        } catch (ComandoIncompletoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
                     String regex = "trato\\s+(\\w+):\\s+cambiar\\s*\\(([^,]+),\\s*([^\\)]+)\\)";
                     Pattern pattern = Pattern.compile(regex);
                     Matcher matcher = pattern.matcher(comando);
@@ -564,9 +666,11 @@ public class Juego implements Comando {
                             }
                         }
                         if (jugador2 == null) {
-                            consola.imprimir("Jugador no encontrado: " + jugador);
-                            return;
-                        }
+                            try{
+                                throw new ComandoIncompletoException("Jugador no encontrado" + jugador);
+                            } catch (ComandoIncompletoException e) {
+                                consola.imprimir(e.getMessage());
+                            }}
 
                         // Convertir prpiedad1 y propiedad2 a objetos Propiedad
                         Propiedad propiedad1Obj = null, propiedad2Obj = null;
@@ -586,17 +690,22 @@ public class Juego implements Comando {
                         trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj,
                                 propiedad2Obj);
                     } else {
-                        consola.imprimir("Comando no reconocido.");
-                    }
+                        try{
+                            throw new ComandoNoReconocidoException("Comando no reconocido");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
                     i = 1;
                     break;
 
                 case "aceptar":
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: aceptar [id_trato]");
-                        i = 2;
-                        return;
-                    }
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Comando Incompleto: Uso aceptar [id_trato]");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
                     String idTrato = partes[1];
 
                     // Buscar el trato por ID en la lista de tratos del jugador
@@ -614,10 +723,12 @@ public class Juego implements Comando {
         
                 case "eliminar":
                     if (partes.length < 2) {
-                        consola.imprimir("Comando incompleto. Uso: eliminar [id_trato]");
-                        i = 2;
-                        return;
-                    }
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Comando Incompleto: Uso eliminar [id_trato]");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }}
                     String idTratoE = partes[1];
 
                     // Buscar el trato por ID en la lista de tratos del jugador
@@ -632,8 +743,13 @@ public class Juego implements Comando {
                     i = 1;
                     break;
                 default:
-                    consola.imprimir("Comando no reconocido.");
-                    i = 2;
+                    try{
+                        i = 2;
+                        throw new ComandoNoReconocidoException("Comando no reconocido.");
+
+            } catch (ComandoNoReconocidoException e) {
+                        consola.imprimir(e.getMessage());
+                    }
             }
         } while (i == 2);
 
@@ -667,8 +783,12 @@ public class Juego implements Comando {
     @Override
     public void descJugador(String[] partes) {
         if (partes.length < 3) {
-            consola.imprimir("Comando incompleto. Uso: describir jugador [nombre]");
-            return;
+            try {
+                throw new ComandoInvalidoException("Comando incompleto. Uso: describir jugador [nombre]");
+
+        } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         String nombreJugador = partes[2];
@@ -683,8 +803,12 @@ public class Juego implements Comando {
         }
 
         if (jugador == null) {
-            consola.imprimir("Jugador no encontrado: " + nombreJugador);
-            return;
+            try {
+                throw new ComandoInvalidoException("Jugador no encontrado" + nombreJugador);
+
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Imprimir detalles del jugador
@@ -740,8 +864,12 @@ public class Juego implements Comando {
         }
 
         if (avatar == null) {
-            consola.imprimir("Avatar no encontrado: " + ID);
-            return;
+            try {
+                throw new ComandoInvalidoException("Jugador no encontrado" + ID);
+
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         // Imprimir detalles del avatar
@@ -770,8 +898,12 @@ public class Juego implements Comando {
         nombre = partes[0];
         Casilla casilla = tablero.encontrar_casilla(nombre);
         if (casilla == null) {
-            consola.imprimir("Casilla no encontrada: " + nombre);
-            return;
+            try {
+                throw new ComandoInvalidoException("Csilla no encontrado" + nombre);
+
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
         consola.imprimir("{");
         switch (casilla.getTipo().toLowerCase()) {
@@ -804,8 +936,12 @@ public class Juego implements Comando {
                 consola.imprimir("    jugadores: " + casilla.getJugadoresEnCarcel());
                 break;
             default:
-                consola.imprimir("Tipo de casilla no válido para descripción.");
-                break;
+                try{
+                    throw new CasillaInvalidaException("Tipo de casilla no válido para descripción.");
+
+        } catch (CasillaInvalidaException e) {
+                    consola.imprimir(e.getMessage());
+                }
         }
         consola.imprimir("}");
         consola.imprimir("");
@@ -819,8 +955,12 @@ public class Juego implements Comando {
         Jugador jugadorActual = jugadores.get(turno);
 
         if (getTirado()) {
-            consola.imprimir("Ya has lanzado los dados en este turno.");
-            return;
+            try {
+                throw new ComandoInvalidoException("Ya has lanzado los dados en este turno");
+
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
         lanzamientos++;
         dado1 = new Dado();
@@ -862,7 +1002,12 @@ public class Juego implements Comando {
                         jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
                         consola.imprimir(tablero.toString());
                     } else {
-                        consola.imprimir("Error: No se encontró la casilla de la cárcel.");
+                        try {
+                            throw new CasillaNoEncontradaException("Error: No se encontró la casilla de la carcel");
+
+                        } catch (CasillaNoEncontradaException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                 }
             }
@@ -876,8 +1021,12 @@ public class Juego implements Comando {
     public void lanzarTrucados() {
         // Corrección de error tipográfico
         if (getTirado()) {
-            consola.imprimir("Ya has lanzado los dados en este turno.");
-            return;
+            try {
+                throw new ComandoInvalidoException("Ya has lanzado los dados en este turno");
+
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
         consola.imprimir("Introduce los valores de tus dados trucados:");
 
@@ -922,7 +1071,12 @@ public class Juego implements Comando {
                         jugadorActual.getAvatar().moverAvatar(Tablero.getTodasCasillas(), 10);
                         consola.imprimir(tablero.toString());
                     } else {
-                        consola.imprimir("Error: No se encontró la casilla de la cárcel.");
+                        try {
+                            throw new CasillaNoEncontradaException("Error: No se encontró la casilla de la carcel");
+
+                        } catch (CasillaNoEncontradaException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                 }
             }
@@ -947,8 +1101,12 @@ public class Juego implements Comando {
             if (opcion == 1) {
                 ArrayList<Casilla> propiedades = jugador.getPropiedades();
                 if (propiedades.isEmpty()) {
-                    consola.imprimir("No tienes propiedades para hipotecar.");
-                    continue;
+                    try{
+                        throw new NoTienesPropiedadesException("No tienes propiedades para hipotecar.");
+
+                } catch (NoTienesPropiedadesException e) {
+                        consola.imprimir(e.getMessage());
+                    }
                 }
 
                 consola.imprimir("Elige una propiedad para hipotecar:");
@@ -966,19 +1124,35 @@ public class Juego implements Comando {
                         propiedad.hipotecarCasilla(jugador, Tablero.banca);
                         consola.imprimir("Has hipotecado " + casilla.getNombre() + ".");
                     } else {
-                        consola.imprimir("Tipo de casilla no válido para hipotecar.");
-                        break;
+                        try{
+                            throw new EstadoCasillaInvalidoException("Tipo de casilla no valido para hipotecar.");
+
+                        } catch (EstadoCasillaInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                     consola.imprimir("Has hipotecado " + casilla.getNombre() + ".");
                     break;
                 } else {
-                    consola.imprimir("Índice de propiedad no válido.");
+                    try {
+
+
+                        throw new EstadoCasillaInvalidoException("Indice de propiedad no valido");
+                    } catch (EstadoCasillaInvalidoException e) {
+                        consola.imprimir(e.getMessage());
+                    }
                 }
             } else if (opcion == 2) {
                 bancarrota(jugador, acreedor);
                 break;
             } else {
-                consola.imprimir("Opción no válida.");
+                try {
+
+
+                    throw new ComandoInvalidoException("Opción no válida.");
+            } catch (ComandoInvalidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
         }
     }
@@ -1031,11 +1205,24 @@ public class Juego implements Comando {
         // Buscar la casilla por nombre
         String nombre1 = nombre + " " + jugadores.get(turno).getAvatar().getId();
         if (!jugadores.get(turno).getAvatar().getLugar().getNombre().equals(nombre1)) {
-            consola.imprimir("No estás en esta casilla, no puedes comprarla");
-        } else {
+            try {
+
+
+                throw new CasillaInvalidaException("No estás en esta casilla, no puedes comprarla");
+        } catch (CasillaInvalidaException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
+        else {
             Casilla casilla = tablero.encontrar_casilla(nombre);
             if (!listarVenta().contains(nombre)) {
-                consola.imprimir("Esa casilla no se puede comprar");
+                try {
+
+
+                    throw new CasillaInvalidaException("Esa casilla no puede comprar");
+                } catch (CasillaInvalidaException e) {
+                    consola.imprimir(e.getMessage());
+                }
             } else {
                 if (casilla != null) {
                     // Llamar al método comprarCasilla
@@ -1044,7 +1231,13 @@ public class Juego implements Comando {
                         Propiedad propiedad = (Propiedad) casilla;
                         propiedad.comprarCasilla(jugadorActual, Tablero.banca);
                     } else {
-                        consola.imprimir("Este tipo de casilla no se pude comprar.");
+                        try {
+
+
+                            throw new CasillaInvalidaException("Este tipo de casilla no puede comprar");
+                        } catch (CasillaInvalidaException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
                 } else {
                     consola.imprimir("La casilla " + nombre + " no existe.");
@@ -1060,8 +1253,13 @@ public class Juego implements Comando {
         Jugador jugadorActual = jugadores.get(turno);
 
         if (!jugadorActual.isEnCarcel()) {
-            consola.imprimir("No estás en la cárcel.");
-            return;
+            try {
+
+
+                throw new CasillaNoEncontradaException("No estas en la carcel");
+            } catch (CasillaNoEncontradaException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
 
         if (jugadorActual.turnosEnCarcel == 3) {
@@ -1073,7 +1271,13 @@ public class Juego implements Comando {
                 jugadorActual.turnosEnCarcel = 0;
                 consola.imprimir("Has pagado la multa y has salido de la cárcel.");
             } else {
-                consola.imprimir("No tienes suficiente dinero para pagar la multa.");
+                try {
+
+
+                    throw new FondosInsuficientesException("No tienes suficiente dinero para pagar la multa");
+                } catch (FondosInsuficientesException e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
 
         } else if (jugadorActual.turnosEnCarcel < 3) {
@@ -1094,7 +1298,13 @@ public class Juego implements Comando {
                     jugadorActual.turnosEnCarcel = 0;
                     consola.imprimir("Has pagado la multa y has salido de la cárcel.");
                 } else {
-                    consola.imprimir("No tienes suficiente dinero para pagar la multa.");
+                    try {
+
+
+                        throw new FondosInsuficientesException("No tienes suficiente dinero para pagar la multa");
+                    } catch (FondosInsuficientesException e) {
+                        consola.imprimir(e.getMessage());
+                    }
                 }
             } else if (opcion == 2) {
 
@@ -1120,7 +1330,13 @@ public class Juego implements Comando {
                 }
 
             } else {
-                consola.imprimir("Opción no válida.");
+                try {
+
+
+                    throw new ComandoInvalidoException("Opcion no valida");
+                } catch (ComandoInvalidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
         }
     }
@@ -1306,11 +1522,20 @@ public class Juego implements Comando {
         // Buscar la casilla por nombre
         String nombre1 = nombre + " " + jugadores.get(turno).getAvatar().getId();
         if (!jugadores.get(turno).getAvatar().getLugar().getNombre().equals(nombre1)) {
-            consola.imprimir("No estás en esta casilla, no puedes hipotecarla");
-        } else {
+            try{
+                throw new CasillaInvalidaException("No estás en esta casilla, no puedes hipotecarla");
+        } catch (CasillaInvalidaException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
+            else {
             Casilla casilla = tablero.encontrar_casilla(nombre);
             if (listarHipoteca().contains(nombre)) {
-                consola.imprimir("Esa casilla no se puede hipotecar");
+                try{
+                    throw new CasillaInvalidaException("Esa casilla no se puede hipotecar");
+                } catch (CasillaInvalidaException e) {
+                    consola.imprimir(e.getMessage());
+                }
             } else {
                 if (casilla != null && casilla instanceof Propiedad) {
                     Propiedad propiedad = (Propiedad) casilla;
@@ -1318,7 +1543,11 @@ public class Juego implements Comando {
                     Jugador jugadorAhora = jugadores.get(turno);
                     propiedad.hipotecarCasilla(jugadorAhora, Tablero.banca);
                 } else {
-                    consola.imprimir("La casilla " + nombre + " no existe.");
+                    try{
+                        throw new CasillaInvalidaException("La casilla " + nombre + " no existe.");
+                    } catch (CasillaInvalidaException e) {
+                        consola.imprimir(e.getMessage());
+                    }
                 }
             }
         }
@@ -1336,8 +1565,11 @@ public class Juego implements Comando {
 
             // Verificar si la casilla es una propiedad
             if (!(casilla instanceof Propiedad)) {
-                consola.imprimir("La casilla " + nombre + " no es una propiedad.");
-                return;
+                try{
+                    throw new CasillaInvalidaException("La casilla " + nombre + " no es una propiedad");
+                } catch (CasillaInvalidaException e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
 
             Propiedad propiedad = (Propiedad) casilla;
@@ -1357,15 +1589,29 @@ public class Juego implements Comando {
 
                     // Informar al jugador
                     consola.imprimir(jugadorAhora.getNombre() + " paga " + costoDeshipoteca + " por deshipotecar " + nombre + ". Ahora puede recibir alquileres y edificar en el grupo " + casilla.getNombre() + ".");
-                } else {
-                    consola.imprimir(jugadorAhora.getNombre() + " no tiene suficiente dinero para deshipotecar " + nombre + ".");
                 }
-            } else {
-                consola.imprimir(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No está hipotecada.");
+
+                    else {
+                        try{
+                            throw new FondosInsuficientesException(jugadorAhora.getNombre() + " no tiene suficiente dinero para deshipotecar " + nombre + ".");
+                    } catch (FondosInsuficientesException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+                }
+                } else {
+                    try{
+                        throw new ComandoInvalidoException(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No está hipotecada.");
+                } catch (ComandoInvalidoException e) {
+                        consola.imprimir(e.getMessage());
+                    }
             }
-        } else {
-            consola.imprimir(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No es una propiedad que le pertenece.");
-        }
+            } else {
+            try{
+                throw new ComandoInvalidoException(jugadorAhora.getNombre() + " no puede deshipotecar " + nombre + ". No es una propiedad que le pertenece.");
+            } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
+            }
     }
 
     /*
@@ -1633,9 +1879,14 @@ public class Juego implements Comando {
     public void listarEdificiosGrupo(String colorGrupo) {
         Grupo grupo = tablero.getGrupos().get(colorGrupo);
         if (grupo == null) {
-            consola.imprimir("El grupo especificado no existe.");
-            return;
+            try{
+                throw new ComandoInvalidoException("El grupo especificado no existe.");
+
+        } catch (ComandoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
         }
+
 
         ArrayList<Casilla> propiedades = grupo.getMiembros();
         int maxCasas = 0, maxHoteles = 0, maxPiscinas = 0, maxPistasDeporte = 0;
@@ -1708,8 +1959,12 @@ public class Juego implements Comando {
                     edificio = solar.getPistasDeporte();
                     break;
                 default:
-                    consola.imprimir("Tipo de edificio no válido.");
-                    return;
+                    try{
+                        throw new EdificioInvalidoException("Tipo de edificio no válido.");
+
+            } catch (EdificioInvalidoException e) {
+                        throw new RuntimeException(e);
+                    }
             }
 
             if (edificio != null) {
@@ -1745,12 +2000,20 @@ public class Juego implements Comando {
                     jugadorAhora.valorpropiedades = jugadorAhora.valorpropiedades
                             - (edificio.getCosteEdificio() * 0.5f * numEdificios);
                 }
-            } else {
-                consola.imprimir("No se pueden vender " + tipoEdificio + " en " + nombreCasilla + ".");
+            } else  {
+                try{
+                    throw new EdificioInvalidoException("No se pueden vender " + tipoEdificio + " en " + nombreCasilla + ".");
+            } catch (EdificioInvalidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
             }
         } else {
-            consola.imprimir("No se pueden vender " + tipoEdificio + " en " + nombreCasilla
+            try{
+                throw new EdificioInvalidoException("No se pueden vender " + tipoEdificio + " en " + nombreCasilla
                     + ". Esta propiedad no pertenece a " + jugadorAhora.getNombre() + ".");
+        } catch (EdificioInvalidoException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -1779,8 +2042,12 @@ public class Juego implements Comando {
                         case 5:
                         consola.imprimir("    cambiar: (" + trato.getPropiedad1().getNombre() + " y " + trato.getCantidadDinero1() + ", " + trato.getPropiedad2().getNombre() + ")");
                     default:
-                        consola.imprimir("Tipo de trato no válido.");
-                        break;
+                        try {
+                            throw new ComandoInvalidoException("Tipo de trato no válido.");
+
+                } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                 }
                 consola.imprimir("},");
             }
