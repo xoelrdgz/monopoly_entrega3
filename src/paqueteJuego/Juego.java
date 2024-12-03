@@ -67,7 +67,6 @@ public class Juego implements Comando {
         tablero = new Tablero();
         tablero.generarCasillas(); // Generar las 40 casillas del tablero
         Casilla inicio = Tablero.getTodasCasillas().get(0).get(0);// Casilla de salida
-        Tablero.banca = new Jugador();
 
         // Paso 2: Imprimir el tablero
         consola.imprimir(tablero.toString()); // Esto imprimirá el tablero en el formato del método toString()
@@ -469,11 +468,13 @@ public class Juego implements Comando {
                     break;
 
                 case "mover":
-                    try{
-                        i = 2;
-                        throw new ComandoInvalidoException("Comando no valido: Uso ver mover [numero_casillas]");
-                    } catch (ComandoInvalidoException e) {
-                        consola.imprimir(e.getMessage());
+                    if (partes.length < 2) {
+                        try {
+                            i = 2;
+                            throw new ComandoInvalidoException("Comando no valido: Uso ver mover [numero_casillas]");
+                        } catch (ComandoInvalidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
                     }
 
                     int casillas = Integer.parseInt(partes[1]);
@@ -494,7 +495,6 @@ public class Juego implements Comando {
                         } catch (ComandoInvalidoException e) {
                             consola.imprimir(e.getMessage());
                         }
-
                     }
                     String nombreCasillaHipoteca = partes[1];
                     hipotecar(nombreCasillaHipoteca);
@@ -612,6 +612,8 @@ public class Juego implements Comando {
                         } catch (ComandoIncompletoException e) {
                             consola.imprimir(e.getMessage());
                         }}
+
+                    // trato jugador: cambiar (detalles1, detalles2) detalles puede ser (propiedad/dinero) o (propiedad y dinero)
                     String regex = "trato\\s+(\\w+):\\s+cambiar\\s*\\(([^,]+),\\s*([^\\)]+)\\)";
                     Pattern pattern = Pattern.compile(regex);
                     Matcher matcher = pattern.matcher(comando);
@@ -651,11 +653,14 @@ public class Juego implements Comando {
                             partes = detalle2.split("y");
                             propiedad2 = partes[0].trim();
                             cantidadDinero2 = Integer.parseInt(partes[1].trim());
-                        } else if (esNumero(detalle2)) {
-                            cantidadDinero2 = Integer.parseInt(detalle2);
                         } else {
-                            propiedad2 = detalle2;
+                            if (esNumero(detalle2)) {
+                            cantidadDinero2 = Integer.parseInt(detalle2);
+                            } else {
+                                propiedad2 = detalle2;
+                            }
                         }
+
 
                         Jugador jugador1 = jugadores.get(turno);
                         Jugador jugador2 = null;
@@ -670,31 +675,30 @@ public class Juego implements Comando {
                                 throw new ComandoIncompletoException("Jugador no encontrado" + jugador);
                             } catch (ComandoIncompletoException e) {
                                 consola.imprimir(e.getMessage());
-                            }}
-
-                        // Convertir prpiedad1 y propiedad2 a objetos Propiedad
-                        Propiedad propiedad1Obj = null, propiedad2Obj = null;
-                        for (ArrayList<Casilla> casillaList : Tablero.getTodasCasillas()) {
-                            for (Casilla casilla : casillaList) {
-                                if (casilla.getNombre().equalsIgnoreCase(propiedad1)) {
-                                    propiedad1Obj = (Propiedad) casilla;
-                                } else if (casilla.getNombre().equalsIgnoreCase(propiedad2)) {
-                                    propiedad2Obj = (Propiedad) casilla;
-                                }
                             }
                         }
 
-                        Tratos trato = new Tratos(jugador1, jugador2);
+                        // Convertir prpiedad1 y propiedad2 a objetos Propiedad
+                        Propiedad propiedad1Obj = null, propiedad2Obj = null;
+
+                        if (propiedad1 != null) {
+                            propiedad1Obj = (Propiedad) tablero.encontrar_casilla(propiedad1);
+                        }
+                        if (propiedad2 != null) {
+                            propiedad2Obj = (Propiedad) tablero.encontrar_casilla(propiedad2);
+                        }
+
+                        Tratos trato = new Tratos(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj, propiedad2Obj);
 
                         // Llamar al método correspondiente
-                        trato.proponerTrato(jugador1, jugador2, cantidadDinero1, cantidadDinero2, propiedad1Obj,
-                                propiedad2Obj);
+                        trato.proponerTrato();
                     } else {
                         try{
                             throw new ComandoNoReconocidoException("Comando no reconocido");
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
-                        }}
+                        }
+                    }
                     i = 1;
                     break;
 
@@ -705,7 +709,8 @@ public class Juego implements Comando {
                             throw new ComandoNoReconocidoException("Comando Incompleto: Uso aceptar [id_trato]");
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
-                        }}
+                        }
+                    }
                     String idTrato = partes[1];
 
                     // Buscar el trato por ID en la lista de tratos del jugador
@@ -716,11 +721,32 @@ public class Juego implements Comando {
                             break;
                         }
                     }
-                    trato.aceptar(idTrato);
+
+                    if (trato == null) {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Trato no encontrado");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                            break;
+                        }
+                    }
+
+                    if (trato.getJugador2() == jugadores.get(turno)) {
+                        trato.aceptar(idTrato, jugadores.get(turno));
+                        i = 1;
+                    } else {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("No puedes aceptar un trato que no te han propuesto");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+                    }
                     i = 1;
                     break;
 
-        
+
                 case "eliminar":
                     if (partes.length < 2) {
                         try{
@@ -739,7 +765,28 @@ public class Juego implements Comando {
                             break;
                         }
                     }
-                    tratoE.eliminar(idTratoE, jugadores.get(turno));
+
+                    if (tratoE == null) {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("Trato no encontrado");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                            break;
+                        }
+                    }
+
+                    if (tratoE.getJugador1() == jugadores.get(turno) || tratoE.getJugador2() == jugadores.get(turno)) {
+                        tratoE.eliminar(idTratoE, jugadores.get(turno));
+                        i = 1;
+                    } else {
+                        try{
+                            i = 2;
+                            throw new ComandoNoReconocidoException("No puedes eliminar un trato que no has propuesto o recibido");
+                        } catch (ComandoNoReconocidoException e) {
+                            consola.imprimir(e.getMessage());
+                        }
+                    }
                     i = 1;
                     break;
                 default:
