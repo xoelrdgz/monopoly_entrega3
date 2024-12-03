@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import paqueteCasilla.Casilla;
+import paqueteExcepcion.movimiento.ModoMovimientoInvalidoException;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
 import paqueteJuego.Tablero;
 import paqueteConsola.*;
+import paqueteExcepcion.*;
 
 public abstract class Avatar {
 
@@ -134,8 +136,13 @@ public abstract class Avatar {
             moverenavanzado(jugador,valorTirada,avatar,posicionActual,nuevaPosicion);
         }
         else {
-            consola.imprimir("Hay problemas detectando si el movimiento es básico o avanzado, no se ha podido mover al jugador");}
+            try{
+                throw new ModoMovimientoInvalidoException("Hay problemas detectando si el movimiento es básico o avanzado, no se ha podido mover al jugador");
 
+            } catch (ModoMovimientoInvalidoException e) {
+                consola.imprimir(e.getMessage());
+            }
+        }
     }
 
     //Método mover en básico

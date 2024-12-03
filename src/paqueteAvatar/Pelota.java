@@ -1,5 +1,6 @@
 package paqueteAvatar;
 
+import paqueteExcepcion.movimiento.ModoMovimientoInvalidoException;
 import paqueteJuego.Juego;
 import paqueteJuego.Jugador;
 import paqueteCasilla.Casilla;
@@ -83,7 +84,7 @@ public class Pelota extends Avatar {
             // Verificar si el jugador pasó por la casilla de salida (casilla 0)
             if (nuevaPosicion<0 && posicionActual>0) {
                 jugador.disminuirVueltas();  // Aumentar el contador de vueltas del jugador
-                consola.imprimir("¡Has retrocdido por la casilla de salida! Pagas " + SUMA_VUELTA + " monedas.");
+                consola.imprimir("¡Has retrocedido por la casilla de salida! Pagas " + SUMA_VUELTA + " monedas.");
                 if(jugador.getFortuna()>=SUMA_VUELTA){
                     jugador.sumarFortuna(-SUMA_VUELTA); }
                 else{Juego.sinDinero(jugador,Tablero.banca);}// Añadir el valor de la vuelta a la fortuna del jugador
@@ -118,8 +119,14 @@ public class Pelota extends Avatar {
                 casillasintermedias.add(1);
             }
 
-            else{consola.imprimir("Error raro en mov avanzado de pelota");}
+            else{
+                try{
 
+                    throw new ModoMovimientoInvalidoException("Error raro en mov avanzado de pelota");}
+                catch (ModoMovimientoInvalidoException e) {
+                    consola.imprimir(e.getMessage());
+                }
+            }
 
 
 
