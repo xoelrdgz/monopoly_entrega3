@@ -47,6 +47,7 @@ public class Hotel extends Edificio {
             getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
             // Se borran las 4 casas de la lista de ids
             for (int i = 0; i < 4; i++) {
+                // Se elimina el último elemento de la lista
                 getSolar().getCasas().getIds().removeLast();
             }
             propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();

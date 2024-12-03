@@ -57,6 +57,7 @@ public class Casa extends Edificio {
 
     // Método que comprueba si se ha alcanzado el número máximo de edificios
     @Override
+    // Devuelve -1 si se ha alcanzado el número máximo de edificios
     public int esMaxEdificios() {
         int i = 0;
         try {
