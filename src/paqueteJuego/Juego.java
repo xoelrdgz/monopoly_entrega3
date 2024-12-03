@@ -604,7 +604,7 @@ public class Juego implements Comando {
                             throw new ComandoNoReconocidoException("Error reconociendo el comando introducido");
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
-                        }}
+                        }}break;
                     break;
                 case "trato":
 
@@ -919,7 +919,7 @@ public class Juego implements Comando {
 
             } catch (ComandoInvalidoException e) {
                 consola.imprimir(e.getMessage());
-            }
+            }return;
         }
 
         // Imprimir detalles del avatar
@@ -953,7 +953,7 @@ public class Juego implements Comando {
 
             } catch (ComandoInvalidoException e) {
                 consola.imprimir(e.getMessage());
-            }
+            }return;
         }
         consola.imprimir("{");
         switch (casilla.getTipo().toLowerCase()) {

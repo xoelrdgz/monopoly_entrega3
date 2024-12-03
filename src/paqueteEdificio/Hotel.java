@@ -52,7 +52,7 @@ public class Hotel extends Edificio {
             for (int i = 0; i < 4; i++) {
                 getSolar().getCasas().getIds().remove(getSolar().getCasas().getIds().size() - 1);
             }
-            setNumEdificios(getNumEdificios() + 1);
+
             propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
             getSolar().getHoteles().setNumEdificios(getSolar().getHoteles().getNumEdificios() + 1);
             crearIDedif("Hotel");

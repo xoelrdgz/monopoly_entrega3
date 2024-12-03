@@ -46,7 +46,7 @@ public class Piscina extends Edificio {
             propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
             getSolar().getPiscinas().setNumEdificios(getSolar().getPiscinas().getNumEdificios() + 1);
             getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
-            setNumEdificios(getNumEdificios() + 1);
+
             propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
             crearIDedif("Piscina");
 

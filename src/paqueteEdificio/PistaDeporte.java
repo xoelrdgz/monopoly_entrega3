@@ -46,7 +46,7 @@ public class PistaDeporte extends Edificio {
             propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
             propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
             getSolar().getPistasDeporte().setNumEdificios(getSolar().getPistasDeporte().getNumEdificios() + 1);
-            setNumEdificios(getNumEdificios() + 1);
+
             getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
             propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
             crearIDedif("PistaDeporte");

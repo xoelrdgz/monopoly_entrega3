@@ -46,7 +46,7 @@ public class Casa extends Edificio {
 
         propietario.setFortuna(propietario.getFortuna() - getCosteEdificio());
         propietario.dineroinvertido = propietario.dineroinvertido + getCosteEdificio();
-        setNumEdificios(getNumEdificios() + 1);
+
         getSolar().casillahacostado = getSolar().casillahacostado + getCosteEdificio();
         propietario.valorpropiedades = propietario.valorpropiedades + getCosteEdificio();
         getSolar().getCasas().setNumEdificios(getSolar().getCasas().getNumEdificios() + 1);
