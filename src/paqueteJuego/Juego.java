@@ -264,17 +264,15 @@ public class Juego implements Comando {
 
             switch (accion.toLowerCase()) {
                 case "describir":
-                    try {
                         if (partes.length < 3) {
-                            i = 2;
-                            throw new ComandoIncompletoException("Comando incompleto. Uso: describir [jugador/avatar/casilla] [nombre/ID]");
+                            try {
+                                throw new ComandoIncompletoException("Comando incompleto. Uso: describir [jugador/avatar/casilla] [nombre/ID]");
 
-                        }
 
-                        // Aquí puedes agregar más código para procesar el comando si es necesario
                     } catch (ComandoIncompletoException e) {
-                        consola.imprimir(e.getMessage());
-                    }
+                            consola.imprimir(e.getMessage());
+
+                    }  } else{
                     // Subcomando que puede ser jugador, avatar o casilla
                     String tipoDescripcion = partes[1];
                     String argumento = partes[2];
@@ -299,7 +297,7 @@ public class Juego implements Comando {
                             } catch (ComandoInvalidoException e) {
                                 consola.imprimir(e.getMessage());
                             }}
-
+                }
                             break;
 
                 case "lanzar":
@@ -328,10 +326,11 @@ public class Juego implements Comando {
                         } catch (ComandoIncompletoException e) {
                             consola.imprimir(e.getMessage());
                         }
-                    }
+                    }else {
                     String nombreCasilla = partes[1];
                     comprar(nombreCasilla);
                     i = 1;
+                   }
                     break;
 
                 case "salir":
@@ -525,9 +524,12 @@ public class Juego implements Comando {
                             consola.imprimir(e.getMessage());
                         }
 
-                    }
+                    }else {
                     String tipoEdific = partes[1];
                     Casilla pos = jugadores.get(turno).getAvatar().getLugar();
+
+
+
                     if (pos instanceof Solar) {
                         Solar solar = (Solar) pos;
                         solar.edificar(tipoEdific);
@@ -537,10 +539,10 @@ public class Juego implements Comando {
                              i = 2;
                              throw new CasillaInvalidaException("No puedes edificar en esta casilla");
 
-                    } catch (Exception e) {
-                             throw new RuntimeException(e);
+                    } catch (CasillaInvalidaException e) {
+                             consola.imprimir(e.getMessage());
                          }
-                    }
+                    }}
                     break;
 
                 case "vender":
@@ -567,6 +569,7 @@ public class Juego implements Comando {
                     venderEdificios(tipoEdificio, nombreCasillaVenta, cantidad);
                     i = 1;
                     break;
+
 
                 case "bancarrota":
                     bancarrotamenu(jugadores.get(turno), Tablero.banca);
@@ -602,7 +605,7 @@ public class Juego implements Comando {
                         } catch (ComandoNoReconocidoException e) {
                             consola.imprimir(e.getMessage());
                         }}
-
+                    break;
                 case "trato":
 
                     if (partes.length < 2) {
@@ -1003,11 +1006,13 @@ public class Juego implements Comando {
 
         if (getTirado()) {
             try {
+
                 throw new ComandoInvalidoException("Ya has lanzado los dados en este turno");
 
             } catch (ComandoInvalidoException e) {
                 consola.imprimir(e.getMessage());
             }
+            return;
         }
         lanzamientos++;
         dado1 = new Dado();
@@ -1074,6 +1079,7 @@ public class Juego implements Comando {
             } catch (ComandoInvalidoException e) {
                 consola.imprimir(e.getMessage());
             }
+            return;
         }
         consola.imprimir("Introduce los valores de tus dados trucados:");
 
@@ -2092,7 +2098,7 @@ public class Juego implements Comando {
                         try {
                             throw new ComandoInvalidoException("Tipo de trato no válido.");
 
-                } catch (ComandoInvalidoException e) {
+                        } catch (ComandoInvalidoException e) {
                             consola.imprimir(e.getMessage());
                         }
                 }
