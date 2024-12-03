@@ -362,7 +362,7 @@ public class Tratos {
         jugador2.setTratosPendientes(true);
 
         // Mensaje de trato propuesto
-        consola.imprimir(jugador2.getNombre() + ", te doy " + propiedad1.getNombre() + " y " + cantidadDinero2 + " y tú me das " + propiedad2.getNombre() + ".");
+        consola.imprimir(jugador2.getNombre() + ", te doy " + propiedad1.getNombre() + " y tú me das " + propiedad2.getNombre() + " y " + cantidadDinero2 + ".");
     }
 
     // Aceptar trato de tipo 4, realiza el intercambio de propiedad por propiedad y dinero
