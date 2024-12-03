@@ -2087,7 +2087,7 @@ public class Juego implements Comando {
                         consola.imprimir("    cambiar: (" + trato.getCantidadDinero1() + ", " + trato.getPropiedad2().getNombre() + ")");
                         break;
                     case 4:
-                        consola.imprimir("    cambiar: (" + trato.getPropiedad1() + ", " + trato.getPropiedad2().getNombre() + " y " + trato.getCantidadDinero2() + ")");
+                        consola.imprimir("    cambiar: (" + trato.getPropiedad1().getNombre() + ", " + trato.getPropiedad2().getNombre() + " y " + trato.getCantidadDinero2() + ")");
                         break;
                         case 5:
                         consola.imprimir("    cambiar: (" + trato.getPropiedad1().getNombre() + " y " + trato.getCantidadDinero1() + ", " + trato.getPropiedad2().getNombre() + ")");
