@@ -472,7 +472,7 @@ public class Tratos {
         }
 
         // Mensaje de trato aceptado
-        consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + cantidadDinero1 + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + ".");
+        consola.imprimir("Se ha aceptado el trato con " + jugador1.getNombre() + " le doy " + propiedad2.getNombre() + " y " + jugador1.getNombre() + " me da " + propiedad1.getNombre() + " y " + cantidadDinero1 + ".");
 
         // Borrar trato de la lista de tratos de los jugadores
         jugador1.getListaTratos().remove(this);
