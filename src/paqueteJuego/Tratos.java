@@ -107,12 +107,6 @@ public class Tratos {
              }
         }
 
-        // DEBUG
-        consola.imprimir("Propiedad 1: " + this.getPropiedad1());
-        consola.imprimir("Propiedad 2: " + this.getPropiedad2());
-        consola.imprimir("Cantidad de dinero 1: " + this.getCantidadDinero1());
-        consola.imprimir("Cantidad de dinero 2: " + this.getCantidadDinero2());
-
         if (this.getPropiedad1() != null && this.getPropiedad2() != null && this.getCantidadDinero1() == 0 && this.getCantidadDinero2() == 0){
             this.setTipoTrato(1);
         } else if (this.getPropiedad1() != null && this.getPropiedad2() == null && this.getCantidadDinero1() == 0 && this.getCantidadDinero2() != 0){
