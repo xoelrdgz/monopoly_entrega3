@@ -98,10 +98,13 @@ public class Solar extends Propiedad {
     @Override
     public float calcularAlquiler() {
         float alquiler = 0;
+        float alquilerbase = 0;
         if (this.grupo.esDuenhoGrupo(this.duenho)) {
             alquiler = this.valor * 0.2f;
+            alquilerbase = this.valor * 0.2f;
         } else {
             alquiler = this.valor * 0.1f;
+            alquilerbase = this.valor * 0.1f;
         }
 
         // Ajustar el alquiler según los edificios construidos
@@ -112,17 +115,14 @@ public class Solar extends Propiedad {
 
         // Incrementar el alquiler según el número de edificios
         switch (numCasas) {
-            case 1 -> alquiler += this.valor * 5; // Una casa incrementa el alquiler 5 veces el valor de la casilla
-            case 2 -> alquiler += this.valor * 15; // Dos casas incrementan el alquiler 15 veces el valor de la casilla
-            case 3 -> alquiler += this.valor * 35; // Tres casas incrementan el alquiler 35 veces el valor de la casilla
-            case 4 -> alquiler += this.valor * 70; // Cuatro casas incrementan el alquiler 70 veces el valor de la
-            // casilla
+            case 1 -> alquiler += alquilerbase * 5; // Una casa incrementa el alquiler 5 veces el valor del alquiler de la casilla
+            case 2 -> alquiler += alquilerbase * 15; // Dos casas incrementan el alquiler 15 veces el valor del alquiler de la casilla
+            case 3 -> alquiler += alquilerbase * 35; // Tres casas incrementan el alquiler 35 veces el valor del alquiler de la casilla
+            case 4 -> alquiler += alquilerbase * 50; // Cuatro casas incrementan el alquiler 50 veces el valor del alquiler de la casilla
         }
-        alquiler += numHoteles * (this.valor * 70); // Cada hotel incrementa el alquiler 70 veces el valor de la casilla
-        alquiler += numPiscinas * (this.valor * 25); // Cada piscina incrementa el alquiler 25 veces el valor de la
-        // casilla
-        alquiler += numPistasDeporte * (this.valor * 25); // Cada pista de deporte incrementa el alquiler 25 veces el
-        // valor de la casilla
+        alquiler += numHoteles * (alquilerbase * 70); // Cada hotel incrementa el alquiler 70 veces el valor del alquiler de la casilla
+        alquiler += numPiscinas * (alquilerbase * 25); // Cada piscina incrementa el alquiler 25 veces el valor del alquiler de la casilla
+        alquiler += numPistasDeporte * (alquilerbase * 25); // Cada pista de deporte incrementa el alquiler 25 veces el valor del alquiler de la casilla
 
         return alquiler;
     }
