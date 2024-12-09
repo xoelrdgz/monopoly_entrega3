@@ -8,6 +8,7 @@ import paqueteConsola.*;
 import java.util.ArrayList;
 
 import static paqueteJuego.Juego.*;
+import static paqueteJuego.Valor.IMPUESTO_2;
 
 public class CartaCajaComunidad extends Carta{
     Consola consola = new ConsolaNormal();
@@ -43,7 +44,7 @@ public class CartaCajaComunidad extends Carta{
             case 1:
                 consola.imprimir("Paga 500000€ por un fin de semana en un balneario de 5 estrellas.");
                 jugadorActual.sumarFortuna(-500000);
-
+                Tablero.setBote(Tablero.getBote() + 500000);
                 if (jugadorActual.getFortuna() < 0) {
                     sinDinero(jugadorActual, Tablero.banca);
                 }
@@ -75,6 +76,7 @@ public class CartaCajaComunidad extends Carta{
             case 5:
                 consola.imprimir("Paga 1000000€ por invitar a todos tus amigos a un viaje a Solar14.");
                 jugadorActual.sumarFortuna(-1000000);
+                Tablero.setBote(Tablero.getBote() + 1000000);
                 if (jugadorActual.getFortuna() < 0) {
                     sinDinero(jugadorActual, Tablero.banca);
                 }
