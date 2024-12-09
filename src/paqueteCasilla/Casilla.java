@@ -45,6 +45,7 @@ public abstract class Casilla {
     }
 
     // Getters
+    //toString
     public String getNombre() {
         return nombre;
     }
