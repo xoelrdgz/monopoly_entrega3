@@ -1227,6 +1227,13 @@ public class Juego implements Comando {
             for (Casilla propiedad : jugador.getPropiedades()) {
                 acreedor.anhadirPropiedad(propiedad);
                 propiedad.setDuenho(acreedor);
+                if(propiedad.getTipo().equalsIgnoreCase("solar")){
+                    Solar solar=(Solar) propiedad;
+                    solar.getCasas().setNumEdificios(0);
+                    solar.getHoteles().setNumEdificios(0);
+                    solar.getPiscinas().setNumEdificios(0);
+                    solar.getPistasDeporte().setNumEdificios(0);
+                }
             }
             consola.imprimir(jugador.getNombre() + " se ha declarado en bancarrota. Toda su fortuna y propiedades se han transferido a la banca.");
         } else {
@@ -1238,6 +1245,13 @@ public class Juego implements Comando {
             for (Casilla propiedad : jugador.getPropiedades()) {
                 acreedor.anhadirPropiedad(propiedad);
                 propiedad.setDuenho(acreedor);
+                if(propiedad.getTipo().equalsIgnoreCase("solar")){
+                    Solar solar=(Solar) propiedad;
+                    solar.getCasas().setNumEdificios(0);
+                    solar.getHoteles().setNumEdificios(0);
+                    solar.getPiscinas().setNumEdificios(0);
+                    solar.getPistasDeporte().setNumEdificios(0);
+                }
             }
             consola.imprimir(jugador.getNombre()
                     + " se ha declarado en bancarrota. Toda su fortuna y propiedades se han transferido a "

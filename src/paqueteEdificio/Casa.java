@@ -53,6 +53,7 @@ public class Casa extends Edificio {
         crearIDedif("Casa");
 
         consola.imprimir("Has construido una casa por " + getCosteEdificio());
+
     }
 
     // Método que comprueba si se ha alcanzado el número máximo de edificios
